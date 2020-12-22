@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Add some functionalities to debug occ",
   "short_name": "Occ Debugger",
-  "permissions": ["tabs", "activeTab", "https://*.motorolasolutions.com/*"],
+  "permissions": ["tabs", "activeTab", "storage", "<all_urls>"],
   "web_accessible_resources": ["occ-debugger.js"],
   "background": {
     "scripts": ["index.js"],
