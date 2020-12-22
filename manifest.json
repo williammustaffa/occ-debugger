@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "OCC Debugger",
+  "version": "1.0.0",
+  "description": "Add some functionalities to debug occ",
+  "short_name": "Occ Debugger",
+  "permissions": ["tabs", "activeTab", "https://*.motorolasolutions.com/*"],
+  "web_accessible_resources": ["occ-debugger.js"],
+  "background": {
+    "scripts": ["index.js"],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "OCC Debugger",
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  }
+ }
