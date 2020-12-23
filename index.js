@@ -1,18 +1,32 @@
-var DOMAIN_KEY = 'occ-debugger.domain';
+function injectConfigs(configs, tag) {
+  const node = document.getElementsByTagName(tag)[0];
+  const script = document.createElement('script');
+  script.setAttribute('type', 'text/javascript');
+  script.setAttribute('id', 'occ-debugger-config');
+  script.text = 'window.occDebuggerConfigs = ' + JSON.stringify(configs);
+  node.appendChild(script);
+}
 
-chrome.tabs.onUpdated.addListener(function(tab, info) {
-  if (info.status === 'complete') {
-    chrome.storage.sync.get(DOMAIN_KEY, function (data) {
-      // TODO: change way configs are store, maybe save all configs together
-      const configs = {
-        domain: data[DOMAIN_KEY],
-      }
+function injectScript(filePath, tag) {
+  const node = document.getElementsByTagName(tag)[0];
+  const script = document.createElement('script');
+  script.setAttribute('type', 'text/javascript');
+  script.setAttribute('id', 'occ-debugger-script');
+  script.setAttribute('src', filePath);
+  node.appendChild(script);
+}
 
-      chrome.tabs.executeScript(
-        { code: 'var occDebuggerConfigs = ' + JSON.stringify(configs) },
-        () => { chrome.tabs.executeScript({ file: "scripts/occ-debugger.js" }) }
-      )
-    });
+chrome.runtime.onMessage.addListener(function (message) {
+  const configs = message.data;
 
+  if (!configs.domain) return;
+
+  const siteUrl = location.href;
+  const siteRegex = new RegExp(configs.domain);
+
+  if (siteRegex.test(siteUrl) && message.type === 'ready') {
+    injectConfigs(configs, 'body');
+    injectScript(chrome.extension.getURL('scripts/occDebugger.js'), 'body');
+    console.info('Site is listed', siteRegex, siteUrl)
   }
 });

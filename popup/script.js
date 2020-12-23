@@ -1,10 +1,19 @@
-var DOMAIN_KEY = 'occ-debugger.domain';
-var domainInput = document.getElementById('domain');
+const CONFIGS_KEY = 'occ-debugger.configs';
 
-chrome.storage.sync.get(DOMAIN_KEY, function(data) {
-  domainInput.value = data[DOMAIN_KEY];
+// Elements
+const domainInput = document.getElementById('domain');
+
+chrome.storage.sync.get(CONFIGS_KEY, function (data) {
+  if (data[CONFIGS_KEY]) {
+    const configs = JSON.parse(data[CONFIGS_KEY]);
+
+    if (configs && configs.domain) {
+      domainInput.value = configs.domain;
+    }
+  }
 });
 
 domainInput.addEventListener('blur', function (e) {
-  chrome.storage.sync.set({ [DOMAIN_KEY]: e.target.value });
+  const strConfigs = JSON.stringify({ domain: e.target.value });
+  chrome.storage.sync.set({ [CONFIGS_KEY]: strConfigs });
 });
