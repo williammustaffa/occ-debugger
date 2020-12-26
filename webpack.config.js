@@ -1,4 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -42,6 +43,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'popup/index.html',
       chunks: ['popup']
-    })
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/scripts' , to: 'scripts' },
+        { from: 'src/icons', to: 'icons' },
+        { from: 'src/manifest.json', to: 'manifest.json' }
+      ]
+  })
   ]
 };
