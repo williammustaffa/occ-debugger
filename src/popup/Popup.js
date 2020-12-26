@@ -1,5 +1,7 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import { Header, Title, Footer, Button, Form } from 'preact-photon';
+import { Window } from './Popup.styles';
 
 const storage = chrome.storage.sync;
 
@@ -45,14 +47,23 @@ export default function Popup() {
   if (loading) return;
 
   return (
-    <div>
-      <span>{configs.domain}</span>
+    <Window>
+      <Header>
+        <Title>Preact-Photon Demo</Title>
+      </Header>
       <input
         id="domain"
         type="text"
         defaultValue={configs.domain}
         onBlur={updateConfigs('domain')}
       />
-    </div>
+      <Form>
+        <Form.CheckBox label="Topics" checked={true}/>
+        <Form.CheckBox label="Spinner" checked={false}/>
+      </Form>
+      <Footer>
+        <Button>Apply</Button>
+      </Footer>
+    </Window>
   );
 }

@@ -23,7 +23,9 @@ const popupBundleConfig = merge(common, {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      title: "OCC Debugger",
       filename: 'popup/index.html',
+      template: 'src/popup/index.html',
       chunks: ['popup']
     }),
     new CopyWebpackPlugin({
@@ -41,7 +43,7 @@ const scriptsBundleConfig = merge(common, {
   entry: {
     background: path.join(SRC_PATH, 'scripts/background.js'),
     inject: path.join(SRC_PATH, 'scripts/inject.js'),
-    ['occ-debugger']: path.join(SRC_PATH, 'scripts/occ-debugger.js')
+    'occ-debugger': path.join(SRC_PATH, 'scripts/occ-debugger.js')
   },
   output: {
     filename: 'scripts/[name].js',

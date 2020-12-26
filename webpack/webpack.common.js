@@ -15,7 +15,14 @@ module.exports = {
         }
       },
       {
-        test: /\.scss$/i,
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 100000
+        }
+      },
+      {
+        test: /\.(css|scss)$/i,
         use: [
           'style-loader',
           'css-loader',
@@ -25,7 +32,17 @@ module.exports = {
       },
     ]
   },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    alias: {
+      'react': "preact/compat",
+      'react-dom': 'preact/compat',
+      'react-dom/test-utils': 'preact/test-utils',
+    }
   }
 };
