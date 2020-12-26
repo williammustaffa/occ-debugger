@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { Header, Title, Footer, Button, Form } from 'preact-photon';
-import { Window } from './Popup.styles';
+import { Header, Title, Button, Form, Footer } from 'preact-photon';
+import { Window, Body } from './Popup.styles';
 
 const storage = chrome.storage.sync;
 
@@ -49,20 +49,29 @@ export default function Popup() {
   return (
     <Window>
       <Header>
-        <Title>Preact-Photon Demo</Title>
+        <Title>OCC Debugger</Title>
       </Header>
-      <input
-        id="domain"
-        type="text"
-        defaultValue={configs.domain}
-        onBlur={updateConfigs('domain')}
-      />
-      <Form>
-        <Form.CheckBox label="Topics" checked={true}/>
-        <Form.CheckBox label="Spinner" checked={false}/>
-      </Form>
+      <Body>
+        <Form>
+          <div class="form-group">
+            <label>Domain</label>
+            <input
+              id="domain"
+              type="text"
+              className="form-control"
+              defaultValue={configs.domain}
+              onBlur={updateConfigs('domain')}
+            />
+          </div>
+          <Form.CheckBox label="Topics" checked={true}/>
+          <Form.CheckBox label="Spinner" checked={false}/>
+        </Form>
+      </Body>
       <Footer>
-        <Button>Apply</Button>
+        <div className="toolbar-actions">
+          <Button>Cancel</Button>
+          <Button class="pull-right" primary>Apply</Button>
+        </div>
       </Footer>
     </Window>
   );
