@@ -5,7 +5,7 @@
   "description": "Add some functionalities to debug occ",
   "short_name": "Occ Debugger",
   "permissions": ["tabs", "activeTab", "storage", "<all_urls>"],
-  "web_accessible_resources": ["scripts/occDebugger.js"],
+  "web_accessible_resources": ["scripts/occ-debugger.js"],
   "background": {
     "scripts": ["scripts/background.js"],
     "persistent": false

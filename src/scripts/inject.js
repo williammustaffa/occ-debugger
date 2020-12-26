@@ -16,6 +16,7 @@ function injectScript(filePath, tag) {
   node.appendChild(script);
 }
 
+
 chrome.runtime.onMessage.addListener(function (message) {
   const configs = message.data;
 
@@ -26,7 +27,9 @@ chrome.runtime.onMessage.addListener(function (message) {
 
   if (siteRegex.test(siteUrl) && message.type === 'ready') {
     injectConfigs(configs, 'body');
-    injectScript(chrome.extension.getURL('scripts/occDebugger.js'), 'body');
-    console.info('Site is listed', siteRegex, siteUrl)
+    injectScript(chrome.extension.getURL('scripts/occ-debugger.js'), 'body');
+    console.info('Site is listed', siteUrl)
+  } else {
+    console.info('Site is not listed', siteUrl)
   }
 });

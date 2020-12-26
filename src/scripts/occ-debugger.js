@@ -1,3 +1,6 @@
+let occRequire = __non_webpack_require__;
+const OCC_PACKAGES = ['spinner', 'pubsub'];
+
 class OccDebugger {
   constructor(features) {
     this.prefix = '[OCC-DEBUGGER]';
@@ -36,7 +39,7 @@ class OccDebugger {
 
   debugSpinner() {
     const self = this;
-    const spinner = require('spinner');
+    const spinner = occRequire('spinner');
 
     // Save original methods
     const buildCSS = spinner.buildCSS;
@@ -55,7 +58,7 @@ class OccDebugger {
 
   debugTopics() {
     const self = this;
-    const pubsub = require('pubsub');
+    const pubsub = occRequire('pubsub');
 
     Object.keys(pubsub.topicNames).map(function (topicName) {
       $.Topic(pubsub.topicNames[topicName]).subscribe(function () {
@@ -66,11 +69,10 @@ class OccDebugger {
   }
 }
 
-
 function waitForRequire(callback) {
   const listener = setInterval(function () {
-    if (typeof require === 'undefined') return;
-    require(['spinner', 'pubsub'], callback);
+    if (typeof occRequire === 'undefined') return;
+    occRequire(OCC_PACKAGES, callback);
     clearInterval(listener);
   });
 }
