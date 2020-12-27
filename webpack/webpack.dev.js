@@ -13,7 +13,7 @@ const SRC_PATH = path.resolve(__dirname, '..', 'src');
 // Bundling popup
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'cheap-module-source-map',
+  devtool: 'inline-source-map',
   entry: {
     'popup/index': path.join(SRC_PATH, 'popup/index.js'),
     'scripts/inject': path.join(SRC_PATH, 'scripts/inject.js'),

@@ -1,5 +1,4 @@
 let occRequire = __non_webpack_require__;
-const OCC_PACKAGES = ['spinner', 'pubsub'];
 
 class OccDebugger {
   constructor(options) {
@@ -67,14 +66,4 @@ class OccDebugger {
   }
 }
 
-function waitForRequire(callback) {
-  const listener = setInterval(function () {
-    if (typeof occRequire === 'undefined') return;
-    occRequire(OCC_PACKAGES, callback);
-    clearInterval(listener);
-  });
-}
-
-waitForRequire(function () {
-  new OccDebugger(occDebuggerConfigs).init();
-});
+new OccDebugger(occDebuggerConfigs).init();
