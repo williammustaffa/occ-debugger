@@ -1,5 +1,5 @@
-import storage from 'utils/storage';
-import constants from 'utils/constants';
+import storage from '@utils/storage';
+import constants from '@utils/constants';
 
 function injectConfigs(configs, tag) {
   const node = document.getElementsByTagName(tag)[0];

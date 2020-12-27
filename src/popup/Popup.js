@@ -1,12 +1,13 @@
 import { h } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
-import { Header, Title, Button, Form, Footer } from 'preact-photon';
-import storage from 'utils/storage';
-import constants from 'utils/constants';
+import { useEffect, useMemo, useState } from 'preact/hooks';
+import { Header, Title, Button, Footer, FormGroup, Checkbox, Input } from '@components';
+import storage from '@utils/storage';
+import constants from '@utils/constants';
 import { Window, Body } from './Popup.styles';
 
 export default function Popup() {
   const [loading, setLoading] = useState(true);
+  const [isDirty, setIsDirty] = useState(false);
   const [configs, setConfigs] = useState({});
 
   // Load configs
@@ -25,6 +26,7 @@ export default function Popup() {
 
   const applyConfigs = () => {
     storage.setItem(constants.CONFIGS_KEY, configs);
+    setIsDirty(false);
   };
 
   // Save configs by name
@@ -39,6 +41,8 @@ export default function Popup() {
       ...state,
       [configName]: configValue
     }));
+
+    setIsDirty(true);
   };
 
   if (loading) return null;
@@ -49,35 +53,31 @@ export default function Popup() {
         <Title>OCC Debugger</Title>
       </Header>
       <Body>
-        <Form>
-          <div class="form-group">
-            <label>Target domain</label>
-            <input
-              id="domain"
-              type="text"
-              className="form-control"
-              defaultValue={configs.domain}
-              onBlur={updateConfigs('domain')}
-            />
-          </div>
-          <Form.CheckBox
-            label="Topics"
-            checked={configs.topics}
-            onChange={updateConfigs('topics')}
+        <FormGroup>
+          <Input
+            label="Target domain"
+            defaultValue={configs.domain}
+            onBlur={updateConfigs('domain')}
           />
-          <Form.CheckBox
-            label="Spinner"
-            checked={configs.spinner}
-            onChange={updateConfigs('spinner')}
-          />
-        </Form>
+        </FormGroup>
+        <Checkbox
+          label="Topics"
+          checked={configs.topics}
+          onChange={updateConfigs('topics')}
+        />
+        <Checkbox
+          label="Spinner"
+          checked={configs.spinner}
+          onChange={updateConfigs('spinner')}
+        />
       </Body>
       <Footer>
         <div className="toolbar-actions">
           <Button onClick={closePopup}>Cancel</Button>
           <Button
-            class="pull-right"
+            className="pull-right"
             primary
+            enabled={isDirty}
             onClick={applyConfigs}
             >Apply
           </Button>

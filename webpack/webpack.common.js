@@ -5,7 +5,7 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules)/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -54,7 +54,8 @@ module.exports = {
       'react': "preact/compat",
       'react-dom': 'preact/compat',
       'react-dom/test-utils': 'preact/test-utils',
-      'utils': path.resolve(__dirname, '../src/utils')
+      '@utils': path.resolve(__dirname, '../src/utils'),
+      '@components': path.resolve(__dirname, '../src/components'),
     }
   },
   plugins: []
