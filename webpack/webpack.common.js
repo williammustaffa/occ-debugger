@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   module: {
     rules: [
@@ -7,7 +9,16 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  "useBuiltIns": "usage",
+                  "corejs": 3,
+                  "targets": "> 0.25%, not dead" 
+                }
+              ]
+            ],
             plugins: [
               ["@babel/plugin-transform-react-jsx", { "pragma": "h" }]
             ]
@@ -43,6 +54,8 @@ module.exports = {
       'react': "preact/compat",
       'react-dom': 'preact/compat',
       'react-dom/test-utils': 'preact/test-utils',
+      'utils': path.resolve(__dirname, '../src/utils')
     }
-  }
+  },
+  plugins: []
 };

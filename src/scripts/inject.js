@@ -1,3 +1,6 @@
+import storage from 'utils/storage';
+import constants from 'utils/constants';
+
 function injectConfigs(configs, tag) {
   const node = document.getElementsByTagName(tag)[0];
   const script = document.createElement('script');
@@ -16,20 +19,22 @@ function injectScript(filePath, tag) {
   node.appendChild(script);
 }
 
-
-chrome.runtime.onMessage.addListener(function (message) {
-  const configs = message.data;
-
-  if (!configs.domain) return;
+function initialize(configs) {
+  if (!configs) return;
 
   const siteUrl = location.href;
   const siteRegex = new RegExp(configs.domain);
 
-  if (siteRegex.test(siteUrl) && message.type === 'ready') {
+  if (siteRegex.test(siteUrl)) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occ-debugger.js'), 'body');
     console.info('Site is listed', siteUrl)
   } else {
     console.info('Site is not listed', siteUrl)
   }
-});
+}
+
+// Get configs and initialize
+storage.getItem(constants.CONFIGS_KEY)
+  .then(initialize)
+  .catch(console.warn);

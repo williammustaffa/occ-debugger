@@ -2,37 +2,35 @@ let occRequire = __non_webpack_require__;
 const OCC_PACKAGES = ['spinner', 'pubsub'];
 
 class OccDebugger {
-  constructor(features) {
+  constructor(options) {
     this.prefix = '[OCC-DEBUGGER]';
-    this.features = features || [];
+    this.features = options || {};
   }
 
   log() {
     const args = Array.prototype.slice.call(arguments);
     const type = args.shift();
   
-    args.unshift(this.prefix);
+    args.unshift(`${this.prefix}[${type}]`);
 
-    console[type].apply(console.log, args);
-  }
-
-  enable(featureName) {
-    this.features.push(featureName);
+    console[type].apply(console, args);
   }
 
   init() {
+    this.log('info', 'Initializing occ-debugger extension');
+
     const featuresMapping = {
       spinner: this.debugSpinner,
       topics: this.debugTopics
     };
 
-    this.features.forEach((featureName) => {
+    Object.keys(this.features).forEach(featureName => {
+      const featureEnabled = this.features[featureName];
       const featureFn = featuresMapping[featureName];
 
-      if (typeof featureFn !== 'undefined') {
+      if (featureEnabled && typeof featureFn === 'function') {
+        this.log('info', `Feature enabled: ${featureName}`);
         featureFn.call(this);
-      } else {
-        this.log('info', `[WARN] Feature << ${featureName} >> not found`);
       }
     });
   }
@@ -78,8 +76,5 @@ function waitForRequire(callback) {
 }
 
 waitForRequire(function () {
-  const instance = new OccDebugger();
-  instance.enable('topics');
-  instance.enable('spinner');
-  instance.init();
+  new OccDebugger(occDebuggerConfigs).init();
 });

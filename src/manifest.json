@@ -6,15 +6,11 @@
   "short_name": "Occ Debugger",
   "permissions": ["tabs", "activeTab", "storage", "<all_urls>"],
   "web_accessible_resources": ["scripts/occ-debugger.js"],
-  "background": {
-    "scripts": ["scripts/background.js"],
-    "persistent": false
-  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["scripts/inject.js"],
-      "all_frames": true
+      "all_frames": false
     }
   ],
   "browser_action": {

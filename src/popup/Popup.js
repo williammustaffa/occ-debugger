@@ -1,50 +1,47 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { Header, Title, Button, Form, Footer } from 'preact-photon';
+import storage from 'utils/storage';
+import constants from 'utils/constants';
 import { Window, Body } from './Popup.styles';
-
-const storage = chrome.storage.sync;
-
-const CONFIGS_KEY = 'occ-debugger.configs';
-const DEFAULT_CONFIGS = {
-  domain: '',
-  topics: false,
-  spinner: false
-};
 
 export default function Popup() {
   const [loading, setLoading] = useState(true);
-  const [configs, setConfigs] = useState(DEFAULT_CONFIGS);
+  const [configs, setConfigs] = useState({});
 
   // Load configs
   useEffect(() => {
-    storage.get(CONFIGS_KEY, function (data) {
-      if (data[CONFIGS_KEY]) {
-        const configs = JSON.parse(data[CONFIGS_KEY]);
-        if (configs) {
-          setConfigs(configs);
-        }
-        setLoading(false);
+    const loadConfigs = async () => {
+      const loadedConfigs = await storage.getItem(constants.CONFIGS_KEY);
+      if (loadedConfigs) {
+        setConfigs(loadedConfigs);
       }
-    });
+      setLoading(false);
+    }
+    loadConfigs();
   }, []);
 
-  // Sync configs to storage
-  useEffect(() => {
-    if (loading) return;
-    const strConfigs = JSON.stringify(configs);
-    storage.set({ [CONFIGS_KEY]: strConfigs });
-  }, [configs]);
+  const closePopup = () => window.close();
+
+  const applyConfigs = () => {
+    storage.setItem(constants.CONFIGS_KEY, configs);
+  };
 
   // Save configs by name
   const updateConfigs = configName => e => {
+    const configValue = (
+      e.target.type === 'checkbox' ?
+      e.target.checked :
+      e.target.value
+    );
+
     setConfigs(state => ({
       ...state,
-      [configName]: e.target.value
+      [configName]: configValue
     }));
-  }
+  };
 
-  if (loading) return;
+  if (loading) return null;
 
   return (
     <Window>
@@ -54,7 +51,7 @@ export default function Popup() {
       <Body>
         <Form>
           <div class="form-group">
-            <label>Domain</label>
+            <label>Target domain</label>
             <input
               id="domain"
               type="text"
@@ -63,14 +60,27 @@ export default function Popup() {
               onBlur={updateConfigs('domain')}
             />
           </div>
-          <Form.CheckBox label="Topics" checked={true}/>
-          <Form.CheckBox label="Spinner" checked={false}/>
+          <Form.CheckBox
+            label="Topics"
+            checked={configs.topics}
+            onChange={updateConfigs('topics')}
+          />
+          <Form.CheckBox
+            label="Spinner"
+            checked={configs.spinner}
+            onChange={updateConfigs('spinner')}
+          />
         </Form>
       </Body>
       <Footer>
         <div className="toolbar-actions">
-          <Button>Cancel</Button>
-          <Button class="pull-right" primary>Apply</Button>
+          <Button onClick={closePopup}>Cancel</Button>
+          <Button
+            class="pull-right"
+            primary
+            onClick={applyConfigs}
+            >Apply
+          </Button>
         </div>
       </Footer>
     </Window>
