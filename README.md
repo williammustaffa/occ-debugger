@@ -11,21 +11,21 @@ npm install
 ```
 npm start
 ```
-This will generate a dev `dist` folder on the project root. Upload the folder on `chrome://extensions` through `Load unpacked` option. _This option only displays when **Developer mode** is enabled_
+This will generate a dev `dist` folder on the project root. Upload the folder on `chrome://extensions` through `Load unpacked` option. _This option only displays when **developer mode** is enabled_.
  
 
-Webpack is configured with [Webpack Extension Reloaded](https://github.com/rubenspgcavalcante/webpack-extension-reloader) Plugin, so you don't need to upload it every time you change the files while running the server.
+Webpack is configured with [Webpack Extension Reloaded](https://github.com/rubenspgcavalcante/webpack-extension-reloader) Plugin, so you don't need to reload the extension every time you change the files while running the server.
 
 
 ### Build
-Considering all packages are installed as per Development section, run:
+Considering all packages are installed as per development section, run:
 ```
 npm run build
 ```
 This command will generate the unpacked version of the extension in the `dist` folder.
 
 
-Popup id build using `preact` library.
+Popup is built using [Preact](https://preactjs.com/) and [Photon](http://photonkit.com/).
 
 ### Features
 
