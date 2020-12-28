@@ -30,5 +30,7 @@ Popup is built using [Preact](https://preactjs.com/) and [Photon](http://photonk
 ### Features
 
 **Topics:** Enable topics debugging
+
 **Spinner:** Enable spinner debugging
+
 **ViewModels:** TODO
