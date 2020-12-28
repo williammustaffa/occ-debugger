@@ -1,5 +1,4 @@
-import storage from '@utils/storage';
-import constants from '@utils/constants';
+import { storage, constants } from '@utils';
 
 function injectConfigs(configs, tag) {
   const node = document.getElementsByTagName(tag)[0];
@@ -20,21 +19,15 @@ function injectScript(filePath, tag) {
 }
 
 function initialize(configs) {
-  if (!configs) return;
+  const siteUrl = location.hostname;
 
-  const siteUrl = location.href;
-  const siteRegex = new RegExp(configs.domain);
-
-  if (siteRegex.test(siteUrl)) {
+  if (configs.domain = siteUrl && configs.enabled) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occ-debugger.js'), 'body');
-    console.info('Site is listed', siteUrl)
-  } else {
-    console.info('Site is not listed', siteUrl)
   }
 }
 
 // Get configs and initialize
-storage.getItem(constants.CONFIGS_KEY)
+storage.getItem(constants.CONFIGS_KEY, {})
   .then(initialize)
   .catch(console.warn);

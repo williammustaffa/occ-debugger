@@ -38,7 +38,7 @@ module.exports = merge(common, {
     }),
     new ExtensionReloader({
       port: 3000,
-      reloadPage: true,
+      reloadPage: true
     }),
   ]
 });

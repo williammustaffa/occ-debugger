@@ -1,6 +1,12 @@
 import { h } from 'preact';
+import styled from 'styled-components';
 import classNames from 'classnames';
 import { Icon } from './Icon';
+
+const ButtonStyled = styled.button`
+  opacity: ${props => props.disabled ? 0.5 : 1};
+  cursor: pointer;
+`;
 
 export function Button({
   children,
@@ -12,10 +18,15 @@ export function Button({
   large,
   mini,
   form,
+  pullRight,
+  pullLeft,
   icon,
+  disabled,
+  active,
   ...props
 }) {
   const componentClass = classNames('btn', className, {
+    'active': active,
     'btn-default': ![primary, positive, negative, warning].some(isEnabled => !!isEnabled),
     'btn-primary': primary,
     'btn-positive': positive,
@@ -23,7 +34,9 @@ export function Button({
     'btn-warning': warning,
     'btn-large': large,
     'btn-mini': mini,
-    'btn-form': form
+    'btn-form': form,
+    'pull-right': pullRight,
+    'pull-left': pullLeft
   });
 
   const renderIcon = () => {
@@ -32,9 +45,9 @@ export function Button({
   };
 
   return (
-    <button className={componentClass} {...props}>
+    <ButtonStyled className={componentClass} disabled={disabled} {...props}>
       {renderIcon()}
       {children}
-    </button>
+    </ButtonStyled>
   );
 }

@@ -1,9 +1,9 @@
-const storage = chrome.storage.local;
+const chromeStorage = chrome.storage.local;
 
-function getItem(key, json = true) {
+function getItem(key, defaultValue, json = true) {
   return new Promise(resolve => {
-    storage.get(key, data => {
-      const raw = data[key];
+    chromeStorage.get(key, data => {
+      const raw = data[key] || defaultValue;
   
       if (json && typeof raw === 'string') {
         try {
@@ -21,10 +21,10 @@ function getItem(key, json = true) {
 
 function setItem(key, value, json = true) {
   const strConfigs = json ? JSON.stringify(value) : value;
-  storage.set({ [key]: strConfigs });
+  chromeStorage.set({ [key]: strConfigs });
 }
 
-export default {
+export const storage = {
   getItem,
   setItem
 };

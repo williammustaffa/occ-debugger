@@ -1,31 +1,38 @@
 import { h } from 'preact';
-import { useEffect, useMemo, useState } from 'preact/hooks';
-import { Header, Title, Button, Footer, FormGroup, Checkbox, Input } from '@components';
-import storage from '@utils/storage';
-import constants from '@utils/constants';
-import { Window, Body } from './Popup.styles';
+import { useEffect, useState } from 'preact/hooks';
+import { Toolbar, Title, Button, Checkbox } from '@components';
+import { storage, constants, tabs } from '@utils';
+import { Content, Section } from './Popup.styles';
 
 export default function Popup() {
   const [loading, setLoading] = useState(true);
   const [isDirty, setIsDirty] = useState(false);
   const [configs, setConfigs] = useState({});
+  const [currentTab, setCurrentTab] = useState(false);
 
   // Load configs
   useEffect(() => {
-    const loadConfigs = async () => {
-      const loadedConfigs = await storage.getItem(constants.CONFIGS_KEY);
-      if (loadedConfigs) {
-        setConfigs(loadedConfigs);
-      }
+    const load = async () => {
+      const tab = await tabs.getCurrent();
+      const configs = await storage.getItem(constants.CONFIGS_KEY, {});
+
+      setConfigs({
+        ...configs,
+        domain: tabs.getTabUrl(tab)
+      });
+
+      setCurrentTab(tab);
       setLoading(false);
-    }
-    loadConfigs();
+    };
+
+    load();
   }, []);
 
   const closePopup = () => window.close();
 
-  const applyConfigs = () => {
+  const applyConfigs = async () => {
     storage.setItem(constants.CONFIGS_KEY, configs);
+    tabs.refreshTab(currentTab);
     setIsDirty(false);
   };
 
@@ -48,41 +55,47 @@ export default function Popup() {
   if (loading) return null;
 
   return (
-    <Window>
-      <Header>
+    <Toolbar>
+      <Toolbar.Header>
         <Title>OCC Debugger</Title>
-      </Header>
-      <Body>
-        <FormGroup>
-          <Input
-            label="Target domain"
-            defaultValue={configs.domain}
-            onBlur={updateConfigs('domain')}
+      </Toolbar.Header>
+      <Content>
+        <Section>
+          <span>Site: {tabs.getTabUrl(currentTab)}</span>
+          <Checkbox
+            label="Enabled"
+            checked={configs.enabled}
+            onChange={updateConfigs('enabled')}
           />
-        </FormGroup>
-        <Checkbox
-          label="Topics"
-          checked={configs.topics}
-          onChange={updateConfigs('topics')}
-        />
-        <Checkbox
-          label="Spinner"
-          checked={configs.spinner}
-          onChange={updateConfigs('spinner')}
-        />
-      </Body>
-      <Footer>
-        <div className="toolbar-actions">
-          <Button onClick={closePopup}>Cancel</Button>
+        </Section>
+        <Section>
+          <Title>Logging</Title>
+          <Checkbox
+            disabled={!configs.enabled}
+            label="Topics"
+            checked={configs.topics}
+            onChange={updateConfigs('topics')}
+          />
+          <Checkbox
+            disabled={!configs.enabled}
+            label="Spinner"
+            checked={configs.spinner}
+            onChange={updateConfigs('spinner')}
+          />
+        </Section>
+      </Content>
+      <Toolbar.Footer>
+        <Toolbar.Actions>
+          <Button onClick={closePopup} pullLeft>Close</Button>
           <Button
-            className="pull-right"
             primary
-            enabled={isDirty}
+            pullRight
+            disabled={!isDirty}
             onClick={applyConfigs}
-            >Apply
+            >Save and Refresh
           </Button>
-        </div>
-      </Footer>
-    </Window>
+        </Toolbar.Actions>
+      </Toolbar.Footer>
+    </Toolbar>
   );
 }

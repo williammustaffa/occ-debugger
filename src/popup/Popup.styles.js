@@ -1,9 +1,19 @@
 import styled from 'styled-components'
 
-export const Window = styled.div`
-  width: 350px;
+// Overriding checkbox css here
+export const Content = styled.div`
+  position: relative;
+  padding: 10px;
 `;
 
-export const Body = styled.div`
-  padding: 10px;
-`
+export const Section = styled.div`
+  margin: 0 0 10px;
+`;
+
+export const SectionTitle = styled.div`
+  font-weight: bold;
+  margin: 0 0 5px;
+  font-size: 12px;
+  color: #555;
+  text-align: center;
+`;
