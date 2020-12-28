@@ -1,26 +1,22 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { Toolbar, Title, Button, Checkbox } from '@components';
-import { storage, constants, tabs } from '@utils';
+import { storage, tabs } from '@utils';
 import { Content, Section } from './Popup.styles';
 
 export default function Popup() {
-  const [loading, setLoading] = useState(true);
+  const [configs, setConfigs] = useState();
   const [isDirty, setIsDirty] = useState(false);
-  const [configs, setConfigs] = useState({});
+  const [loading, setLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState(false);
 
   // Load configs
   useEffect(() => {
     const load = async () => {
       const tab = await tabs.getCurrent();
-      const configs = await storage.getItem(constants.CONFIGS_KEY, {});
+      const configs = await storage.getDomainConfigs(tab.domainName);
 
-      setConfigs({
-        ...configs,
-        domain: tabs.getTabUrl(tab)
-      });
-
+      setConfigs(configs);
       setCurrentTab(tab);
       setLoading(false);
     };
@@ -31,7 +27,7 @@ export default function Popup() {
   const closePopup = () => window.close();
 
   const applyConfigs = async () => {
-    storage.setItem(constants.CONFIGS_KEY, configs);
+    storage.saveDomainConfigs(currentTab.domainName, configs);
     tabs.refreshTab(currentTab);
     setIsDirty(false);
   };
@@ -61,7 +57,7 @@ export default function Popup() {
       </Toolbar.Header>
       <Content>
         <Section>
-          <span>Site: {tabs.getTabUrl(currentTab)}</span>
+          <span><strong>Site:</strong> {currentTab.domainName}</span>
           <Checkbox
             label="Enabled"
             checked={configs.enabled}

@@ -1,4 +1,6 @@
-import { storage, constants } from '@utils';
+import { storage } from '@utils';
+
+const DOMAIN_NAME = location.hostname;
 
 function injectConfigs(configs, tag) {
   const node = document.getElementsByTagName(tag)[0];
@@ -19,15 +21,13 @@ function injectScript(filePath, tag) {
 }
 
 function initialize(configs) {
-  const siteUrl = location.hostname;
-
-  if (configs.domain = siteUrl && configs.enabled) {
+  if (configs.enabled) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occ-debugger.js'), 'body');
   }
 }
 
 // Get configs and initialize
-storage.getItem(constants.CONFIGS_KEY, {})
+storage.getDomainConfigs(DOMAIN_NAME)
   .then(initialize)
   .catch(console.warn);
