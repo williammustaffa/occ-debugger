@@ -1,4 +1,4 @@
-import { storage } from '@utils';
+import { storage, emitter } from '@utils';
 
 const DOMAIN_NAME = location.hostname;
 
@@ -20,14 +20,21 @@ function injectScript(filePath, tag) {
   node.appendChild(script);
 }
 
-function initialize(configs) {
-  if (configs.enabled) {
+async function initialize(configs) {
+  // Set and sync occ site property
+  if (!configs.hasOwnProperty('isReady')) {
+    configs.isValid = !!document.getElementById('oracle-cc');
+    configs.isReady = true;
+    await storage.setConfigs(DOMAIN_NAME, configs);
+  }
+
+  if (configs.isValid && configs.enabled) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occ-debugger.js'), 'body');
   }
 }
 
 // Get configs and initialize
-storage.getDomainConfigs(DOMAIN_NAME)
+storage.getConfigs(DOMAIN_NAME)
   .then(initialize)
   .catch(console.warn);

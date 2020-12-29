@@ -1,7 +1,7 @@
 {
   "name": "occ-debugger",
-  "version": "1.0.0",
-  "description": "TODO",
+  "version": "0.1.0",
+  "description": "A siple debugger to help occ developers",
   "main": "index.js",
   "scripts": {
     "build": "webpack --config ./webpack/webpack.prod.js",

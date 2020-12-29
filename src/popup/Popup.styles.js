@@ -1,9 +1,16 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 // Overriding checkbox css here
 export const Content = styled.div`
   position: relative;
   padding: 10px;
+  min-height: ${props => props.height || 0}px;
+
+  ${props => props.centered && css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `}
 `;
 
 export const Section = styled.div`

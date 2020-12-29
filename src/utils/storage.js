@@ -1,11 +1,6 @@
-import { constants } from '@utils';
-
-// Chrome storage service
-const chromeStorage = chrome.storage.local;
-
 function getItem(key, defaultValue, json = true) {
   return new Promise(resolve => {
-    chromeStorage.get(key, data => {
+    chrome.storage.local.get(key, data => {
       const raw = data[key] || defaultValue;
 
       if (json && typeof raw === 'string') {
@@ -24,25 +19,39 @@ function getItem(key, defaultValue, json = true) {
 
 function setItem(key, value, json = true) {
   const strConfigs = json ? JSON.stringify(value) : value;
-  chromeStorage.set({ [key]: strConfigs });
+  chrome.storage.local.set({ [key]: strConfigs });
 }
 
-async function getDomainConfigs(domainName) {
-  const allConfigs = await getItem(constants.CONFIGS_KEY, {})
-  const domainConfig = allConfigs[domainName] || {};
-
-  return domainConfig;
+function getConfigs(domainName) {
+  return getItem(domainName, {});
 }
 
-async function saveDomainConfigs(domainName, domainConfigs) {
-  const allConfigs = await getItem(constants.CONFIGS_KEY, {})
-  allConfigs[domainName] = { ...domainConfigs, domain: domainName };
-  await setItem(constants.CONFIGS_KEY, allConfigs);
+function setConfigs(domainName, domainConfigs) {
+  return setItem(domainName, domainConfigs);
+}
+
+function listenConfigs(domainName, callback) {
+  chrome.storage.onChanged.addListener(function (changes) {
+    const domainChanges = changes[domainName]?.newValue;
+
+    if (domainChanges) {
+      try {
+        const newConfigs = JSON.parse(domainChanges);
+
+        if (typeof callback === 'function') {
+          callback(newConfigs);
+        }
+      } catch(e) {
+        console.warn(`Error parsing configuration data for domain ${domainName}`);
+      }
+    }
+  });
 }
 
 export const storage = {
   getItem,
   setItem,
-  getDomainConfigs,
-  saveDomainConfigs
+  getConfigs,
+  setConfigs,
+  listenConfigs
 };
