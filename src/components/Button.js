@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Icon } from './Icon';
 
 const ButtonStyled = styled.button`
+  display: ${props => props.hidden ? 'none' : 'block' };
   opacity: ${props => props.disabled ? 0.5 : 1};
   cursor: pointer;
 `;
@@ -23,6 +24,7 @@ export function Button({
   icon,
   disabled,
   active,
+  hide,
   ...props
 }) {
   const componentClass = classNames('btn', className, {

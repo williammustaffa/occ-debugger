@@ -15,6 +15,14 @@ Toolbar.Header = function ({ children, className, ...props }) {
   );
 }
 
+Toolbar.Body = function ({ children, className, ...props }) {
+  const componentClass = classNames([className, 'toolbar', ' toolbar-body']);
+
+  return (
+    <header className={componentClass} {...props}>{children}</header>
+  );
+}
+
 Toolbar.Footer = function ({ children, className, ...props }) {
   const componentClass = classNames([className, 'toolbar', ' toolbar-footer']);
 

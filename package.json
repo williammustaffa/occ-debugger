@@ -1,8 +1,7 @@
 {
   "name": "occ-debugger",
   "version": "0.1.0",
-  "description": "A siple debugger to help occ developers",
-  "main": "index.js",
+  "description": "A simple debugger to help occ developers",
   "scripts": {
     "build": "webpack --config ./webpack/webpack.prod.js",
     "start": "webpack --config ./webpack/webpack.dev.js --watch "
@@ -11,8 +10,8 @@
     "type": "git",
     "url": "git+https://github.com/williammustaffa/occ-debugger.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "williammustaffa",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/williammustaffa/occ-debugger/issues"
   },
