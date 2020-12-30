@@ -45,7 +45,7 @@ export function ConfigsProvider({ children }) {
   };
 
   // Save configs to local storage
-  const applyConfigs = async () => {
+  const applyConfigs = () => {
     return storage.setConfigs(tab.domainName, configs);
   };
 

@@ -19,7 +19,6 @@ export function Content() {
     <ContentStyled>
       <Section>
         <div><strong>Site:</strong> {tab?.domainName}</div>
-        <div><strong>OCC Site:</strong> {`${isValid}`}</div>
         <Checkbox
           label="Enabled"
           checked={configs.enabled}
