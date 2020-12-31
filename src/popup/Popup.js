@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { Toolbar, Title } from '@components';
+import { Toolbar, Title, Window, WindowContent } from 'photon-preact';
 
 // Subcomponents
 import { Content } from './Content';
@@ -7,14 +7,16 @@ import { FooterActions } from './FooterActions';
 
 export function Popup() {
   return (
-    <Toolbar>
-      <Toolbar.Header>
+    <Window>
+      <Toolbar header>
         <Title>OCC Debugger</Title>
-      </Toolbar.Header>
-      <Content />
-      <Toolbar.Footer>
+      </Toolbar>
+      <WindowContent>
+        <Content />
+      </WindowContent>
+      <Toolbar footer>
         <FooterActions />
-      </Toolbar.Footer>
-    </Toolbar>
+      </Toolbar>
+    </Window>
   );
 }

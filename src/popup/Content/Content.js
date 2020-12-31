@@ -1,5 +1,5 @@
 import { h, Fragment } from 'preact';
-import { Title, Checkbox } from '@components';
+import { Title, Checkbox } from 'photon-preact';
 import { useConfigs } from '@contexts/configs';
 import { Section, ContentStyled } from './Content.styles';
 

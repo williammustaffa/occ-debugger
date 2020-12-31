@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { Toolbar, Button } from '@components';
+import { Toolbar, Button } from 'photon-preact';
 import { useConfigs } from '@contexts/configs';
 import { tabs } from '@utils';
 

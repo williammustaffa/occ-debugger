@@ -15,7 +15,7 @@ module.exports = {
                 {
                   "useBuiltIns": "usage",
                   "corejs": 3,
-                  "targets": "> 0.25%, not dead" 
+                  "targets": "> 0.25%, not dead"
                 }
               ]
             ],
@@ -55,7 +55,6 @@ module.exports = {
       'react-dom': 'preact/compat',
       'react-dom/test-utils': 'preact/test-utils',
       '@utils': path.resolve(__dirname, '../src/utils'),
-      '@components': path.resolve(__dirname, '../src/components'),
       '@contexts': path.resolve(__dirname, '../src/contexts'),
     }
   },
