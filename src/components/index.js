@@ -1,3 +1,4 @@
+export * from './GlobalTheme';
 export * from './Button';
 export * from './ButtonGroup';
 export * from './Checkbox';
@@ -9,3 +10,4 @@ export * from './Radio';
 export * from './Title';
 export * from './Toolbar';
 export * from './NavGroup';
+export * from './Window';

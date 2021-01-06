@@ -27,9 +27,10 @@ module.exports = {
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader',
+        loader: 'file-loader',
         options: {
-          limit: 100000
+          limit: 100000,
+          name: '[path][name].[ext]',
         }
       },
       {
@@ -57,6 +58,8 @@ module.exports = {
       '@utils': path.resolve(__dirname, '../src/utils'),
       '@components': path.resolve(__dirname, '../src/components'),
       '@contexts': path.resolve(__dirname, '../src/contexts'),
+      '@fonts': path.resolve(__dirname, '../src/fonts'),
+      '@base-css': path.resolve(__dirname, '../src/base-css'),
     }
   },
   plugins: []

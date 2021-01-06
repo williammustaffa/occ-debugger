@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { Toolbar, Title } from '@components';
+import { Window, Toolbar, Title } from '@components';
 
 // Subcomponents
 import { Content } from './Content';
@@ -7,14 +7,16 @@ import { FooterActions } from './FooterActions';
 
 export function Popup() {
   return (
-    <Toolbar>
-      <Toolbar.Header>
+    <Window height={300} width={350}>
+      <Toolbar header>
         <Title>OCC Debugger</Title>
-      </Toolbar.Header>
-      <Content />
-      <Toolbar.Footer>
+      </Toolbar>
+      <Window.Content>
+        <Content />
+      </Window.Content>
+      <Toolbar footer>
         <FooterActions />
-      </Toolbar.Footer>
-    </Toolbar>
+      </Toolbar>
+    </Window>
   );
 }

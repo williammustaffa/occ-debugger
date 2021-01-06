@@ -1,16 +1,17 @@
 
 import { h, render } from 'preact';
 import { ConfigsProvider } from '@contexts/configs';
+import { GlobalTheme } from "@components";
 import { Popup } from './Popup';
-
-// Import photon css
-import "photon/dist/css/photon.css";
+import theme from './theme';
 
 // Add configs context to popup
 const PopupWithConfigs = () => (
-  <ConfigsProvider>
-    <Popup />
-  </ConfigsProvider>
+  <GlobalTheme theme={theme}>
+    <ConfigsProvider>
+      <Popup />
+    </ConfigsProvider>
+  </GlobalTheme>
 );
 
 render(<PopupWithConfigs />, document.body);
