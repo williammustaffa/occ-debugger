@@ -26,7 +26,7 @@ export function Content() {
         />
       </Section>
       <Section>
-        <Title>Logging</Title>
+        <Title>Console</Title>
         <Checkbox
           disabled={!configs.enabled}
           label="Topics"
@@ -38,6 +38,13 @@ export function Content() {
           label="Spinner"
           checked={configs.spinner}
           onChange={updateConfigs('spinner')}
+        />
+        <Title>Panel</Title>
+        <Checkbox
+          disabled={!configs.enabled}
+          label="Order"
+          checked={configs.process}
+          onChange={updateConfigs('process')}
         />
       </Section>
     </ContentStyled>

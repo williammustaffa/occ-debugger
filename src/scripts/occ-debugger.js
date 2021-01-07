@@ -9,7 +9,7 @@ class OccDebugger {
   log() {
     const args = Array.prototype.slice.call(arguments);
     const type = args.shift();
-  
+
     args.unshift(`${this.prefix}[${type}]`);
 
     console[type].apply(console, args);
@@ -43,12 +43,12 @@ class OccDebugger {
     const destroyWithoutDelay = spinner.destroyWithoutDelay;
 
     spinner.buildCSS = function () {
-      self.log('warn', '[SPINNER CREATED]', arguments);
+      self.log('info', '[SPINNER CREATED]', arguments);
       buildCSS.apply(this, arguments);
     };
 
     spinner.destroyWithoutDelay = function () {
-      self.log('warn', '[SPINNER DESTROYED]', arguments);
+      self.log('info', '[SPINNER DESTROYED]', arguments);
       destroyWithoutDelay.apply(this, arguments);
     };
   }
@@ -57,10 +57,10 @@ class OccDebugger {
     const self = this;
     const pubsub = occRequire('pubsub');
 
-    Object.keys(pubsub.topicNames).map(function (topicName) {
-      $.Topic(pubsub.topicNames[topicName]).subscribe(function () {
+    Object.keys(pubsub.topics).map(function (topicName) {
+      $.Topic(topicName).subscribe(function () {
         const args = Array.prototype.slice.call(arguments);
-        self.log('warn', `[TOPIC TRIGGER]${topicName}`, args);
+        self.log('info', `[TOPIC TRIGGER]${topicName}`, args);
       });
     });
   }

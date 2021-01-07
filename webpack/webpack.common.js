@@ -1,6 +1,49 @@
+const { mergeWithCustomize } = require('webpack-merge');
+const { uniq, merge } = require('lodash');
 const path = require('path');
 
-module.exports = {
+// Plugins
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const DIST_PATH =  path.resolve(__dirname, '..', 'dist');
+const SRC_PATH = path.resolve(__dirname, '..', 'src');
+
+const configs = {
+  entry: {
+    'views/devtools/index': path.join(SRC_PATH, 'views/devtools/index.js'),
+    'views/popup/index': path.join(SRC_PATH, 'views/popup/index.js'),
+    'scripts/inject': path.join(SRC_PATH, 'scripts/inject.js'),
+    'scripts/occ-debugger': path.join(SRC_PATH, 'scripts/occ-debugger.js')
+  },
+  output: {
+    filename: '[name].js',
+    path: DIST_PATH
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      cache: false,
+      title: "OCC Debugger",
+      filename: 'views/popup/index.html',
+      template: 'src/views/popup/index.html',
+      chunks: ['views/popup/index']
+    }),
+    new HtmlWebpackPlugin({
+      cache: false,
+      title: "OCC Debugger - Devtools",
+      filename: 'views/devtools/index.html',
+      template: 'src/views/devtools/index.html',
+      chunks: ['views/devtools/index']
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/icons', to: 'icons' },
+        { from: 'src/manifest.json', to: 'manifest.json' }
+      ]
+    })
+  ],
   module: {
     rules: [
       {
@@ -15,7 +58,7 @@ module.exports = {
                 {
                   "useBuiltIns": "usage",
                   "corejs": 3,
-                  "targets": "> 0.25%, not dead" 
+                  "targets": "> 0.25%, not dead"
                 }
               ]
             ],
@@ -61,6 +104,17 @@ module.exports = {
       '@fonts': path.resolve(__dirname, '../src/fonts'),
       '@base-css': path.resolve(__dirname, '../src/base-css'),
     }
-  },
-  plugins: []
+  }
+};
+
+module.exports = {
+  configs,
+  extend: data => {
+    const merge = mergeWithCustomize({
+      customizeArray: (a, b) => uniq([...a, ...b]),
+      customizeObject: (a, b) => merge({}, a, b)
+    });
+
+    return merge(configs, data);
+  }
 };

@@ -4,6 +4,7 @@ export const ContentStyled = styled.div`
   position: relative;
   padding: 10px;
   min-height: ${props => props.height || 0}px;
+  width:100%;
 
   ${props => props.centered && css`
     display: flex;

@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { getProps } from '@components/GlobalTheme';
 
 export const WindowWrapper = styled.div`
   position: relative;
