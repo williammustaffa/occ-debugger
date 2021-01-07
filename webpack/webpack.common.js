@@ -21,29 +21,6 @@ const configs = {
     filename: '[name].js',
     path: DIST_PATH
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      cache: false,
-      title: "OCC Debugger",
-      filename: 'views/popup/index.html',
-      template: 'src/views/popup/index.html',
-      chunks: ['views/popup/index']
-    }),
-    new HtmlWebpackPlugin({
-      cache: false,
-      title: "OCC Debugger - Devtools",
-      filename: 'views/devtools/index.html',
-      template: 'src/views/devtools/index.html',
-      chunks: ['views/devtools/index']
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: 'src/icons', to: 'icons' },
-        { from: 'src/manifest.json', to: 'manifest.json' }
-      ]
-    })
-  ],
   module: {
     rules: [
       {
@@ -87,6 +64,29 @@ const configs = {
       },
     ]
   },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      cache: false,
+      title: "OCC Debugger",
+      filename: 'views/popup/index.html',
+      template: 'src/views/popup/index.html',
+      chunks: ['views/popup/index']
+    }),
+    new HtmlWebpackPlugin({
+      cache: false,
+      title: "OCC Debugger - Devtools",
+      filename: 'views/devtools/index.html',
+      template: 'src/views/devtools/index.html',
+      chunks: ['views/devtools/index']
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/icons', to: 'icons' },
+        { from: 'src/manifest.json', to: 'manifest.json' }
+      ]
+    })
+  ],
   performance: {
     hints: false,
     maxEntrypointSize: 512000,
