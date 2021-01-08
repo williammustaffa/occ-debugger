@@ -30,7 +30,7 @@ async function initialize(configs) {
 
   if (configs.isValid && configs.enabled) {
     injectConfigs(configs, 'body');
-    injectScript(chrome.extension.getURL('scripts/occ-debugger.js'), 'body');
+    injectScript(chrome.extension.getURL('scripts/occDebugger.js'), 'body');
   }
 }
 

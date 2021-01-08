@@ -3,6 +3,16 @@ import { useEffect, useState } from 'preact/hooks';
 import { storage, tabs } from '@utils';
 import { ConfigsContext } from './ConfigsContext';
 
+const INITIAL_STATE = {
+  settings: {
+    enabled: false,
+  },
+  options: {
+    topics: false,
+    spinner: false,
+    toJS: false
+  }
+}
 
 export function ConfigsProvider({ children }) {
   const [configs, setConfigs] = useState({});

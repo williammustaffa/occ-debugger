@@ -5,7 +5,6 @@ const path = require('path');
 // Plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const DIST_PATH =  path.resolve(__dirname, '..', 'dist');
 const SRC_PATH = path.resolve(__dirname, '..', 'src');
@@ -14,8 +13,8 @@ const configs = {
   entry: {
     'views/devtools/index': path.join(SRC_PATH, 'views/devtools/index.js'),
     'views/popup/index': path.join(SRC_PATH, 'views/popup/index.js'),
-    'scripts/inject': path.join(SRC_PATH, 'scripts/inject.js'),
-    'scripts/occ-debugger': path.join(SRC_PATH, 'scripts/occ-debugger.js')
+    'scripts/contentScript': path.join(SRC_PATH, 'scripts/contentScript.js'),
+    'scripts/occDebugger': path.join(SRC_PATH, 'scripts/occDebugger.js')
   },
   output: {
     filename: '[name].js',
@@ -52,23 +51,13 @@ const configs = {
           limit: 100000,
           name: '[path][name].[ext]',
         }
-      },
-      {
-        test: /\.(css|scss)$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-          'resolve-url-loader',
-          'sass-loader',
-        ],
-      },
+      }
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       cache: false,
-      title: "OCC Debugger",
+      title: "OCC Debugger - Popup",
       filename: 'views/popup/index.html',
       template: 'src/views/popup/index.html',
       chunks: ['views/popup/index']

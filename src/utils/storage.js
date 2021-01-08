@@ -22,8 +22,8 @@ function setItem(key, value, json = true) {
   chrome.storage.local.set({ [key]: strConfigs });
 }
 
-function getConfigs(domainName) {
-  return getItem(domainName, {});
+function getConfigs(domainName, defaultValue) {
+  return getItem(domainName, defaultValue);
 }
 
 function setConfigs(domainName, domainConfigs) {
