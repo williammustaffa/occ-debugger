@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
+import { get } from 'lodash';
 import { IconStyled } from '@components/Icon/Icon.styles'
-import { getProps } from '@components/GlobalTheme';
 import iconMap from '@assets/fonts/icon-map.json';
 import { inputCss } from '../input.css';
 
@@ -41,8 +41,8 @@ export const ButtonStyled = styled.button`
   opacity: ${props => props.disabled ? 0.5 : 1};
 
   // Theme variants
-  font-size: ${getProps('typography.fontSize')};
-  border-radius: ${getProps('flat', flat => !flat ? '4px' : '0')};
+  font-size: ${({ theme }) => theme.typography.fontSize || '12px'};
+  border-radius: ${({ theme }) => theme.flat ? '2px' : '4px' };
 
   // Button size
   padding: ${props => {
@@ -65,28 +65,24 @@ export const ButtonStyled = styled.button`
   // Button type
   ${props => {
     // In order of priority
+    const { theme } = props;
     const type = ['primary', 'secondary', 'positive', 'negative', 'warning'].find(key => !!props[key]) || 'secondary';
-    const getProp = path => getProps(`${type}.${path}`);
+    const getProp = path => get(theme, `${type}.${path}`);
 
     return css`
       color: ${getProp('color')};
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-      border-color: ${getProp('border')};
-      border-bottom-color: ${getProp('borderBottom')};
+      text-shadow: ${theme.flat ? 'none' : '0 1px 1px rgba(0, 0, 0, 0.1)'};
       background-color: ${getProp('background')};
+
+      // Flat options
+      border-color: ${theme.flat ? 'transparent' : getProp('border')};
+      border-bottom-color: ${theme.flat ? 'transparent' : getProp('borderBottom')};
+      background-image: ${theme.flat ? 'none' : `linear-gradient(to bottom, ${getProp('background')} 0%, ${getProp('gradient')} 100%)`};
 
       &:active {
         background-color: ${getProp('active.background')};
+        background-image: ${theme.flat ? 'none' : `linear-gradient(to bottom, ${getProp('active.background')} 0%, ${getProp('active.gradient')} 100%)`};
       }
-
-      ${getProps('flat', flat => {
-        return !flat && css`
-          background-image: linear-gradient(to bottom, ${getProp('background')} 0%, ${getProp('gradient')} 100%);
-          &:active {
-            background-image: linear-gradient(to bottom, ${getProp('active.background')} 0%, ${getProp('active.gradient')} 100%);
-          }
-        `
-      })}
     `;
   }}
 

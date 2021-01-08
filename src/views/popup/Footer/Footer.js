@@ -3,8 +3,8 @@ import { Toolbar, Button } from '@components';
 import { useConfigs } from '@contexts/configs';
 import { tabs } from '@utils';
 
-export function FooterActions() {
-  const { configs, tab, applyConfigs } = useConfigs();
+export function Footer() {
+  const { configs, tab, applyConfigs, updateConfigs } = useConfigs();
 
   const closePopup = () => window.close();
 
@@ -13,6 +13,8 @@ export function FooterActions() {
   const isHidden = configs.isReady && !configs.isValid;
   const isDisabled = configs.isReady && !configs.isDirty;
   const onClick = () => {
+    updateConfigs('isDirty')(false);
+
     if (configs.isReady) {
       applyConfigs();
     }

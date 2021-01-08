@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { getProps } from '@components/GlobalTheme';
 
 export const WindowWrapper = styled.div`
   position: relative;
@@ -15,7 +14,6 @@ export const WindowStyled = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
 `;
 
 export const WindowContentStyled = styled.div`

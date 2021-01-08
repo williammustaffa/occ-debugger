@@ -1,12 +1,24 @@
 export default {
+  flat: true,
+  global: {
+    background: '#fff',
+    color: '#222'
+  },
+  toolbar: {
+    color: '#222',
+    background: '#e8e6e8',
+    gradient: '#d1cfd1',
+    border: '#c2c0c2'
+  },
   typography: {
+    fontUrl: 'https://fonts.googleapis.com/css?family=Montserrat:400,900|Roboto',
+    fontFamily: 'Roboto, sans-serif',
     fontSize: '12px',
+    color: '#fff',
     h1: {
       fontSize: '2em',
     }
   },
-  fontSize: 12,
-  flat: false,
   primary: {
     color: '#fff',
     background: '#6eb4f7',
@@ -61,11 +73,5 @@ export default {
       background: '#ddd',
       gradient: '#ddd'
     }
-  },
-  toolbar: {
-    color: '#222',
-    background: '#e8e6e8',
-    gradient: '#d1cfd1',
-    border: '#c2c0c2'
   }
 }

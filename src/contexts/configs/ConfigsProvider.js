@@ -38,13 +38,7 @@ export function ConfigsProvider({ children }) {
   }, []);
 
   // Save configs by name
-  const updateConfigs = configName => e => {
-    const configValue = (
-      e.target.type === 'checkbox' ?
-      e.target.checked :
-      e.target.value
-    );
-
+  const updateConfigs = configName => configValue => {
     const changes = {
       isDirty: true,
       [configName]: configValue

@@ -6,6 +6,11 @@ import photonEntypoWOFF from '@assets/fonts/photon-entypo.woff'
 import photonEntypoTTF from '@assets/fonts/photon-entypo.ttf'
 
 export const GlobalPageStyles = createGlobalStyle`
+  ${({ theme }) => {
+    const fontUrl = theme.typography.fontUrl;
+    return fontUrl && `@import url('${fontUrl}');`;
+  }}
+
   @font-face {
     font-family: "photon-entypo";
     src: url(${photonEntypoEOT});
@@ -124,8 +129,8 @@ export const GlobalPageStyles = createGlobalStyle`
     font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
     font-size: 13px;
     line-height: 1.6;
-    color: #333;
-    background-color: transparent;
+    color: ${({ theme }) => theme.global.color || '#333'};
+    background-color: ${({ theme }) => theme.global.background || 'transparent'};
   }
 
   hr {

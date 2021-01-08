@@ -18,7 +18,6 @@ export function Content() {
   return (
     <ContentStyled>
       <Section>
-        <div><strong>Site:</strong> {tab?.domainName}</div>
         <Checkbox
           label="Enabled"
           checked={configs.enabled}

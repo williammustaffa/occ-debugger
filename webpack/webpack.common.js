@@ -32,7 +32,7 @@ const configs = {
         loader: 'file-loader',
         options: {
           limit: 100000,
-          name: 'assets/fonts/[name].[ext]',
+          name: '/dist/assets/fonts/[name].[ext]',
         }
       }
     ]
@@ -81,11 +81,11 @@ const configs = {
 module.exports = {
   configs,
   extend: data => {
-    const merge = mergeWithCustomize({
+    const customMerge = mergeWithCustomize({
       customizeArray: (a, b) => uniq([...a, ...b]),
       customizeObject: (a, b) => merge({}, a, b)
     });
 
-    return merge(configs, data);
+    return customMerge(configs, data);
   }
 };

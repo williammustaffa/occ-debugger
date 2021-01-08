@@ -1,17 +1,12 @@
 import styled, { css } from 'styled-components';
 import { TitleStyled } from '@components/Title'
-import { getProps } from '@components/GlobalTheme';
 
 export const ToolbarStyled = styled.div`
   min-height: 22px;
   box-shadow: inset 0 1px 0 #f5f4f5;
-  background-color: ${getProps('toolbar.background')};
   padding: 5px 0 3px;
-  background-image: ${getProps('flat', flat => (
-    flat ?
-    'none' :
-    css`linear-gradient(to bottom, ${getProps('toolbar.background')} 0%, ${getProps('toolbar.gradient')} 100%);`
-  ))};
+  background-color: ${({ theme }) => theme.toolbar.background};
+  background-image: ${({ theme }) => theme.flat ? 'none' : css`linear-gradient(to bottom, ${theme.toolbar.background} 0%, ${theme.toolbar.gradient} 100%);`};
 
   &:before, &:after {
     display: table;
@@ -23,11 +18,11 @@ export const ToolbarStyled = styled.div`
   }
 
   ${TitleStyled} {
-    color: ${getProps('toolbar.color')};
+    color: ${({ theme }) => theme.toolbar.color};
   }
 
   ${props => props.header && css`
-    border-bottom: ${getProps('toolbar.border', border => border ? `1px solid ${border}` : 'none')};
+    border-bottom: 1px solid ${props.theme.toolbar.border};
 
     ${TitleStyled} {
       margin-top: 1px;
@@ -35,12 +30,13 @@ export const ToolbarStyled = styled.div`
   `}
 
   ${props => props.footer && css`
-    border-top: ${getProps('toolbar.border', border => border ? `1px solid ${border}` : 'none')};
+    border-top: 1px solid ${props.theme.toolbar.border};
     -webkit-app-region: drag;
   `}
 
-  ${props => props.borderless && css`
+  ${props => (props.borderless || props.theme.flat) && css`
     border-top: 0;
     border-bottom: 0;
+    box-shadow: none;
   `}
 `

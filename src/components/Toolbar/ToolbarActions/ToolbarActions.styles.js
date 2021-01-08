@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css } from 'styled-components';
 import { ButtonStyled, ButtonGroupStyled } from '@components'
 
 export const ToolbarActionsStyled = styled.div`
@@ -23,4 +23,8 @@ export const ToolbarActionsStyled = styled.div`
     margin-left: 4px;
     margin-right: 4px;
   }
+
+  ${props => props.centered && css`
+    text-align: center;
+  `}
 `;

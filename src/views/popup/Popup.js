@@ -1,21 +1,27 @@
 import { h } from 'preact';
-import { Window, Toolbar, Title } from '@components';
+import { Window, Toolbar, Title, Button } from '@components';
+import { useConfigs } from '@contexts/configs';
 
 // Subcomponents
 import { Content } from './Content';
-import { FooterActions } from './FooterActions';
+import { Footer } from './Footer';
 
 export function Popup() {
+  const { tab } = useConfigs();
+
   return (
     <Window height={400} width={350}>
       <Toolbar header>
         <Title>OCC Debugger</Title>
+        <Toolbar.Actions centered>
+          <Button icon="globe">{tab.domainName}</Button>
+        </Toolbar.Actions>
       </Toolbar>
       <Window.Content>
         <Content />
       </Window.Content>
       <Toolbar footer>
-        <FooterActions />
+        <Footer />
       </Toolbar>
     </Window>
   );
