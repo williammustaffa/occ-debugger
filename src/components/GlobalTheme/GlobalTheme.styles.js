@@ -1,9 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 
 // Add fonts
-import photonEntypoEOT from '@fonts/photon-entypo.eot'
-import photonEntypoWOFF from '@fonts/photon-entypo.woff'
-import photonEntypoTTF from '@fonts/photon-entypo.ttf'
+import photonEntypoEOT from '@assets/fonts/photon-entypo.eot'
+import photonEntypoWOFF from '@assets/fonts/photon-entypo.woff'
+import photonEntypoTTF from '@assets/fonts/photon-entypo.ttf'
 
 export const GlobalPageStyles = createGlobalStyle`
   @font-face {

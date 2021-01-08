@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import iconMap from '@fonts/icon-map.json';
+import iconMap from '@assets/fonts/icon-map.json';
 
 export const IconStyled = styled.span`
   &:before {

@@ -31,6 +31,8 @@ function init(pubsub, spinner) {
   };
 
   try {
+    log('info', 'Initializing OCC debugger');
+
     Object.keys(options).forEach(featureName => {
       const featureEnabled = options[featureName];
       const featureFn = optionsMap[featureName];
@@ -40,8 +42,6 @@ function init(pubsub, spinner) {
         featureFn.call(this, { pubsub, spinner });
       }
     });
-
-    log('info', 'OCC debugger initialized successfully');
   } catch(e) {
     log('info', 'Failed initializing OCC debugger');
   }

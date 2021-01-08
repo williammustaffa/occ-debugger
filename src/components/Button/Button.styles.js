@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 import { IconStyled } from '@components/Icon/Icon.styles'
 import { getProps } from '@components/GlobalTheme';
-import { BaseInput } from '@base-css';
-import iconMap from '@fonts/icon-map.json';
+import iconMap from '@assets/fonts/icon-map.json';
+import { inputCss } from '../input.css';
 
 export const ButtonStyled = styled.button`
   // Apply global properties
-  ${BaseInput}
+  ${inputCss}
 
   // Specific styles
   margin-bottom: 0;

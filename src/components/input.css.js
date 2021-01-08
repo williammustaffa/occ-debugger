@@ -1,8 +1,8 @@
 import { css } from 'styled-components';
-import { BaseProperties } from './BaseProperties';
+import { propertiesCss } from './properties.css';
 
-export const BaseInput = css`
-  ${BaseProperties}
+export const inputCss = css`
+  ${propertiesCss}
 
   color: inherit;
   font: inherit;

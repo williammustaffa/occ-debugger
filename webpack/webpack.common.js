@@ -25,31 +25,14 @@ const configs = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  "useBuiltIns": "usage",
-                  "corejs": 3,
-                  "targets": "> 0.25%, not dead"
-                }
-              ]
-            ],
-            plugins: [
-              ["@babel/plugin-transform-react-jsx", { "pragma": "h" }]
-            ]
-          }
-        }
+        loader: 'babel-loader'
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
         loader: 'file-loader',
         options: {
           limit: 100000,
-          name: '[path][name].[ext]',
+          name: 'assets/fonts/[name].[ext]',
         }
       }
     ]
@@ -71,7 +54,7 @@ const configs = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'src/icons', to: 'icons' },
+        { from: 'src/assets/icons', to: 'assets/icons' },
         { from: 'src/manifest.json', to: 'manifest.json' }
       ]
     })
@@ -90,8 +73,7 @@ const configs = {
       '@utils': path.resolve(__dirname, '../src/utils'),
       '@components': path.resolve(__dirname, '../src/components'),
       '@contexts': path.resolve(__dirname, '../src/contexts'),
-      '@fonts': path.resolve(__dirname, '../src/fonts'),
-      '@base-css': path.resolve(__dirname, '../src/base-css'),
+      '@assets': path.resolve(__dirname, '../src/assets')
     }
   }
 };

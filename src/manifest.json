@@ -18,9 +18,9 @@
     "default_title": "OCC Debugger",
     "default_popup": "views/popup/index.html",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "32": "icons/icon32.png",
-      "128": "icons/icon128.png"
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "128": "assets/icons/icon128.png"
     }
   }
  }

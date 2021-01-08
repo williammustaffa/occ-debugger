@@ -7,7 +7,7 @@ import { FooterActions } from './FooterActions';
 
 export function Popup() {
   return (
-    <Window height={500} width={300}>
+    <Window height={400} width={350}>
       <Toolbar header>
         <Title>OCC Debugger</Title>
       </Toolbar>

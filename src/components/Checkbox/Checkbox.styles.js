@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BaseInput } from '@base-css';
+import { inputCss } from '../input.css';
 
 export const CheckboxWrapper = styled.div`
   position: relative;
@@ -17,7 +17,7 @@ export const CheckboxWrapper = styled.div`
 export const CheckboxStyled = styled.input.attrs(() => ({
   type: 'checkbox'
 }))`
-  ${BaseInput}
+  ${inputCss}
 
   position: absolute;
   margin-left: -20px;

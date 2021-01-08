@@ -1,4 +1,4 @@
-import { h, Fragment } from 'preact';
+import { h } from 'preact';
 import { Title, Checkbox } from '@components';
 import { useConfigs } from '@contexts/configs';
 import { Section, ContentStyled } from './Content.styles';
@@ -42,9 +42,9 @@ export function Content() {
         <Title>Panel</Title>
         <Checkbox
           disabled={!configs.enabled}
-          label="Order"
-          checked={configs.process}
-          onChange={updateConfigs('process')}
+          label="Serialize data"
+          checked={configs.toJS}
+          onChange={updateConfigs('toJS')}
         />
       </Section>
     </ContentStyled>

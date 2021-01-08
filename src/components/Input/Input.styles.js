@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BaseInput } from '@base-css';
+import { inputCss } from '../input.css';
 
 export const InputWrapper = styled.div`
   display: inline-block;
@@ -9,7 +9,7 @@ export const InputWrapper = styled.div`
 export const InputStyled = styled.input.attrs(() => ({
   type: 'text'
 }))`
-  ${BaseInput}
+  ${inputCss}
 
   display: inline-block;
   width: 100%;

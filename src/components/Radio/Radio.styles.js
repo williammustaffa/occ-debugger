@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BaseInput } from '@base-css';
+import { inputCss } from '../input.css';
 
 export const RadioWrapper = styled.div`
   position: relative;
@@ -17,7 +17,7 @@ export const RadioWrapper = styled.div`
 export const RadioStyled = styled.input.attrs(() => ({
   type: 'radio'
 }))`
-  ${BaseInput}
+  ${inputCss}
 
   position: absolute;
   margin-left: -20px;
