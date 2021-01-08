@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/williammustaffa/occ-debugger/master/src/icons/icon128.png" />
+  <img src="https://raw.githubusercontent.com/williammustaffa/occ-debugger/master/src/assets/icons/icon128.png" />
 </p>
 <h1 align="center">OCC Debugger - Chrome Extension</h1>
 
