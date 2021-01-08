@@ -2,35 +2,27 @@ import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { storage, tabs } from '@utils';
 import { ConfigsContext } from './ConfigsContext';
-
-const INITIAL_STATE = {
-  settings: {
-    enabled: false,
-  },
-  options: {
-    topics: false,
-    spinner: false,
-    toJS: false
-  }
-}
+import { set } from 'lodash';
 
 export function ConfigsProvider({ children }) {
-  const [configs, setConfigs] = useState({});
+  const [configs, setConfigs] = useState();
   const [tab, setTab] = useState(false);
 
   // Load configs
   useEffect(() => {
+    const configsListener = (changes) => {
+      console.log("PRAIA", changes);
+      setConfigs(state => ({ ...state, ...changes }))
+    };
+
     const load = async () => {
       const currentTab = await tabs.getCurrent();
       const configs = await storage.getConfigs(currentTab.domainName);
 
       // Listen to config updates
-      storage.listenConfigs(
-        tab.domainName,
-        changes => setConfigs(state => ({ ...state, ...changes }))
-      );
+      storage.listenConfigs(tab.domainName, configsListener);
 
-      setConfigs({ ...configs, isDirty: false });
+      setConfigs(configs);
       setTab(currentTab);
     };
 
@@ -39,13 +31,9 @@ export function ConfigsProvider({ children }) {
 
   // Save configs by name
   const updateConfigs = configName => configValue => {
-    const changes = {
-      isDirty: true,
-      [configName]: configValue
-    };
-
-    // Updating configs only on component
-    setConfigs(state => ({ ...state, ...changes }));
+    const updatedConfigs = { ...configs };
+    set(updatedConfigs, configName, configValue);
+    setConfigs(updatedConfigs);
   };
 
   // Save configs to local storage
@@ -54,8 +42,8 @@ export function ConfigsProvider({ children }) {
   };
 
   return (
-    <ConfigsContext.Provider value={{configs, tab, updateConfigs, applyConfigs }}>
-      {children}
+    <ConfigsContext.Provider value={{ configs, tab, updateConfigs, applyConfigs }}>
+      {configs ? children : 'Loading configuration'}
     </ConfigsContext.Provider>
   )
 }

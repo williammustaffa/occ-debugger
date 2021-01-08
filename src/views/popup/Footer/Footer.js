@@ -4,18 +4,16 @@ import { useConfigs } from '@contexts/configs';
 import { tabs } from '@utils';
 
 export function Footer() {
-  const { configs, tab, applyConfigs, updateConfigs } = useConfigs();
+  const { configs, tab, applyConfigs } = useConfigs();
 
   const closePopup = () => window.close();
 
   // Main button actions
-  const buttonText = configs.isReady ? 'Save and Refresh' : 'Refresh';
-  const isHidden = configs.isReady && !configs.isValid;
-  const isDisabled = configs.isReady && !configs.isDirty;
-  const onClick = () => {
-    updateConfigs('isDirty')(false);
+  const buttonText = configs.registered ? 'Save and Refresh' : 'Refresh';
+  const isHidden = configs.registered && !configs.valid;
 
-    if (configs.isReady) {
+  const onClick = () => {
+    if (configs.registered) {
       applyConfigs();
     }
 
@@ -25,11 +23,11 @@ export function Footer() {
   return (
     <Toolbar.Actions>
       <Button onClick={closePopup} pullLeft>Close</Button>
+      <Button onClick={() => chrome.storage.local.clear()} pullLeft>Reset configs</Button>
       <Button
         primary
         pullRight
         hidden={isHidden}
-        disabled={isDisabled}
         onClick={onClick}
       >{buttonText}</Button>
     </Toolbar.Actions>

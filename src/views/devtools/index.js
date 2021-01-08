@@ -1,19 +1,11 @@
 import { tabs, storage } from '@utils';
 
 function getOCCViewModels(configs) {
-  try{
+  try {
     const occRequire = __non_webpack_require__;
 
     // Require knockout
     const ko = occRequire('knockout');
-
-    // Requiring occ view model instances
-    const order = occRequire('pageLayout/order').getInstance();
-    const user = occRequire('pageLayout/user').getInstance();
-    const cart = order.cart();
-
-    // Define elements to expose
-    const global = { user, order, cart };
 
     // Get context from current element
     const target = {};
@@ -23,9 +15,9 @@ function getOCCViewModels(configs) {
       target.data = ko.dataFor($0);
     }
 
-    return { configs, global, target };
+    return { configs, target };
   } catch(e) {
-    return { message: 'Something wen\'t wrong' };
+    return { message: 'Something wen\'t wrong', error: e };
   }
 }
 
@@ -35,14 +27,30 @@ chrome.devtools.panels.elements.createSidebarPane(
     const currentTab = await tabs.getCurrent();
     const configs = await storage.getConfigs(currentTab.domainName);
 
-    const updateElementProperties = () => {
-      sidebar.setExpression(`(${getOCCViewModels.toString()})(${JSON.stringify(configs)})`);
-    };
+    try {
+      if (!configs.registered) {
+        throw new Error('Unidentified site. Please reload your page and reopen the devtools');
+      }
 
-    updateElementProperties();
+      if (!configs.valid) {
+        throw new Error('This is not an OCC site.');
+      }
 
-    //attach to chrome events so that the sidebarPane refreshes (contains up to date info)
-    chrome.devtools.panels.elements.onSelectionChanged.addListener(updateElementProperties);
-    sidebar.onShown.addListener(updateElementProperties);
+      if (!configs.options.enabled) {
+        throw new Error('OCC Debugger is disabled.');
+      }
+
+      const updateElementProperties = () => {
+        sidebar.setExpression(`(${getOCCViewModels.toString()})(${JSON.stringify(configs)})`);
+      };
+
+      updateElementProperties();
+
+      // Attach to chrome events so that the sidebarPane refreshes (contains up to date info)
+      chrome.devtools.panels.elements.onSelectionChanged.addListener(updateElementProperties);
+      sidebar.onShown.addListener(updateElementProperties);
+    } catch({ message }) {
+      sidebar.setObject({ configs, message });
+    }
   }
 );
