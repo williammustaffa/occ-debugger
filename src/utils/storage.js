@@ -42,7 +42,7 @@ function setConfigs(domainName, domainConfigs) {
 }
 
 function listenConfigs(domainName, callback) {
-  chrome.storage.onChanged.addListener(function (changes) {
+  chrome.storage.onChanged.addListener(changes => {
     const domainChanges = changes[domainName]?.newValue;
 
     if (domainChanges) {

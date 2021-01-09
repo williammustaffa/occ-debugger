@@ -11,7 +11,6 @@ export function ConfigsProvider({ children }) {
   // Load configs
   useEffect(() => {
     const configsListener = (changes) => {
-      console.log("PRAIA", changes);
       setConfigs(state => ({ ...state, ...changes }))
     };
 
@@ -20,7 +19,7 @@ export function ConfigsProvider({ children }) {
       const configs = await storage.getConfigs(currentTab.domainName);
 
       // Listen to config updates
-      storage.listenConfigs(tab.domainName, configsListener);
+      storage.listenConfigs(currentTab.domainName, configsListener);
 
       setConfigs(configs);
       setTab(currentTab);

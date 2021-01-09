@@ -10,7 +10,7 @@ export function Content() {
   if (!valid) {
     return (
       <ContentStyled centered height={100}>
-        <div>{registered ? 'This is not an OCC site.' : 'Please, refresh your tab!'}<br />{JSON.stringify(configs, null, 2)}</div>
+        <div>{registered ? 'This is not an OCC site.' : 'Please, refresh your tab!'}</div>
       </ContentStyled>
     );
   }
