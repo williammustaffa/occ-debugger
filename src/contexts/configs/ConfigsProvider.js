@@ -6,6 +6,7 @@ import { set } from 'lodash';
 
 export function ConfigsProvider({ children }) {
   const [configs, setConfigs] = useState();
+  const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState(false);
 
   // Load configs
@@ -23,6 +24,7 @@ export function ConfigsProvider({ children }) {
 
       setConfigs(configs);
       setTab(currentTab);
+      setLoading(false);
     };
 
     load();
@@ -41,8 +43,8 @@ export function ConfigsProvider({ children }) {
   };
 
   return (
-    <ConfigsContext.Provider value={{ configs, tab, updateConfigs, applyConfigs }}>
-      {configs ? children : 'Loading configuration'}
+    <ConfigsContext.Provider value={{ loading, configs, tab, updateConfigs, applyConfigs }}>
+      {children}
     </ConfigsContext.Provider>
   )
 }

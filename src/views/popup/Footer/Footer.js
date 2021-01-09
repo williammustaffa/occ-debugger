@@ -8,10 +8,6 @@ export function Footer() {
 
   const closePopup = () => window.close();
 
-  // Main button actions
-  const buttonText = configs.registered ? 'Save and Refresh' : 'Refresh';
-  const isHidden = configs.registered && !configs.valid;
-
   const onClick = () => {
     if (configs.registered) {
       applyConfigs();
@@ -19,6 +15,10 @@ export function Footer() {
 
     tabs.refreshTab(tab);
   };
+
+  // Main button actions
+  const buttonText = configs?.registered ? 'Save and Refresh' : 'Refresh';
+  const isHidden = !configs || configs.registered && !configs.valid;
 
   return (
     <Toolbar.Actions>

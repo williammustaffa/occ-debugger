@@ -7,7 +7,13 @@ import { Content } from './Content';
 import { Footer } from './Footer';
 
 export function Popup() {
-  const { tab } = useConfigs();
+  const { tab, loading } = useConfigs();
+
+  if (loading) {
+    // Loading screen, we can possibly make
+    // this logic inside render method
+    return <Window height={350} width={350} />
+  };
 
   return (
     <Window height={350} width={350}>
