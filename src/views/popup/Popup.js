@@ -10,7 +10,7 @@ export function Popup() {
   const { tab } = useConfigs();
 
   return (
-    <Window height={400} width={350}>
+    <Window height={350} width={350}>
       <Toolbar header>
         <Title>OCC Debugger</Title>
         <Toolbar.Actions centered>

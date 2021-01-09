@@ -41,7 +41,7 @@ export function Content() {
         <Title>Panel</Title>
         <Checkbox
           disabled={!options.enabled}
-          label="Serialize data"
+          label="Serialize"
           checked={options.toJS}
           onChange={updateConfigs('options.toJS')}
         />
