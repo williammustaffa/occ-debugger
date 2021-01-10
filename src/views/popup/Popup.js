@@ -6,17 +6,20 @@ import { useConfigs } from '@contexts/configs';
 import { Content } from './Content';
 import { Footer } from './Footer';
 
+const WINDOW_HEIGHT = 300;
+const WINDOW_WIDTH = 350;
+
 export function Popup() {
   const { tab, loading } = useConfigs();
 
   if (loading) {
     // Loading screen, we can possibly make
     // this logic inside render method
-    return <Window height={350} width={350} />
+    return <Window height={WINDOW_HEIGHT} width={WINDOW_WIDTH} />
   };
 
   return (
-    <Window height={350} width={350}>
+    <Window height={WINDOW_HEIGHT} width={WINDOW_WIDTH}>
       <Toolbar header>
         <Title>OCC Debugger</Title>
         <Toolbar.Actions centered>

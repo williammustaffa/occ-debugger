@@ -3,26 +3,28 @@ import { tabs, storage } from '@utils';
 function getOCCViewModels(configs) {
   try {
     const occRequire = __non_webpack_require__;
-    const result = { __proto__: null };
 
     // Require knockout
     const ko = occRequire('knockout');
 
     // Get context from current element
     if ($0) {
-      result.dataFor = ko.dataFor($0);
-      result.contextFor = ko.contextFor($0);
+      const contextFor = ko.contextFor($0);
 
-      if (configs.options.toJS) {
-        result.toJS = ko.toJS(result.dataFor);
+      if (!contextFor) {
+        throw new Error('Selected element has no knockout bindings.')
       }
 
-      return result;
+      const base = configs.options.toJS
+        ? ko.toJS(contextFor.$data)
+        : {};
+
+      return Object.assign(base, contextFor);
     }
 
     throw new Error('Please select an element');
   } catch({ message }) {
-    return { mesage, __proto__: null };
+    return { message, __proto__: null };
   }
 }
 
