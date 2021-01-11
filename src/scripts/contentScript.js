@@ -7,7 +7,7 @@ function injectConfigs(configs, tag) {
   const script = document.createElement('script');
   script.setAttribute('type', 'text/javascript');
   script.setAttribute('id', 'occ-debugger-config');
-  script.text = 'window.occDebuggerConfigs = ' + JSON.stringify(configs);
+  script.text = 'window._occDebugger = ' + JSON.stringify(configs);
   node.appendChild(script);
 }
 
@@ -22,13 +22,13 @@ function injectScript(filePath, tag) {
 
 async function initialize(configs) {
   // Set and sync occ site property
-  if (!configs.hasOwnProperty('isReady')) {
-    configs.isValid = !!document.getElementById('oracle-cc');
-    configs.isReady = true;
+  if (!configs.registered) {
+    configs.valid = !!document.getElementById('oracle-cc');
+    configs.registered = true;
     await storage.setConfigs(DOMAIN_NAME, configs);
   }
 
-  if (configs.isValid && configs.enabled) {
+  if (configs.valid && configs.options.enabled) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occDebugger.js'), 'body');
   }

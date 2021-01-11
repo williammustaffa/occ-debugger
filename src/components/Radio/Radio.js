@@ -11,11 +11,9 @@ export const Radio = ({ children, label, onChange, ...props }) => {
 
   return (
     <RadioWrapper>
-      <label>
-        <RadioStyled {...props} onChange={handleChange} />
-        {label}
-        {children}
-      </label>
+      <RadioStyled {...props} onChange={handleChange} />
+      {label}
+      {children}
     </RadioWrapper>
   )
 }

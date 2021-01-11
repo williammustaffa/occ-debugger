@@ -11,11 +11,9 @@ export const Checkbox = ({ children, label, onChange, ...props }) => {
 
   return (
     <CheckboxWrapper>
-      <label>
-        <CheckboxStyled {...props} onChange={handleChange}/>
-        {label}
-        {children}
-      </label>
+      <CheckboxStyled {...props} onChange={handleChange}/>
+      {label}
+      {children}
     </CheckboxWrapper>
   )
 }

@@ -1,31 +1,30 @@
 import { tabs, storage } from '@utils';
 
 function getOCCViewModels(configs) {
-  try{
+  try {
     const occRequire = __non_webpack_require__;
 
     // Require knockout
     const ko = occRequire('knockout');
 
-    // Requiring occ view model instances
-    const order = occRequire('pageLayout/order').getInstance();
-    const user = occRequire('pageLayout/user').getInstance();
-    const cart = order.cart();
-
-    // Define elements to expose
-    const global = { user, order, cart };
-
     // Get context from current element
-    const target = {};
-
     if ($0) {
-      target.context = ko.contextFor($0);
-      target.data = ko.dataFor($0);
+      const contextFor = ko.contextFor($0);
+
+      if (!contextFor) {
+        throw new Error('Selected element has no knockout bindings.')
+      }
+
+      const base = configs.options.toJS
+        ? ko.toJS(contextFor.$data)
+        : {};
+
+      return Object.assign(base, contextFor);
     }
 
-    return { configs, global, target };
-  } catch(e) {
-    return { message: 'Something wen\'t wrong' };
+    throw new Error('Please select an element');
+  } catch({ message }) {
+    return { message, __proto__: null };
   }
 }
 
@@ -33,16 +32,39 @@ chrome.devtools.panels.elements.createSidebarPane(
   "OCC Debugger",
   async (sidebar) => {
     const currentTab = await tabs.getCurrent();
-    const configs = await storage.getConfigs(currentTab.domainName);
+    let configs = await storage.getConfigs(currentTab.domainName);
 
-    const updateElementProperties = () => {
-      sidebar.setExpression(`(${getOCCViewModels.toString()})(${JSON.stringify(configs)})`);
+    const updatePanelInformation = () => {
+      try {
+        if (!configs.registered) {
+          throw new Error('Unidentified site. Please reload your page and reopen the devtools');
+        }
+  
+        if (!configs.valid) {
+          throw new Error('This is not an OCC site.');
+        }
+  
+        if (!configs.options.enabled) {
+          throw new Error('OCC Debugger is disabled.');
+        }
+
+        sidebar.setExpression(`(${getOCCViewModels.toString()})(${JSON.stringify(configs)})`);
+      } catch({ message }) {
+        sidebar.setObject({ configs, message });
+      }
     };
 
-    updateElementProperties();
+    // Listen to configuration changes
+    storage.listenConfigs(currentTab.domainName, changes => {
+      configs = changes;
+      updatePanelInformation();
+    });
 
-    //attach to chrome events so that the sidebarPane refreshes (contains up to date info)
-    chrome.devtools.panels.elements.onSelectionChanged.addListener(updateElementProperties);
-    sidebar.onShown.addListener(updateElementProperties);
+    // Initial call
+    updatePanelInformation();
+
+    // Attach to chrome events so that the sidebarPane refreshes (contains up to date info)
+    chrome.devtools.panels.elements.onSelectionChanged.addListener(updatePanelInformation);
+    sidebar.onShown.addListener(updatePanelInformation);
   }
 );

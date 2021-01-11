@@ -1,5 +1,5 @@
 const occRequire = __non_webpack_require__;
-const options = window.occDebuggerConfigs;
+const options = window._occDebugger.options;
 
 function trace(label, ...args) {
   console.groupCollapsed(`[OCC Debugger] ${label}`);

@@ -21,7 +21,7 @@ export default {
   },
   primary: {
     color: '#fff',
-    background: '#6eb4f7',
+    background: '#1a82fb',
     gradient: '#1a82fb',
     border: '#388df8',
     borderBottom: '#0866dc',

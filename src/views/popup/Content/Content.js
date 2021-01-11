@@ -4,13 +4,13 @@ import { useConfigs } from '@contexts/configs';
 import { Section, ContentStyled } from './Content.styles';
 
 export function Content() {
-  const { configs, tab, updateConfigs } = useConfigs();
-  const { isValid, isReady } = configs;
+  const { configs, updateConfigs } = useConfigs();
+  const { valid, registered, options } = configs;
 
-  if (!isValid) {
+  if (!valid) {
     return (
       <ContentStyled centered height={100}>
-        <div>{isReady ? 'This is not an OCC site.' : 'Please, refresh your tab!'}</div>
+        <div>{registered ? 'This is not an OCC site.' : 'Please, refresh your tab!'}</div>
       </ContentStyled>
     );
   }
@@ -20,30 +20,30 @@ export function Content() {
       <Section>
         <Checkbox
           label="Enabled"
-          checked={configs.enabled}
-          onChange={updateConfigs('enabled')}
+          checked={options.enabled}
+          onChange={updateConfigs('options.enabled')}
         />
       </Section>
       <Section>
         <Title>Console</Title>
         <Checkbox
-          disabled={!configs.enabled}
+          disabled={!options.enabled}
           label="Topics"
-          checked={configs.topics}
-          onChange={updateConfigs('topics')}
+          checked={options.topics}
+          onChange={updateConfigs('options.topics')}
         />
         <Checkbox
-          disabled={!configs.enabled}
+          disabled={!options.enabled}
           label="Spinner"
-          checked={configs.spinner}
-          onChange={updateConfigs('spinner')}
+          checked={options.spinner}
+          onChange={updateConfigs('options.spinner')}
         />
         <Title>Panel</Title>
         <Checkbox
-          disabled={!configs.enabled}
-          label="Serialize data"
-          checked={configs.toJS}
-          onChange={updateConfigs('toJS')}
+          disabled={!options.enabled}
+          label="Serialize"
+          checked={options.toJS}
+          onChange={updateConfigs('options.toJS')}
         />
       </Section>
     </ContentStyled>

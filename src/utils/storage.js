@@ -1,3 +1,14 @@
+const INITIAL_CONFIGS = {
+  registered: false,
+  valid: false,
+  options: {
+    enabled: false,
+    topics: false,
+    spinner: false,
+    toJS: false
+  }
+};
+
 function getItem(key, defaultValue, json = true) {
   return new Promise(resolve => {
     chrome.storage.local.get(key, data => {
@@ -22,8 +33,8 @@ function setItem(key, value, json = true) {
   chrome.storage.local.set({ [key]: strConfigs });
 }
 
-function getConfigs(domainName, defaultValue) {
-  return getItem(domainName, defaultValue);
+function getConfigs(domainName) {
+  return getItem(domainName, INITIAL_CONFIGS);
 }
 
 function setConfigs(domainName, domainConfigs) {
@@ -31,7 +42,7 @@ function setConfigs(domainName, domainConfigs) {
 }
 
 function listenConfigs(domainName, callback) {
-  chrome.storage.onChanged.addListener(function (changes) {
+  chrome.storage.onChanged.addListener(changes => {
     const domainChanges = changes[domainName]?.newValue;
 
     if (domainChanges) {
