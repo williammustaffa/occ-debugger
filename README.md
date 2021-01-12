@@ -5,6 +5,9 @@
 
 An extension to help occ developers to debug the plarform.
 
+### Usage
+Download latest release zip file, extract it. Access `chrome://extensions`, enable **developer mode** and load the extracted content though the `Load unpacked` button.
+
 ### Development
 Install all packages
 ```
