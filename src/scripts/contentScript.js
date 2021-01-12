@@ -1,6 +1,4 @@
-import { storage, emitter } from '@utils';
-
-const DOMAIN_NAME = location.hostname;
+import { storage } from '@utils';
 
 function injectConfigs(configs, tag) {
   const node = document.getElementsByTagName(tag)[0];
@@ -19,6 +17,8 @@ function injectScript(filePath, tag) {
   script.setAttribute('src', filePath);
   node.appendChild(script);
 }
+
+const DOMAIN_NAME = location.hostname;
 
 async function initialize(configs) {
   // Set and sync occ site property

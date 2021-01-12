@@ -23,7 +23,7 @@ export function Footer() {
   return (
     <Toolbar.Actions>
       <Button onClick={closePopup} pullLeft>Close</Button>
-      <Button onClick={() => chrome.storage.local.clear()} pullLeft>Reset configs</Button>
+      {/*<Button onClick={() => chrome.storage.local.clear()} pullLeft>Reset configs</Button>*/}
       <Button
         primary
         pullRight
