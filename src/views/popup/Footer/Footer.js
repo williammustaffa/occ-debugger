@@ -14,6 +14,7 @@ export function Footer() {
     }
 
     tabs.refreshTab(tab);
+    window.close();
   };
 
   // Main button actions
