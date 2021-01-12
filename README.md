@@ -6,11 +6,11 @@
 An extension to help occ developers to debug the plarform.
 
 ### Development
-Install all packages...
+Install all packages
 ```
 npm install
 ```
-...and then run the dev server.
+And run the dev server.
 ```
 npm start
 ```
@@ -30,10 +30,13 @@ This command will generate the unpacked version of the extension in the `dist` f
 
 Popup is built using [Preact](https://preactjs.com/) and [Photon](http://photonkit.com/).
 
-### Features
+### Devtools
+A panel is available in devtools called "OCC debugger". This will provide information regarding the inspected element.
 
-**Topics:** Enable topics debugging
+### Popup options
 
-**Spinner:** Enable spinner debugging
+**Topics:** Enable topics debugging. Listen to "pubsub.topicNames" adding a log in console when any is triggered.
 
-**ViewModels:** TODO
+**Spinner:** Enable spinner debugging. Listen to spinner create and destroy methods, adding a log in console.
+
+**Serialize:** Enable data serialization in devtools. Serialize data(`$context.data`) for inspected element. (_when this option is enabled, context will be prefixed with a "*"_)
