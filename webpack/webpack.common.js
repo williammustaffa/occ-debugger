@@ -32,7 +32,7 @@ const configs = {
         loader: 'file-loader',
         options: {
           limit: 100000,
-          name: '/dist/assets/fonts/[name].[ext]',
+          name: '/assets/fonts/[name].[ext]',
         }
       }
     ]
