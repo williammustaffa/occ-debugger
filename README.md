@@ -5,12 +5,15 @@
 
 An extension to help occ developers to debug the plarform.
 
+### Usage
+Download latest release zip file, extract it. Access `chrome://extensions`, enable **developer mode** and load the extracted content though the `Load unpacked` button.
+
 ### Development
-Install all packages...
+Install all packages
 ```
 npm install
 ```
-...and then run the dev server.
+And run the dev server.
 ```
 npm start
 ```
@@ -30,10 +33,22 @@ This command will generate the unpacked version of the extension in the `dist` f
 
 Popup is built using [Preact](https://preactjs.com/) and [Photon](http://photonkit.com/).
 
-### Features
+## Features
 
-**Topics:** Enable topics debugging
+### Devtools
+A panel is available in devtools called "OCC debugger". This will provide information regarding the inspected element.
 
-**Spinner:** Enable spinner debugging
+### Popup
+#### Enabled 
+Enable OCC debugger to run on current site.
 
-**ViewModels:** TODO
+#### Topics
+Enable topics debugging. Listen to "pubsub.topicNames" adding a log in console when any is triggered.
+
+#### Spinner
+Enable spinner debugging. Listen to spinner create and destroy methods, adding a log in console.
+
+#### Serialize
+Enable data serialization in devtools. Serialize data(`$context.data`) for inspected element.
+
+**Note:** _when this option is enabled, context will be prefixed with a "*"_
