@@ -30,13 +30,21 @@ This command will generate the unpacked version of the extension in the `dist` f
 
 Popup is built using [Preact](https://preactjs.com/) and [Photon](http://photonkit.com/).
 
+## Features
+
 ### Devtools
 A panel is available in devtools called "OCC debugger". This will provide information regarding the inspected element.
 
-### Popup options
+### Popup
+#### Enabled 
+Enable OCC debugger to run on current site.
 
-**Topics:** Enable topics debugging. Listen to "pubsub.topicNames" adding a log in console when any is triggered.
+#### Topics
+Enable topics debugging. Listen to "pubsub.topicNames" adding a log in console when any is triggered.
 
-**Spinner:** Enable spinner debugging. Listen to spinner create and destroy methods, adding a log in console.
+#### Spinner
+Enable spinner debugging. Listen to spinner create and destroy methods, adding a log in console.
 
-**Serialize:** Enable data serialization in devtools. Serialize data(`$context.data`) for inspected element. (_when this option is enabled, context will be prefixed with a "*"_)
+#### Serialize
+Enable data serialization in devtools. Serialize data(`$context.data`) for inspected element.
+Note: (_when this option is enabled, context will be prefixed with a "*"_)
