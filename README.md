@@ -6,7 +6,7 @@
 An extension to help occ developers to debug the plarform.
 
 ### Usage
-Download latest release `occ-debugger-[version].zip` file, extract it. Access `chrome://extensions`, enable **developer mode** and load the extracted folder, named `occ-debugger`, though the `Load unpacked` button.
+Download latest release zip file, extract it. Access `chrome://extensions`, enable **developer mode** and load the extracted folder through the `Load unpacked` button.
 
 ### Development
 Install all packages
