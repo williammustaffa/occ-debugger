@@ -2,10 +2,10 @@ const INITIAL_CONFIGS = {
   registered: false,
   valid: false,
   options: {
-    enabled: false,
+    enabled: true,
     topics: false,
     spinner: false,
-    toJS: false
+    toJS: true
   }
 };
 
