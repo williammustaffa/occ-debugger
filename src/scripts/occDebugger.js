@@ -102,7 +102,7 @@ function debugCookies() {
     return result;
   }
 
-  const listenCookieChange = (callback, interval = 500) => {
+  const listenCookieChange = (callback, interval = 100) => {
     let previousCookie = document.cookie;
 
     setInterval(()=> {
