@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "OCC Debugger",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Add some functionalities to debug occ",
   "short_name": "Occ Debugger",
   "permissions": ["tabs", "activeTab", "storage", "<all_urls>"],

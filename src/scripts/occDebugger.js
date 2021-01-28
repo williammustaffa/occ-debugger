@@ -76,18 +76,26 @@ function debugTopics({ pubsub }) {
 function debugCookies() {
   const findDiff = (object1, object2) => {
     const target = { ...object1, ...object2 };
-    const result = {};
+    const result = {
+      '@added': {},
+      '@removed': {},
+      '@modified': {},
+      count: 0
+    };
 
     for (let key in target) {
       if(object1[key] !== object2[key]) {
-        result[key] = object2.hasOwnProperty(key) ? object2[key] : '@removed cookie';
-      }
-
-      if (
-        typeof object1[key] === 'object' &&
-        typeof object2[key] === 'object'
-      ) {
-        result[key] = arguments.callee(object1[key], object2[key]);
+        if (
+          object1.hasOwnProperty(key) &&
+          object2.hasOwnProperty(key)
+        ) {
+          result["@modified"][key] = object2[key];
+        } else if (object2.hasOwnProperty(key)) {
+          result["@added"][key] = object2[key];
+        } else {
+          result["@removed"][key] = object1[key];
+        }
+        result.count++;
       }
     }
 
@@ -95,22 +103,25 @@ function debugCookies() {
   }
 
   const listenCookieChange = (callback, interval = 500) => {
-    let previousCookies = document.cookie;
+    let previousCookie = document.cookie;
 
     setInterval(()=> {
       const currentCookie = document.cookie;
 
-      if (currentCookie !== previousCookies) {
+      if (currentCookie !== previousCookie) {
         try {
-          const oldValue = parseCookies(previousCookies);
+          const oldValue = parseCookies(previousCookie);
           const newValue = parseCookies(currentCookie);
           const diff = findDiff(oldValue, newValue);
-    
-          callback({ oldValue, newValue, diff });
+
+          if (diff.count > 0) {
+            delete diff.count;
+            callback({ oldValue, newValue, diff });
+          }
         } catch(e) {
           ccLogger.info('[msiGDPRCookies] Error parsing cookie values', e);
         } finally {
-          previousCookies = currentCookie;
+          previousCookie = currentCookie;
         }
       }
     }, interval);
