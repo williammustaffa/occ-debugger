@@ -1,4 +1,5 @@
 const occRequire = __non_webpack_require__;
+const occDependencies = ['pubsub', 'spinner'];
 const options = window._occDebugger.options;
 
 function trace(label, ...args) {
@@ -24,10 +25,11 @@ function log(type, ...args) {
   console[type].apply(console, args);
 }
 
-function init(pubsub, spinner) {
+function init(...dependencies) {
   const optionsMap = {
     spinner: debugSpinner,
-    topics: debugTopics
+    topics: debugTopics,
+    cookies: debugCookies
   };
 
   try {
@@ -39,7 +41,7 @@ function init(pubsub, spinner) {
 
       if (featureEnabled && typeof featureFn === 'function') {
         log('info', `Feature enabled`, featureName);
-        featureFn.call(this, { pubsub, spinner });
+        featureFn.call(this, dependencies);
       }
     });
   } catch(e) {
@@ -71,5 +73,68 @@ function debugTopics({ pubsub }) {
   });
 }
 
+function debugCookies() {
+  const findDiff = (object1, object2) => {
+    const target = { ...object1, ...object2 };
+    const result = {};
+
+    for (let key in target) {
+      if(object1[key] !== object2[key]) {
+        result[key] = object2.hasOwnProperty(key) ? object2[key] : '@removed cookie';
+      }
+
+      if (
+        typeof object1[key] === 'object' &&
+        typeof object2[key] === 'object'
+      ) {
+        result[key] = arguments.callee(object1[key], object2[key]);
+      }
+    }
+
+    return result;
+  }
+
+  const listenCookieChange = (callback, interval = 500) => {
+    let previousCookies = document.cookie;
+
+    setInterval(()=> {
+      const currentCookie = document.cookie;
+
+      if (currentCookie !== previousCookies) {
+        try {
+          const oldValue = parseCookies(previousCookies);
+          const newValue = parseCookies(currentCookie);
+          const diff = findDiff(oldValue, newValue);
+    
+          callback({ oldValue, newValue, diff });
+        } catch(e) {
+          ccLogger.info('[msiGDPRCookies] Error parsing cookie values', e);
+        } finally {
+          previousCookies = currentCookie;
+        }
+      }
+    }, interval);
+  }
+
+  const parseCookies = cookieString => {
+    const cookies = cookieString
+      .split(';')
+      .reduce((result, expression) => {
+        if (!expression) return result;
+        const [key, value] = expression.split('=');
+        result[key.trim()] = value.trim();
+        return result;
+      }, {});
+
+    return cookies;
+  }
+
+  const handleCookieChanges = changes => {
+    log('info', 'Cookies changed:', changes);
+  }
+
+  listenCookieChange(handleCookieChanges);
+}
+
 // Require and init
-occRequire(['pubsub', 'spinner'], init);
+occRequire(occDependencies, init);

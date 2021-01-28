@@ -28,6 +28,12 @@ export function Content() {
         <Title>Console</Title>
         <Checkbox
           disabled={!options.enabled}
+          label="Cookies"
+          checked={options.cookies}
+          onChange={updateConfigs('options.cookies')}
+        />
+        <Checkbox
+          disabled={!options.enabled}
           label="Topics"
           checked={options.topics}
           onChange={updateConfigs('options.topics')}

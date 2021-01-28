@@ -6,7 +6,7 @@ import { useConfigs } from '@contexts/configs';
 import { Content } from './Content';
 import { Footer } from './Footer';
 
-const WINDOW_HEIGHT = 300;
+const WINDOW_HEIGHT = 350;
 const WINDOW_WIDTH = 350;
 
 export function Popup() {

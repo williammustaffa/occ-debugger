@@ -3,6 +3,7 @@ const INITIAL_CONFIGS = {
   valid: false,
   options: {
     enabled: true,
+    cookies: false,
     topics: false,
     spinner: false,
     toJS: true

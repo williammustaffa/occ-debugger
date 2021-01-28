@@ -42,6 +42,9 @@ A panel is available in devtools called "OCC debugger". This will provide inform
 #### Enabled 
 Enable OCC debugger to run on current site.
 
+#### Cookies
+Enable cookies debugging. Listen to changes in cookies and log it into devtools console.
+
 #### Topics
 Enable topics debugging. Listen to "pubsub.topicNames" adding a log in console when any is triggered.
 
