@@ -41,15 +41,15 @@ function init(...dependencies) {
 
       if (featureEnabled && typeof featureFn === 'function') {
         log('info', `Feature enabled`, featureName);
-        featureFn.call(this, dependencies);
+        featureFn.apply(this, dependencies);
       }
     });
   } catch(e) {
-    log('info', 'Failed initializing OCC debugger');
+    log('info', 'Failed initializing OCC debugger', e);
   }
 }
 
-function debugSpinner({ spinner }) {
+function debugSpinner(pubsub, spinner) {
   // Save original methods
   const buildCSS = spinner.buildCSS;
   const destroyWithoutDelay = spinner.destroyWithoutDelay;
@@ -65,7 +65,7 @@ function debugSpinner({ spinner }) {
   };
 }
 
-function debugTopics({ pubsub }) {
+function debugTopics(pubsub, spinner) {
   Object.keys(pubsub.topicNames).map(function (topicName) {
     $.Topic(pubsub.topicNames[topicName]).subscribe((...args) => {
       trace(`Topic triggered: ${topicName}`, ...args);
@@ -73,7 +73,7 @@ function debugTopics({ pubsub }) {
   });
 }
 
-function debugCookies() {
+function debugCookies(pubsub, spinner) {
   const findDiff = (object1, object2) => {
     const target = { ...object1, ...object2 };
     const result = {

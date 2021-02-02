@@ -39,5 +39,8 @@ chrome.devtools.panels.elements.createSidebarPane(
     // Attach to chrome events so that the sidebarPane refreshes (contains up to date info)
     chrome.devtools.panels.elements.onSelectionChanged.addListener(updatePanelInformation);
     sidebar.onShown.addListener(updatePanelInformation);
+
+    // Background page events
+    chrome.extension.onMessage.addListener(updatePanelInformation);
   }
 );

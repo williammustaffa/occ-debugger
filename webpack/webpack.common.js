@@ -13,6 +13,7 @@ const configs = {
   entry: {
     'views/devtools/index': path.join(SRC_PATH, 'views/devtools/index.js'),
     'views/popup/index': path.join(SRC_PATH, 'views/popup/index.js'),
+    'scripts/background': path.join(SRC_PATH, 'scripts/background.js'),
     'scripts/contentScript': path.join(SRC_PATH, 'scripts/contentScript.js'),
     'scripts/occDebugger': path.join(SRC_PATH, 'scripts/occDebugger.js')
   },
