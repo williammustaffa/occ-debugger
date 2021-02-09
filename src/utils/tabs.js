@@ -1,9 +1,10 @@
 function getCurrent() {
-  return new Promise(resolve => {
-    const query = { active: true, currentWindow: true };
+  return new Promise((resolve, reject) => {
+    const query = { active: true };
+
     chrome.tabs.query(query, tabs => {
-      const tab = tabs.pop();
-      tab.domainName = getTabUrl(tab);
+      const tab = tabs.length && tabs.pop();
+      tab.domainName = tab && getTabUrl(tab);
       resolve(tab);
     });
   });

@@ -4,7 +4,7 @@ import { getParser } from './parser';
 chrome.devtools.panels.elements.createSidebarPane(
   "OCC Debugger",
   async (sidebar) => {
-    const currentTab = await tabs.getCurrent();
+    let currentTab = await tabs.getCurrent();
     let configs = await storage.getConfigs(currentTab.domainName);
 
     const updatePanelInformation = () => {
@@ -28,19 +28,25 @@ chrome.devtools.panels.elements.createSidebarPane(
     };
 
     // Listen to configuration changes
-    storage.listenConfigs(currentTab.domainName, changes => {
+    const configListener = storage.listenConfigs(currentTab.domainName, changes => {
       configs = changes;
       updatePanelInformation();
     });
 
-    // Initial call
-    updatePanelInformation();
+    // Listen to tab changes
+    chrome.extension.onMessage.addListener(async () => {
+      currentTab = await tabs.getCurrent();
+      configs = await storage.getConfigs(currentTab.domainName);
+
+      configListener.updatedomain(currentTab.domainName);
+      updatePanelInformation();
+    });
 
     // Attach to chrome events so that the sidebarPane refreshes (contains up to date info)
     chrome.devtools.panels.elements.onSelectionChanged.addListener(updatePanelInformation);
     sidebar.onShown.addListener(updatePanelInformation);
 
-    // Background page events
-    chrome.extension.onMessage.addListener(updatePanelInformation);
+    // Initial call
+    updatePanelInformation();
   }
 );

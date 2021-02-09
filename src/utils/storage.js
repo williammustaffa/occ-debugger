@@ -42,8 +42,14 @@ function setConfigs(domainName, domainConfigs) {
   return setItem(domainName, domainConfigs);
 }
 
-function listenConfigs(domainName, callback) {
-  chrome.storage.onChanged.addListener(changes => {
+function listenConfigs(domain, callback) {
+  let domainName = domain;
+
+  const updateDomain = newDomain => {
+    domainName = newDomain;
+  }
+
+  const listener = changes => {
     const domainChanges = changes[domainName]?.newValue;
 
     if (domainChanges) {
@@ -57,7 +63,11 @@ function listenConfigs(domainName, callback) {
         console.warn(`Error parsing configuration data for domain ${domainName}`);
       }
     }
-  });
+  };
+
+  chrome.storage.onChanged.addListener(listener);
+
+  return { updateDomain };
 }
 
 export const storage = {

@@ -14,6 +14,10 @@ function parseElementData(configs) {
     const occRequire = __non_webpack_require__;
     const result = { __proto__: null };
 
+    if (!occRequire) {
+      throw new Error('Please, select an element with knockout bindings');
+    }
+
     // Require knockout
     const ko = occRequire('knockout');
     const context = ko.contextFor($0);
@@ -35,7 +39,7 @@ function parseElementData(configs) {
 
     return result;
   } catch({ message }) {
-    return { message, __proto__: null };
+    return { configs, message, __proto__: null };
   }
 }
 
