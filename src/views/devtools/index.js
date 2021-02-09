@@ -1,10 +1,14 @@
 import { tabs, storage } from '@utils';
 import { getParser } from './parser';
 
+const port = chrome.runtime.connect({ name: 'occ-debugger' });
+
 chrome.devtools.panels.elements.createSidebarPane(
   "OCC Debugger",
   async (sidebar) => {
-    let currentTab = await tabs.getCurrent();
+    const tabId = chrome.devtools.inspectedWindow.tabId;
+
+    let currentTab = await tabs.getTabById(tabId);
     let configs = await storage.getConfigs(currentTab.domainName);
 
     const updatePanelInformation = () => {
@@ -33,12 +37,13 @@ chrome.devtools.panels.elements.createSidebarPane(
       updatePanelInformation();
     });
 
-    // Listen to tab changes
-    chrome.extension.onMessage.addListener(async () => {
-      currentTab = await tabs.getCurrent();
+    // Listen to current tab changes
+    port.onMessage.addListener(async (data) => {
+      currentTab = await tabs.getTabById(tabId);
       configs = await storage.getConfigs(currentTab.domainName);
 
-      configListener.updatedomain(currentTab.domainName);
+      configListener.updateDomain(currentTab.domainName);
+
       updatePanelInformation();
     });
 

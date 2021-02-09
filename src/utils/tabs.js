@@ -1,17 +1,20 @@
-function getCurrent() {
-  return new Promise((resolve, reject) => {
-    const query = { active: true };
-
-    chrome.tabs.query(query, tabs => {
-      const tab = tabs.length && tabs.pop();
-      tab.domainName = tab && getTabUrl(tab);
-      resolve(tab);
-    });
-  });
+function _processTab(tab) {
+  if (tab) tab.domainName = _getTabUrl(tab);
+  return tab;
 }
 
-function getTabUrl(tab) {
+function _getTabUrl(tab) {
   return new URL(tab.url).hostname;
+}
+
+function getCurrent() {
+  return new Promise((resolve) => {
+    const query = { active: true, currentWindow: true };
+
+    chrome.tabs.query(query, tabs => {
+      resolve(_processTab(tabs.pop()));
+    });
+  });
 }
 
 function refreshTab(tab) {
@@ -20,8 +23,16 @@ function refreshTab(tab) {
   });
 }
 
+function getTabById(id) {
+  return new Promise(resolve => {
+    chrome.tabs.get(id, tab => {
+      resolve(_processTab(tab));
+    });
+  });
+}
+
 export const tabs = {
   getCurrent,
-  getTabUrl,
+  getTabById,
   refreshTab
 };

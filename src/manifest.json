@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
   "name": "OCC Debugger",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Add some functionalities to debug occ",
   "short_name": "Occ Debugger",
-  "permissions": ["tabs", "activeTab", "storage", "<all_urls>"],
+  "permissions": ["tabs", "storage", "<all_urls>"],
   "web_accessible_resources": ["scripts/occDebugger.js"],
   "devtools_page": "views/devtools/index.html",
   "background": {

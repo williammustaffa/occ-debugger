@@ -1,19 +1,24 @@
+const PORT_NAME = 'occDebugger';
 
-function send(namespace, value) {
-  chrome.runtime.sendMessage({ namespace, value });
+function connect() {
+  const port = chrome.runtime.connect({ name: PORT_NAME });
+
+  const sendMessage = message => {
+    port.postMessage(message);
+  }
+
+  const onMessage = callback => {
+    port.onMessage.addListener(callback);
+  }
+
+  return { sendMessage, onMessage };
 }
 
-function listen(namespace, callback) {
-  chrome.runtime.onMessage.addListener(({ namespace: ns, value }) => {
-    if (namespace === ns) {
-      if (typeof callback === 'function') {
-        callback(value);
-      }
-    }
+function onConnect(callback) {
+  chrome.runtime.onConnect.addListener(port => {
+    if (port.name !== PORT_NAME) return;
+    callback(port);
   });
 }
 
-export const emitter = {
-  send,
-  listen
-};
+export const emitter = { connect, onConnect };
