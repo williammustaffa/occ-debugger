@@ -1,29 +1,8 @@
+import logger from './logger';
+
 const occRequire = __non_webpack_require__;
 const occDependencies = ['pubsub', 'spinner'];
 const options = window._occDebugger.options;
-
-function trace(label, ...args) {
-  console.groupCollapsed(`[OCC Debugger] ${label}`);
-
-  // Log arguments
-  if (args.length) {
-    console.groupCollapsed('Arguments');
-    args.forEach(console.log);
-    console.groupEnd();
-  }
-
-  // Stack trace
-  console.groupCollapsed('Stack trace');
-  console.trace('');
-  console.groupEnd();
-
-  console.groupEnd();
-}
-
-function log(type, ...args) {
-  args.unshift(`[OCC Debugger]`);
-  console[type].apply(console, args);
-}
 
 function init(...dependencies) {
   const optionsMap = {
@@ -33,34 +12,48 @@ function init(...dependencies) {
   };
 
   try {
-    log('info', 'Initializing OCC debugger');
+    logger.log('Initializing');
 
     Object.keys(options).forEach(featureName => {
       const featureEnabled = options[featureName];
       const featureFn = optionsMap[featureName];
 
       if (featureEnabled && typeof featureFn === 'function') {
-        log('info', `Feature enabled`, featureName);
+        logger.feature(featureName);
         featureFn.apply(this, dependencies);
       }
     });
   } catch(e) {
-    log('info', 'Failed initializing OCC debugger', e);
+    logger.error('Failed initializing OCC debugger', e.message);
   }
 }
 
 function debugSpinner(pubsub, spinner) {
   // Save original methods
-  const buildCSS = spinner.buildCSS;
+  const create = spinner.create;
   const destroyWithoutDelay = spinner.destroyWithoutDelay;
 
-  spinner.buildCSS = function (...args) {
-    trace('Spinner created', ...args);
-    buildCSS.apply(this, args);
+  const getParent = args => {
+    const result = Array.isArray(args) && args[0];
+
+    if (typeof result === 'string'){
+      return result;
+    }
+
+    if (result && result.parent) {
+      return result.parent;
+    }
+
+    return 'Unidentified';
+  }
+
+  spinner.create = function (...args) {
+    logger.debug('Spinner created', getParent(args), ...args);
+    create.apply(this, args);
   };
 
   spinner.destroyWithoutDelay = function (...args) {
-    trace('Spinner destroyed', ...args);
+    logger.debug('Spinner destroyed', getParent(args), ...args);
     destroyWithoutDelay.apply(this, args);
   };
 }
@@ -68,7 +61,7 @@ function debugSpinner(pubsub, spinner) {
 function debugTopics(pubsub, spinner) {
   Object.keys(pubsub.topicNames).map(function (topicName) {
     $.Topic(pubsub.topicNames[topicName]).subscribe((...args) => {
-      trace(`Topic triggered: ${topicName}`, ...args);
+      logger.debug('Topic triggered', topicName, ...args);
     });
   });
 }
@@ -115,11 +108,10 @@ function debugCookies(pubsub, spinner) {
           const diff = findDiff(oldValue, newValue);
 
           if (diff.count > 0) {
-            delete diff.count;
             callback({ oldValue, newValue, diff });
           }
         } catch(e) {
-          ccLogger.info('[msiGDPRCookies] Error parsing cookie values', e);
+          logger.error('Failed parsins cookies', e.message);
         } finally {
           previousCookie = currentCookie;
         }
@@ -141,7 +133,9 @@ function debugCookies(pubsub, spinner) {
   }
 
   const handleCookieChanges = changes => {
-    log('info', 'Cookies changed:', changes);
+    const nOfChanges = changes.diff.count;
+    delete changes.diff.count;
+    logger.debug('Cookies changed', `${nOfChanges} changes`, changes);
   }
 
   listenCookieChange(handleCookieChanges);

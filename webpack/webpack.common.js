@@ -43,14 +43,12 @@ const configs = {
       cache: false,
       title: "OCC Debugger - Popup",
       filename: 'views/popup/index.html',
-      template: 'src/views/popup/index.html',
       chunks: ['views/popup/index']
     }),
     new HtmlWebpackPlugin({
       cache: false,
       title: "OCC Debugger - Devtools",
       filename: 'views/devtools/index.html',
-      template: 'src/views/devtools/index.html',
       chunks: ['views/devtools/index']
     }),
     new CopyWebpackPlugin({
