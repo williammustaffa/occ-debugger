@@ -55,3 +55,6 @@ Enable spinner debugging. Listen to spinner create and destroy methods, adding a
 Enable data serialization in devtools. Serialize data(`$context.data`) for inspected element.
 
 **Note:** _when this option is enabled, context will be prefixed with a "*"_
+
+## Known Issues
+- https://bugs.chromium.org/p/chromium/issues/detail?id=363796
