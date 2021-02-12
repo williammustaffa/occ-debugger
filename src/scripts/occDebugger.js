@@ -1,4 +1,4 @@
-import logger from './logger';
+import { logger } from '@utils/logger';
 
 const occRequire = __non_webpack_require__;
 const occDependencies = ['pubsub', 'spinner'];
@@ -12,19 +12,19 @@ function init(...dependencies) {
   };
 
   try {
-    logger.log('Initializing');
+    logger.log({ suffix: 'Initializing...' });
 
     Object.keys(options).forEach(featureName => {
       const featureEnabled = options[featureName];
       const featureFn = optionsMap[featureName];
 
       if (featureEnabled && typeof featureFn === 'function') {
-        logger.feature(featureName);
+        logger.log({ label: 'Feature Enabled', suffix: featureName });
         featureFn.apply(this, dependencies);
       }
     });
   } catch(e) {
-    logger.error('Failed initializing OCC debugger', e.message);
+    logger.error({ suffix: 'Failed initializing OCC debugger' }, e.message);
   }
 }
 
@@ -48,12 +48,12 @@ function debugSpinner(pubsub, spinner) {
   }
 
   spinner.create = function (...args) {
-    logger.debug('Spinner created', getParent(args), ...args);
+    logger.debug({ label: 'Spinner Created', suffix: getParent(args) }, ...args);
     create.apply(this, args);
   };
 
   spinner.destroyWithoutDelay = function (...args) {
-    logger.debug('Spinner destroyed', getParent(args), ...args);
+    logger.debug({ label: 'Spinner Destroyed', suffix: getParent(args) }, ...args);
     destroyWithoutDelay.apply(this, args);
   };
 }
@@ -61,7 +61,7 @@ function debugSpinner(pubsub, spinner) {
 function debugTopics(pubsub, spinner) {
   Object.keys(pubsub.topicNames).map(function (topicName) {
     $.Topic(pubsub.topicNames[topicName]).subscribe((...args) => {
-      logger.debug('Topic triggered', topicName, ...args);
+      logger.debug({ label: 'Topic Triggered', suffix: topicName }, ...args);
     });
   });
 }
@@ -111,7 +111,7 @@ function debugCookies(pubsub, spinner) {
             callback({ oldValue, newValue, diff });
           }
         } catch(e) {
-          logger.error('Failed parsins cookies', e.message);
+          logger.error({ suffix: 'Failed parsing cookies' }, e.message);
         } finally {
           previousCookie = currentCookie;
         }
@@ -135,7 +135,7 @@ function debugCookies(pubsub, spinner) {
   const handleCookieChanges = changes => {
     const nOfChanges = changes.diff.count;
     delete changes.diff.count;
-    logger.debug('Cookies changed', `${nOfChanges} changes`, changes);
+    logger.debug({ label: 'Cookies Changed', suffix: `${nOfChanges} change(s)` }, changes);
   }
 
   listenCookieChange(handleCookieChanges);
