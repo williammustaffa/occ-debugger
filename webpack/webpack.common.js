@@ -1,6 +1,7 @@
 const { mergeWithCustomize } = require('webpack-merge');
 const { uniq, merge } = require('lodash');
 const path = require('path');
+const pkg = require('../package.json');
 
 // Plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -8,6 +9,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const DIST_PATH =  path.resolve(__dirname, '..', 'dist');
 const SRC_PATH = path.resolve(__dirname, '..', 'src');
+
+// Replace version in manifest json
+const setManifestVersion = content => {
+  return content.toString().replace(/__version__/g, pkg.version);
+}
 
 const configs = {
   entry: {
@@ -54,7 +60,7 @@ const configs = {
     new CopyWebpackPlugin({
       patterns: [
         { from: 'src/assets/icons', to: 'assets/icons' },
-        { from: 'src/manifest.json', to: 'manifest.json' }
+        { from: 'src/manifest.json', to: 'manifest.json', transform: setManifestVersion }
       ]
     })
   ],
