@@ -34,6 +34,12 @@ export function Content() {
         />
         <Checkbox
           disabled={!options.enabled}
+          label="Analytics"
+          checked={options.analytics}
+          onChange={updateConfigs('options.analytics')}
+        />
+        <Checkbox
+          disabled={!options.enabled}
           label="Topics"
           checked={options.topics}
           onChange={updateConfigs('options.topics')}

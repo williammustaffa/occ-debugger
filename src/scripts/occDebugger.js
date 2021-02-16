@@ -8,7 +8,8 @@ function init(...dependencies) {
   const optionsMap = {
     spinner: debugSpinner,
     topics: debugTopics,
-    cookies: debugCookies
+    cookies: debugCookies,
+    analytics: debugAnalytics
   };
 
   try {
@@ -139,6 +140,15 @@ function debugCookies(pubsub, spinner) {
   }
 
   listenCookieChange(handleCookieChanges);
+}
+
+function debugAnalytics() {
+  $(document).on('msiCustomDataTransfer.occ-debugger', (event, data) => {
+    const dataUet = data && data['data-uet'];
+    const linkType = dataUet && dataUet['link-type'] || 'Unidentified';
+
+    logger.debug({ label: 'Analytics triggered', suffix: linkType }, data);
+  });
 }
 
 // Require and init

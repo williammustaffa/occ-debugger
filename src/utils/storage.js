@@ -6,6 +6,7 @@ const INITIAL_CONFIGS = {
     cookies: false,
     topics: false,
     spinner: false,
+    analytics: false,
     toJS: true
   }
 };

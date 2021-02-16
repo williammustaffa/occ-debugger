@@ -6,7 +6,8 @@
     "start": "webpack --config ./webpack/webpack.dev.js --watch ",
     "build": "npm run extension:build && npm run extension:zip",
     "extension:build": "webpack --config ./webpack/webpack.prod.js",
-    "extension:zip": "node build.js"
+    "extension:zip": "node ./scripts/build.js",
+    "extension:publish": "node -r dotenv/config ./scripts/publish.js"
   },
   "repository": {
     "type": "git",
@@ -25,8 +26,10 @@
     "@babel/preset-env": "^7.5.5",
     "babel": "^6.23.0",
     "babel-loader": "^8.0.6",
+    "chrome-webstore-upload": "^0.4.4",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.2.1",
+    "dotenv": "^8.2.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
     "styled-components": "^5.2.1",

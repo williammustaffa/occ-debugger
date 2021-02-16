@@ -52,7 +52,7 @@ function debug(badgeOptions, ...args) {
 
   // Log arguments
   if (args.length) {
-    console.groupCollapsed('Arguments');
+    console.groupCollapsed('Data');
     args.forEach(arg => console.log(arg));
     console.groupEnd();
   }
