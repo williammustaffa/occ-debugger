@@ -39,7 +39,7 @@ function parseElementData(configs) {
 
     return result;
   } catch({ message }) {
-    return { configs, message, __proto__: null };
+    return { message, __proto__: null };
   }
 }
 

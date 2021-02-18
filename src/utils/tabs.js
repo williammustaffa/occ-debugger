@@ -4,6 +4,7 @@ function _processTab(tab) {
 }
 
 function _getTabUrl(tab) {
+  if (!tab.url) return '';
   return new URL(tab.url).hostname;
 }
 
@@ -31,8 +32,13 @@ function getTabById(id) {
   });
 }
 
+function isReady(tab) {
+  return tab && tab.status === 'complete';
+}
+
 export const tabs = {
   getCurrent,
   getTabById,
+  isReady,
   refreshTab
 };

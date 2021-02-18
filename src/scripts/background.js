@@ -15,7 +15,7 @@ chrome.extension.onConnect.addListener(port => {
 
   port.onDisconnect.addListener(() => {
     const portIndex = ports.indexOf(port);
-    if (portIndex !== -1) ports.splice(i, portIndex);
+    if (portIndex !== -1) ports.splice(portIndex, 1);
   });
 });
 
@@ -23,13 +23,16 @@ chrome.extension.onConnect.addListener(port => {
 chrome.windows.onFocusChanged.addListener(async () => {
   // Send message to devtool.js. Then you can re-evaluate ko.dataFor($0)
   const tab = await tabs.getCurrent();
-  notifyPorts({ action: 'focus-changed', tab });
+  notifyPorts({ action: 'focus-changed', tabId: tab && tab.id });
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   // when URL changes notify devtools
+  if (changeInfo.status) {
+    notifyPorts({ action: 'status-changed', tabId });
+  }
+
   if (changeInfo.url) {
-    const tab = await tabs.getCurrent();
-    notifyPorts({ action: 'url-changed', tab });
+    notifyPorts({ action: 'url-changed', tabId });
   }
 });

@@ -10,9 +10,14 @@ chrome.devtools.panels.elements.createSidebarPane(
 
     let currentTab = await tabs.getTabById(tabId);
     let configs = await storage.getConfigs(currentTab.domainName);
+    let ready = tabs.isReady(currentTab);
 
     const updatePanelInformation = () => {
       try {
+        if (!ready) {
+          throw new Error('Site is loading. Please wait...');
+        }
+
         if (!configs.registered) {
           throw new Error('Unidentified site. Please reload your page and reopen the devtools');
         }
@@ -27,7 +32,7 @@ chrome.devtools.panels.elements.createSidebarPane(
 
         sidebar.setExpression(getParser(configs));
       } catch({ message }) {
-        sidebar.setObject({ configs, message });
+        sidebar.setObject({ message });
       }
     };
 
@@ -38,9 +43,12 @@ chrome.devtools.panels.elements.createSidebarPane(
     });
 
     // Listen to current tab changes
-    port.onMessage.addListener(async (data) => {
+    port.onMessage.addListener(async data => {
+      if (data.tabId !== tabId) return;
+
       currentTab = await tabs.getTabById(tabId);
       configs = await storage.getConfigs(currentTab.domainName);
+      ready = tabs.isReady(currentTab);
 
       configListener.updateDomain(currentTab.domainName);
 
