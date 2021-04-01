@@ -9,34 +9,6 @@ function parseElementData(configs) {
     }
   }
 
-  function getWidgetsFromRegions(ko, regions) {
-    const widgets = {};
-
-    const extractWidgets = regions => {
-      const _regions = ko.unwrap(regions);
-
-      _regions.forEach(region => {
-        const regionWidgets = ko.unwrap(region.widgets);
-        const regionRegions = ko.unwrap(region.regions);
-
-        if (Array.isArray(regionWidgets) && regionWidgets.length) {
-          regionWidgets.forEach(widget => {
-            const widgetName = ko.unwrap(widget.typeId).replace(/_v\d+$/, '')
-            widgets[widgetName] = widget
-          });
-        }
-
-        // Recursive approach
-        if (Array.isArray(regionRegions) && regionRegions.length) {
-          extractWidgets(regionRegions);
-        }
-      });
-    }
-
-    extractWidgets(regions);
-
-    return widgets;
-  }
 
   try {
     const result = { __proto__: null };
@@ -51,13 +23,6 @@ function parseElementData(configs) {
 
     if (!context) {
       throw new Error('Please, select an element with knockout bindings.');
-    }
-
-    if (!configs.options.details) {
-      const masterViewModel = ko.contextFor(document.body).$masterViewModel;
-      const widgets = getWidgetsFromRegions(ko, masterViewModel.regions);
-      const details = { widgets };
-      assign(result, details, '*$');
     }
 
     // If assign options is enabled

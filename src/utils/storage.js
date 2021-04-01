@@ -1,14 +1,4 @@
-const INITIAL_CONFIGS = {
-  registered: false,
-  valid: false,
-  options: {
-    enabled: true,
-    cookies: false,
-    topics: false,
-    spinner: false,
-    toJS: true
-  }
-};
+import configs from '../configs';
 
 function getItem(key, defaultValue, json = true) {
   return new Promise(resolve => {
@@ -35,7 +25,7 @@ function setItem(key, value, json = true) {
 }
 
 function getConfigs(domainName) {
-  return getItem(domainName, INITIAL_CONFIGS);
+  return getItem(domainName, configs);
 }
 
 function setConfigs(domainName, domainConfigs) {
@@ -47,7 +37,7 @@ function listenConfigs(domain, callback) {
 
   const updateDomain = newDomain => {
     domainName = newDomain;
-  }
+  };
 
   const listener = changes => {
     const domainChanges = changes[domainName]?.newValue;

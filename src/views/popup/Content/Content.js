@@ -25,7 +25,7 @@ export function Content() {
         />
       </Section>
       <Section>
-        <Title>Console</Title>
+        <Title>Devtools</Title>
         <Checkbox
           disabled={!options.enabled}
           label="Cookies"
@@ -44,12 +44,30 @@ export function Content() {
           checked={options.spinner}
           onChange={updateConfigs('options.spinner')}
         />
-        <Title>Panel</Title>
         <Checkbox
           disabled={!options.enabled}
           label="Serialize"
           checked={options.toJS}
           onChange={updateConfigs('options.toJS')}
+        />
+        <Title>Panels</Title>
+        <Checkbox
+          disabled={!options.enabled}
+          label="OCC Debugger"
+          checked={options.debuggerPanel}
+          onChange={updateConfigs('options.debuggerPanel')}
+        />
+        <Checkbox
+          disabled={!options.enabled}
+          label="OCC Layout"
+          checked={options.layoutPanel}
+          onChange={updateConfigs('options.layoutPanel')}
+        />
+        <Checkbox
+          disabled={!options.enabled}
+          label="OCC Analytics"
+          checked={options.analyticsPanel}
+          onChange={updateConfigs('options.analyticsPanel')}
         />
       </Section>
     </ContentStyled>

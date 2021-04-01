@@ -23,7 +23,9 @@ chrome.extension.onConnect.addListener(port => {
 chrome.windows.onFocusChanged.addListener(async () => {
   // Send message to devtool.js. Then you can re-evaluate ko.dataFor($0)
   const tab = await tabs.getCurrent();
-  notifyPorts({ action: 'focus-changed', tabId: tab && tab.id });
+  const tabId = tab && tab.id;
+
+  notifyPorts({ action: 'focus-changed', tabId });
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
