@@ -55,46 +55,24 @@ function parseLayoutData(configs) {
     );
   }
 
-  function getUserData(masterViewModel) {
-    const user = unwrap(
-      masterViewModel &&
-      masterViewModel.data &&
-      masterViewModel.data.global &&
-      masterViewModel.data.global.user
-    );
-
-    return { user };
-  }
-
   // Execute
   try {
     const result = { __proto__: null };
 
     if (!__non_webpack_require__) {
-      throw new Error('Require is not loaded yet.');
+      throw new Error('Please, select an element with knockout bindings');
     }
 
     // Require knockout
     const ko = __non_webpack_require__('knockout');
 
-    if (!ko) {
-      throw new Error('Knockout is not loaded yet.');
-    }
-
-    const context = ko.contextFor(document.body);
-
-    if (!context) {
-      throw new Error('View model is not loaded yet.')
-    }
-
-    const masterViewModel = context.$masterViewModel;
+    const masterViewModel = ko.contextFor(document.body).$masterViewModel;
     const widgets = getWidgetsFromRegions(masterViewModel);
     const page = getPageData(masterViewModel);
-    const user = getUserData(masterViewModel);
+
 
     assign(result, widgets);
     assign(result, page);
-    assign(result, user);
 
     return result;
   } catch({ message }) {

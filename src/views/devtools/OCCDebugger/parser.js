@@ -14,11 +14,16 @@ function parseElementData(configs) {
     const result = { __proto__: null };
 
     if (!__non_webpack_require__) {
-      throw new Error('Please, select an element with knockout bindings');
+      throw new Error('Require is not loaded yet.');
     }
 
     // Require knockout
     const ko = __non_webpack_require__('knockout');
+
+    if (!ko) {
+      throw new Error('Knockout is not loaded yet.');
+    }
+
     const context = ko.contextFor($0);
 
     if (!context) {

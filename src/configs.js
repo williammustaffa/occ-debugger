@@ -13,7 +13,7 @@ export default {
 
     // Panels
     debuggerPanel: true,
-    layoutPanel: true,
-    analyticsPanel: true
+    layoutPanel: false,
+    analyticsPanel: false
   }
 };

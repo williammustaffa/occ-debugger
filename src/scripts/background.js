@@ -1,23 +1,6 @@
-import { tabs } from '@utils';
+import { tabs, emitter } from '@utils';
 
-const ports = [];
-
-function notifyPorts(data) {
-  ports.forEach(port => {
-    port.postMessage(data);
-  });
-}
-
-chrome.extension.onConnect.addListener(port => {
-  if (port.name !== 'occ-debugger') return;
-
-  ports.push(port);
-
-  port.onDisconnect.addListener(() => {
-    const portIndex = ports.indexOf(port);
-    if (portIndex !== -1) ports.splice(portIndex, 1);
-  });
-});
+const { notify } = emitter.create('occ-debugger');
 
 // You cannot use the chrome.windows api in the devtools.js page.
 chrome.windows.onFocusChanged.addListener(async () => {
@@ -25,16 +8,17 @@ chrome.windows.onFocusChanged.addListener(async () => {
   const tab = await tabs.getCurrent();
   const tabId = tab && tab.id;
 
-  notifyPorts({ action: 'focus-changed', tabId });
+  notify({ action: 'focus-changed', tabId });
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   // when URL changes notify devtools
   if (changeInfo.status) {
-    notifyPorts({ action: 'status-changed', tabId });
+    // Added some delay so scripts have time to be executed
+    notify({ action: 'status-changed', tabId });
   }
 
   if (changeInfo.url) {
-    notifyPorts({ action: 'url-changed', tabId });
+    notify({ action: 'url-changed', tabId });
   }
 });

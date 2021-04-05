@@ -23,6 +23,9 @@ function init(...dependencies) {
         featureFn.apply(this, dependencies);
       }
     });
+
+    // Tell occ debugger is initialized
+    window.postMessage({ action: 'occ-debugger-initialized' })
   } catch(e) {
     logger.error({ suffix: 'Failed initializing OCC debugger' }, e.message);
   }
