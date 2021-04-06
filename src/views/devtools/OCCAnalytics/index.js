@@ -1,3 +1,4 @@
+import { resources } from '@utils';
 import { getParser } from './parser';
 
 export default {
@@ -5,31 +6,33 @@ export default {
   name: 'OCC Analytics',
   triggers: ['default'],
 
-  load(sidebar, next) { 
-    const listener = ({ request, getContent }) => {
-      if (request.url.match(/analytics\/main\.json/)) {
-        getContent(content => {
+  load(sidebar, state, next) {
+    const analyticsInterval = setInterval(() => {
+      sidebar.setObject({ message: "Error parsing analytics file. Please refresh the page to try again.", __proto__: null });
+
+      resources.getHARLog().then(async result => {
+        const resource = result.find(a => a.request.url.match(/analytics\/main\.json/));
+
+        if (resource) {
           try {
-            const details = JSON.parse(content);
-            // TODO> use this details to match tagged widgets
+            const content = await resources.getResourceContent(resource);
+            this.details = JSON.parse(content);
+            clearInterval(analyticsInterval);
+            next();
           } catch(e) {
-            console.warn("Error parsing analytics file");
+            sidebar.setObject({ message: e.message, __proto__: null });
+            clearInterval();
           }
-
-          chrome.devtools.network.onRequestFinished.removeListener(listener);
-          next();
-        });
-      }
-    }
-
-    chrome.devtools.network.onRequestFinished.addListener(listener);
+        }
+      });
+    }, 500);
   },
 
   update(sidebar, { configs }) {
     try {
       sidebar.setExpression(getParser(configs));
     } catch({ message }) {
-      sidebar.setObject({ message });
+      sidebar.setObject({ message, __proto__: null });
     }
   }
 }

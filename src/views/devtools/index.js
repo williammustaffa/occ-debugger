@@ -1,18 +1,43 @@
 import { tabs, storage, emitter } from '@utils';
 
-// Panels
+// Panels modules
 import OCCAnalytics from './OCCAnalytics';
 import OCCDebugger from './OCCDebugger';
 import OCCLayout from './OCCLayout';
 
-const REGISTRY = [OCCDebugger, OCCLayout, OCCAnalytics];
-
-// Messaging
+// Messaging between background and devtools
 const { onMessage } = emitter.connect('occ-debugger');
 
-// Register panels
+// Local management of panels
 const panels = [];
+const REGISTRY = [OCCDebugger, OCCLayout, OCCAnalytics];
 
+/**
+ * Identify if panel is enabled
+ *
+ * @param {Object} panel 
+ * @param {Object} state 
+ * @returns 
+ */
+function _isPanelEnabled(panel, state) {
+  return state.configs.options[panel.target.id];
+}
+
+/**
+ * Set panel message
+ *
+ * @param {Object} panel 
+ * @param {String} message 
+ */
+function _setPanelMessage(panel, message) {
+  panel.sidebar.setObject({ message, __proto__: null });
+}
+
+/**
+ * Wait for masterviewmodel to have some data loaded
+ *
+ * @param {Function} callback executed when data is available
+ */
 function _waitForPageResources(callback) {
   const checkResources = () => {
     chrome.devtools.inspectedWindow.eval(
@@ -32,107 +57,162 @@ function _waitForPageResources(callback) {
   checkResources();
 }
 
-// Method to update all panels
-function _update(type, data) {
-  const { configs, ready } = data;
-
-  for (const panel of panels) {
-    const enabled = configs.options[panel.target.id];
-    const shouldUpdate = enabled && panel.target.triggers.indexOf(type) > -1;
-
-    if (!shouldUpdate) continue;
-
-    try {
-      if (!panel.loaded) {
-        throw new Error('Initializing...')
-      }
-
-      if (!ready) {
-        throw new Error('Loading data...');
-      }
-
-      if (!configs.registered) {
-        throw new Error('Unidentified site. Please reload your page and reopen the devtools');
-      }
-
-      if (!configs.valid) {
-        throw new Error('This is not an OCC site.');
-      }
-
-      if (!configs.options.enabled) {
-        throw new Error('OCC Debugger is disabled.');
-      }
-
-      // Wait for page resources
-      _waitForPageResources(() => {
-        panel.target.update(panel.sidebar, data);
-      });
-    } catch(e) {
-      panel.sidebar.setObject({ message: e.message, __proto__: null });
-    }
-  }
-}
-
-// Method to add sidebars and register panels
-function _register(data) {
+/**
+ * Loop though modules and register/create panels
+ *
+ * @param {Object} state 
+ */
+ function _register(state) {
   _waitForPageResources(() => {
     for (const target of REGISTRY) {
       chrome.devtools.panels.elements.createSidebarPane(target.name, sidebar => {
-        sidebar.setObject({ message: 'Initializing...', __proto__: null });
-
         // Register panel
         const panel = { target, sidebar, loaded: false };
+        panel.enabled =  _isPanelEnabled(panel, state);
         panels.push(panel);
 
-        // Yield method
-        const next = () => (panel.loaded = true, _update('default', data));
-
-        // Execute load method if necessary
-        if (typeof target.load === 'function') {
-          target.load.call(target, sidebar, next);
-        } else {
-          next();
-        }
+        _loadPanel(panel, state);
       });
     };
   });
 }
 
-(async () => {
-  const data = {};
+/**
+ * Loop through panels and update if necessary
+ *
+ * @param {String} type 
+ * @param {Object} state 
+ */
+function _update(type, state) {
+  for (const panel of panels) {
+    const shouldUpdate = panel.target.triggers.indexOf(type) > -1;
 
-  data.tab = await tabs.getTabById(chrome.devtools.inspectedWindow.tabId);
-  data.configs = await storage.getConfigs(data.tab.domainName);
-  data.ready = tabs.isReady(data.tab);
+    if (!shouldUpdate) continue;
+
+    // Update enabled property
+    const previousEnabledState = panel.enabled;
+    const currentEnableState = _isPanelEnabled(panel, state);
+
+    panel.enabled =  currentEnableState;
+
+    // In case enabled state has changed, rexecute load method
+    if (previousEnabledState !== currentEnableState) {
+      _loadPanel(panel, state);
+    } else {
+      _updatePanel(panel, state);
+    }
+  }
+}
+
+/**
+ * Initialize panel
+ *
+ * @param {Object} panel 
+ * @param {Object} state 
+ */
+function _loadPanel(panel, state) {
+  const { target, enabled, sidebar } = panel;
+
+  _setPanelMessage(panel, "Initializing...");
+
+  // Initial panel load
+  const next = () => {
+    panel.loaded = true;
+    _updatePanel(panel, state);
+  };
+
+  // Execute load method if necessary
+  if (typeof target.load === 'function' && enabled) {
+    target.load.call(target, sidebar, state, next);
+  } else {
+    next();
+  }
+}
+
+/**
+ * Update a single panel
+ *
+ * @param {Object} panel 
+ * @param {Object} state 
+ */
+function _updatePanel(panel, state) {
+  const { configs, ready } = state;
+
+  try {
+    // Configuration settings
+    if (!configs.registered) {
+      throw new Error('Unidentified site. Please reload your page and reopen the devtools');
+    }
+
+    if (!configs.valid) {
+      throw new Error('This is not an OCC site.');
+    }
+
+    if (!configs.options.enabled) {
+      throw new Error('Extension is disabled on this website.');
+    }
+
+    // States
+    if (!panel.enabled) {
+      throw new Error(`${panel.target.name} is disabled.`);
+    }
+
+    if (!panel.loaded) {
+      throw new Error('Loading panel...')
+    }
+
+    if (!ready) {
+      throw new Error('Site is loading...');
+    }
+
+    // Wait for page resources
+    _waitForPageResources(() => {
+      const { target, sidebar } = panel;
+      target.update.call(target, sidebar, state);
+    });
+  } catch(e) {
+    _setPanelMessage(panel, e.message);
+  }
+}
+
+/**
+ * Initialize panel life cyle, get tab, options and add listeners
+ */
+(async function devtools() {
+  const state = {};
+
+  state.tab = await tabs.getTabById(chrome.devtools.inspectedWindow.tabId);
+  state.configs = await storage.getConfigs(state.tab.domainName);
+  state.ready = tabs.isReady(state.tab);
 
   // Listen to config changes
   const listener = storage.listenConfigs(
-    data.tab.domainName,
+    state.tab.domainName,
     changes => {
-      data.configs = changes;
-      _update('default', data);
+      state.configs = changes;
+      _update('default', state);
     }
   );
 
   // Listen to current tab changes
   onMessage(async message => {
-    const tabId = data.tab.id;
+    const tabId = state.tab.id;
 
     if (message.tabId !== tabId) return;
 
-    data.tab = await tabs.getTabById(tabId);
-    data.configs = await storage.getConfigs(data.tab.domainName);
-    data.ready = tabs.isReady(data.tab);
+    state.tab = await tabs.getTabById(tabId);
+    state.configs = await storage.getConfigs(state.tab.domainName);
+    state.ready = tabs.isReady(state.tab);
 
-    listener.updateDomain(data.tab.domainName);
+    listener.updateDomain(state.tab.domainName);
 
-    _update('default', data);
+    _update('default', state);
   });
 
   // Listen to element selections
   chrome.devtools.panels.elements.onSelectionChanged
-    .addListener(() => _update('default', data));
+    .addListener(() => _update('selection', state));
 
   // Add panels
-  _register(data);
+  _register(state);
 })();

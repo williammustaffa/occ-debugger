@@ -1,6 +1,5 @@
 function _processTab(tab) {
   if (tab) tab.domainName = _getTabUrl(tab);
-  console.log("PRAIAAA", tab);
   return tab;
 }
 
@@ -34,7 +33,23 @@ function getTabById(id) {
 }
 
 function isReady(tab) {
-  return tab && tab.status === 'complete';
+  if (!tab) return false;
+
+    const { status, favIconUrl } = tab;
+    const isComplete = status === 'complete';
+
+    let isTransitioned;
+    try {
+      // Catch param from occDebugger script
+      const odParam = new URL(favIconUrl).searchParams.get('od');
+      const odData = odParam && JSON.parse(odParam) || { complete: true };
+
+      isTransitioned = odData.complete;
+    } catch(e) {
+      isTransitioned = true;
+    }
+
+    return isComplete && isTransitioned;
 }
 
 export const tabs = {

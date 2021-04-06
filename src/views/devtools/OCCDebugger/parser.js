@@ -1,4 +1,4 @@
-function parseElementData(configs) {
+function parser(configs) {
   function assign(target, obj, prefix = '') {
     const exclude = ['__ko_mapping__', 'ko'];
 
@@ -48,5 +48,5 @@ function parseElementData(configs) {
 }
 
 export const getParser = configs => {
-  return `(${parseElementData.toString()})(${JSON.stringify(configs)})`;
+  return `(${parser.toString()})(${JSON.stringify(configs)})`;
 }

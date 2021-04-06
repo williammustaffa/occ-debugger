@@ -3,9 +3,9 @@ import { getParser } from './parser';
 export default {
   id: 'debuggerPanel',
   name: 'OCC Debugger',
-  triggers: ['default'],
+  triggers: ['default', 'selection'],
 
-  update(sidebar, { configs, tab, ready }) {
+  update(sidebar, { configs }) {
     try {
       sidebar.setExpression(getParser(configs));
     } catch({ message }) {

@@ -1,5 +1,5 @@
 
-function parseLayoutData(configs) {
+function parser(configs) {
   // Utils
   function assign(target, obj, prefix = '') {
     const exclude = ['__ko_mapping__', 'ko'];
@@ -70,5 +70,5 @@ function parseLayoutData(configs) {
 }
 
 export const getParser = configs => {
-  return `(${parseLayoutData.toString()})(${JSON.stringify(configs)})`;
+  return `(${parser.toString()})(${JSON.stringify(configs)})`;
 };
