@@ -15,7 +15,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   // when URL changes notify devtools
   if (changeInfo.status) {
     // Added some delay so scripts have time to be executed
-    notify({ action: 'status-changed', tabId });
+    notify({ action: 'status-changed', tabId }, 500);
   }
 
   if (changeInfo.url) {

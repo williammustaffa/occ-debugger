@@ -1,27 +1,30 @@
 import { tabs, storage, emitter } from '@utils';
+
+// Panels
+import OCCAnalytics from './OCCAnalytics';
 import OCCDebugger from './OCCDebugger';
 import OCCLayout from './OCCLayout';
 
-const REGISTRY = [OCCDebugger, OCCLayout];
+const REGISTRY = [OCCDebugger, OCCLayout, OCCAnalytics];
+
+// Messaging
 const { onMessage } = emitter.connect('occ-debugger');
 
 // Register panels
 const panels = [];
 
 function _waitForPageResources(callback) {
-  const evaluationScript = `(${(function () {
-    try {
-      const ko = __non_webpack_require__('knockout');
-      ko.contextFor(document.body).$masterViewModel.data.global.user;
-      return true;
-    } catch(e) {
-      return false;
-    }
-  }).toString()})()`;
-
   const checkResources = () => {
     chrome.devtools.inspectedWindow.eval(
-      evaluationScript,
+      `(${(function () {
+        try {
+          const ko = __non_webpack_require__('knockout');
+          ko.contextFor(document.body).$masterViewModel.data.global.user;
+          return true;
+        } catch(e) {
+          return false;
+        }
+      }).toString()})()`,
       result => result ? callback() : setTimeout(checkResources, 500),
     );
   }
@@ -40,8 +43,12 @@ function _update(type, data) {
     if (!shouldUpdate) continue;
 
     try {
+      if (!panel.loaded) {
+        throw new Error('Initializing...')
+      }
+
       if (!ready) {
-        throw new Error('Processing...');
+        throw new Error('Loading data...');
       }
 
       if (!configs.registered) {
@@ -72,8 +79,20 @@ function _register(data) {
     for (const target of REGISTRY) {
       chrome.devtools.panels.elements.createSidebarPane(target.name, sidebar => {
         sidebar.setObject({ message: 'Initializing...', __proto__: null });
-        panels.push({ target, sidebar });
-        _update('default', data);
+
+        // Register panel
+        const panel = { target, sidebar, loaded: false };
+        panels.push(panel);
+
+        // Yield method
+        const next = () => (panel.loaded = true, _update('default', data));
+
+        // Execute load method if necessary
+        if (typeof target.load === 'function') {
+          target.load.call(target, sidebar, next);
+        } else {
+          next();
+        }
       });
     };
   });
@@ -112,7 +131,7 @@ function _register(data) {
 
   // Listen to element selections
   chrome.devtools.panels.elements.onSelectionChanged
-    .addListener(() => _update('selection', data));
+    .addListener(() => _update('default', data));
 
   // Add panels
   _register(data);

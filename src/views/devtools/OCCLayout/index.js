@@ -4,7 +4,8 @@ export default {
   id: 'layoutPanel',
   name: 'OCC Layout',
   triggers: ['default'],
-  update: (sidebar, { configs, tab, ready }) => {
+
+  update(sidebar, { configs, tab, ready }) {
     try {
       sidebar.setExpression(getParser(configs));
     } catch({ message }) {

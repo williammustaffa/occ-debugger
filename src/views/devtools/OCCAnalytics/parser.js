@@ -46,15 +46,6 @@ function parseLayoutData(configs) {
     return { widgets };
   }
 
-  function getPageData(masterViewModel) {
-    return unwrap(
-      masterViewModel &&
-      masterViewModel.data &&
-      masterViewModel.data.global &&
-      masterViewModel.data.global.pageContext
-    );
-  }
-
   // Execute
   try {
     const result = { __proto__: null };
@@ -68,11 +59,9 @@ function parseLayoutData(configs) {
 
     const masterViewModel = ko.contextFor(document.body).$masterViewModel;
     const widgets = getWidgetsFromRegions(masterViewModel);
-    const page = getPageData(masterViewModel);
 
 
     assign(result, widgets);
-    assign(result, page);
 
     return result;
   } catch({ message }) {
@@ -82,4 +71,4 @@ function parseLayoutData(configs) {
 
 export const getParser = configs => {
   return `(${parseLayoutData.toString()})(${JSON.stringify(configs)})`;
-}
+};

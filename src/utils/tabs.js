@@ -1,5 +1,6 @@
 function _processTab(tab) {
   if (tab) tab.domainName = _getTabUrl(tab);
+  console.log("PRAIAAA", tab);
   return tab;
 }
 
