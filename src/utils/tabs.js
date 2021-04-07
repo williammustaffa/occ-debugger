@@ -34,22 +34,7 @@ function getTabById(id) {
 
 function isReady(tab) {
   if (!tab) return false;
-
-    const { status, favIconUrl } = tab;
-    const isComplete = status === 'complete';
-
-    let isTransitioned;
-    try {
-      // Catch param from occDebugger script
-      const odParam = new URL(favIconUrl).searchParams.get('od');
-      const odData = odParam && JSON.parse(odParam) || { complete: true };
-
-      isTransitioned = odData.complete;
-    } catch(e) {
-      isTransitioned = true;
-    }
-
-    return isComplete && isTransitioned;
+  return tab.status === 'complete';
 }
 
 export const tabs = {

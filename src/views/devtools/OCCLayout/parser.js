@@ -1,5 +1,5 @@
 
-function parser(configs) {
+function parser() {
   // Utils
   function assign(target, obj, prefix = '') {
     const exclude = ['__ko_mapping__', 'ko'];

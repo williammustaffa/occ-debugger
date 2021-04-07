@@ -4,10 +4,10 @@ export default {
   id: 'layoutPanel',
   name: 'OCC Layout',
   triggers: ['default'],
-
   update(sidebar, { configs }) {
     try {
-      sidebar.setExpression(getParser(configs));
+      const parser = getParser(configs);
+      sidebar.setExpression(parser);
     } catch({ message }) {
       sidebar.setObject({ message });
     }

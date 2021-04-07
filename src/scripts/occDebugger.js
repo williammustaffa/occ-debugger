@@ -27,25 +27,16 @@ function init(...dependencies) {
     // Force extension to reload with faviconURL signs
     const [pubsub] = dependencies;
 
-    // WARNING: ugly workaround!
-    // Injecting data on favicon url
-    // Changing this URL will trigger an event to background script informing that
-    // this url has changed, from background we send this data to devtools
-    // background.js -> views/devtools/index (onMessage - tabs.isReady)
-    const notify = data => {
-      const element = document.querySelector('link[rel=icon]');
-      const url = new URL(element.href);
-      url.searchParams.set('od', JSON.stringify(data));
-      element.setAttribute('href', url.href);
-    }
+    // This is used by devtools
+    const update = isReady => () => window._occDebugger.isReady = isReady;
 
     // Inform devtools page will transition
     $.Topic(pubsub.topicNames.HISTORY_PUSH_STATE)
-      .subscribe(() => notify({ complete: false }));
+      .subscribe(update(false));
 
     // Inform devtools page has finished transitioning
     $.Topic(pubsub.topicNames.PAGE_READY)
-      .subscribe(() => notify({ complete: true }));
+      .subscribe(update(true));
 
   } catch(e) {
     logger.error({ suffix: 'Failed initializing OCC debugger' }, e.message);

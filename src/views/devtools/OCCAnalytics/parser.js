@@ -1,5 +1,4 @@
-
-function parser(configs) {
+function parser(details) {
   // Utils
   function assign(target, obj, prefix = '') {
     const exclude = ['__ko_mapping__', 'ko'];
@@ -15,8 +14,86 @@ function parser(configs) {
     return typeof data === 'function' ? data() : data;
   }
 
+  function isObject(data) {
+    return typeof data === 'object' ? true : false;
+  }
+
+  function merge(target, source) {
+    target = $.extend(true, {}, target);
+
+    const processMerge = (target, source) => {
+      if (!isObject(target)) {
+        return source;
+      }
+
+      Object.keys(source).forEach(key => {
+        if (isObject(source[key])) {
+          const value = processMerge(target ? target[key] : {}, source[key]);
+          Object.assign(source[key], value);
+        }
+      })
+  
+      // Join `target` and modified `source`
+      Object.assign(target || {}, source);
+      return target;
+    };
+  
+    return processMerge(target, source);
+  }
+
+  function buildEventData(events) {
+    return events.reduce((acc, event) => {
+      const key = event.selector || event.topic;
+      if (!acc.hasOwnProperty(key)) acc[key] = [];
+      acc[key].push(event);
+      return acc;
+    }, {});
+  }
+
+  function buildComponentData(widget, component, commonEvents) {
+    if (unwrap(widget.global)) return 'Global';
+    if (!component) return 'Widget has no tagging events';
+
+    const events = [];
+
+    component.events.forEach(event => {
+      const triggers = event.trigger.split(',');
+
+      triggers.forEach(trigger => {
+        const subEvent = $.extend(true, {}, event, { trigger });
+
+        commonEvents.forEach(commonEvent => {
+          const commonDataTriggers = commonEvent.trigger.split(',');
+
+          if (
+            commonEvent.trigger === 'all' ||
+            commonDataTriggers.indexOf(subEvent.trigger) > -1
+          ) {
+            subEvent.detail = merge(commonEvent.detail, subEvent.detail);
+          }
+        });
+
+        if (!subEvent.selector) {
+          subEvent.selector = subEvent.trigger;
+        }
+
+        events.push(subEvent);
+      })
+    });
+
+    return buildEventData(events);
+  }
+
+  function getWidgetTagging(widgetName, widget) {
+    const components = details && details.components;
+    const { common, custom } = components;
+    const component = custom.find(data => data.component === widgetName);
+
+    return buildComponentData(widget, component, common);
+  }
+
   // Define processors
-  function getWidgetsFromRegions(masterViewModel) {
+  function getWidgetData(masterViewModel, details) {
     const widgets = {};
     const viewModelRegions = masterViewModel && masterViewModel.regions || [];
 
@@ -29,8 +106,8 @@ function parser(configs) {
 
         if (Array.isArray(regionWidgets) && regionWidgets.length) {
           regionWidgets.forEach(widget => {
-            const widgetName = unwrap(widget.typeId).replace(/_v\d+$/, '')
-            widgets[widgetName] = widget
+            const widgetName = unwrap(widget.typeId).replace(/_v\d+$/, '');
+            widgets[widgetName] = getWidgetTagging(widgetName, widget);
           });
         }
 
@@ -43,7 +120,7 @@ function parser(configs) {
 
     extractWidgets(viewModelRegions);
 
-    return { widgets };
+    return widgets;
   }
 
   // Execute
@@ -58,17 +135,16 @@ function parser(configs) {
     const ko = __non_webpack_require__('knockout');
 
     const masterViewModel = ko.contextFor(document.body).$masterViewModel;
-    const widgets = getWidgetsFromRegions(masterViewModel);
-
+    const widgets = getWidgetData(masterViewModel, details);
 
     assign(result, widgets);
 
     return result;
-  } catch({ message }) {
-    return { message, __proto__: null };
+  } catch({ message, stack }) {
+    return { message, stack, __proto__: null };
   }
 }
 
-export const getParser = configs => {
-  return `(${parser.toString()})(${JSON.stringify(configs)})`;
+export const getParser = (details = {}) => {
+  return `(${parser.toString()})(${JSON.stringify(details)})`;
 };

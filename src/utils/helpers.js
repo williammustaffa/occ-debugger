@@ -8,4 +8,22 @@ function assign(target, obj, prefix = '') {
   }
 }
 
-export const helpers = { assign };
+function debounce(fn, wait, immediate) {
+  let timeout;
+
+  return function () {
+    const later = () => {
+      timeout = null;
+      if (!immediate) fn.apply(this, arguments);
+    };
+
+    const callNow = immediate && !timeout;
+
+    clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+
+    if (callNow) fn.apply(this, arguments);
+	};
+}
+
+export const helpers = { assign, debounce };

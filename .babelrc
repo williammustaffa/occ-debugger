@@ -5,7 +5,8 @@
       {
         "useBuiltIns": "usage",
         "corejs": 3,
-        "targets": "> 0.25%, not dead"
+        "targets": "> 0.25%, not dead",
+        "exclude": ["transform-typeof-symbol"]
       }
     ]
   ],

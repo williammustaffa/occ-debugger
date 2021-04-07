@@ -6,9 +6,9 @@ const TYPES = {
 };
 
 const STYLES = {
-  prefix: 'color: #ffffff; font-weight: bold; padding: 1px 5px; background-color: __type__; border: 1px solid __type__; border-radius: 3px 0 0 3px;',
-  label: 'color: #ffffff; background-color: #222; padding: 1px 5px; border: 1px solid __type__; border-left: none; border-right: none;',
-  suffix: 'padding: 1px 5px; border: 1px solid __type__; border-radius: 0 3px 3px 0; border-left: none;'
+  prefix: 'font-weight: bold; color: #ffffff; background-color: __type__; padding: 1px 5px; border-radius: 3px',
+  label: 'font-weight: bold; color: #222; padding: 1px 5px;',
+  suffix: 'font-weight: normal; color: #222; padding: 1px 5px;'
 };
 
 function getBadge(type, options) {

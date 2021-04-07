@@ -1,4 +1,4 @@
-import { tabs, storage, emitter } from '@utils';
+import { tabs, storage, emitter, helpers } from '@utils';
 
 // Panels modules
 import OCCAnalytics from './OCCAnalytics';
@@ -44,8 +44,11 @@ function _waitForPageResources(callback) {
       `(${(function () {
         try {
           const ko = __non_webpack_require__('knockout');
-          ko.contextFor(document.body).$masterViewModel.data.global.user;
-          return true;
+
+          const isReady = window._occDebugger.isReady;
+          const isUserLoaded = ko.contextFor(document.body).$masterViewModel.data.global.user;
+
+          return isReady && isUserLoaded;
         } catch(e) {
           return false;
         }
@@ -67,7 +70,7 @@ function _waitForPageResources(callback) {
     for (const target of REGISTRY) {
       chrome.devtools.panels.elements.createSidebarPane(target.name, sidebar => {
         // Register panel
-        const panel = { target, sidebar, loaded: false };
+        const panel = { target, sidebar, loaded: false, error: null };
         panel.enabled =  _isPanelEnabled(panel, state);
         panels.push(panel);
 
@@ -96,7 +99,7 @@ function _update(type, state) {
     panel.enabled =  currentEnableState;
 
     // In case enabled state has changed, rexecute load method
-    if (previousEnabledState !== currentEnableState) {
+    if (previousEnabledState !== currentEnableState || panel.error) {
       _loadPanel(panel, state);
     } else {
       _updatePanel(panel, state);
@@ -118,12 +121,19 @@ function _loadPanel(panel, state) {
   // Initial panel load
   const next = () => {
     panel.loaded = true;
+    panel.error = null;
     _updatePanel(panel, state);
   };
 
+  const fail = error => {
+    panel.loaded = false;
+    panel.error = error || 'Failed loading panel... Refresh the page to retry';
+    _updatePanel(panel, state);
+  }
+
   // Execute load method if necessary
   if (typeof target.load === 'function' && enabled) {
-    target.load.call(target, sidebar, state, next);
+    target.load.call(target, sidebar, state, next, fail);
   } else {
     next();
   }
@@ -153,6 +163,10 @@ function _updatePanel(panel, state) {
     }
 
     // States
+    if (panel.error) {
+      throw new Error(panel.error);
+    }
+
     if (!panel.enabled) {
       throw new Error(`${panel.target.name} is disabled.`);
     }
@@ -175,6 +189,9 @@ function _updatePanel(panel, state) {
   }
 }
 
+// Create debouce methods
+const _updateDebounced = helpers.debounce(_update, 100);
+
 /**
  * Initialize panel life cyle, get tab, options and add listeners
  */
@@ -190,28 +207,32 @@ function _updatePanel(panel, state) {
     state.tab.domainName,
     changes => {
       state.configs = changes;
-      _update('default', state);
+      _updateDebounced('default', state);
     }
   );
 
   // Listen to current tab changes
-  onMessage(async message => {
-    const tabId = state.tab.id;
+  onMessage(
+    async message => {
+      const tabId = state.tab.id;
 
-    if (message.tabId !== tabId) return;
+      if (message.tabId !== tabId) return;
 
-    state.tab = await tabs.getTabById(tabId);
-    state.configs = await storage.getConfigs(state.tab.domainName);
-    state.ready = tabs.isReady(state.tab);
+      state.tab = await tabs.getTabById(tabId);
+      state.configs = await storage.getConfigs(state.tab.domainName);
+      state.ready = message.changeInfo.hasOwnProperty('status')
+        ? message.changeInfo.status === 'complete'
+        : state.ready;
 
-    listener.updateDomain(state.tab.domainName);
+      listener.updateDomain(state.tab.domainName);
 
-    _update('default', state);
-  });
+      _updateDebounced('default', state);
+    }
+  );
 
   // Listen to element selections
   chrome.devtools.panels.elements.onSelectionChanged
-    .addListener(() => _update('selection', state));
+    .addListener(() => _updateDebounced('selection', state));
 
   // Add panels
   _register(state);

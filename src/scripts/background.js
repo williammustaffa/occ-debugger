@@ -11,13 +11,9 @@ const { notify } = emitter.create('occ-debugger');
 //   notify({ action: 'focus-changed', tabId });
 // });
 
-chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   // when URL changes notify devtools
-  if (
-    (changeInfo.favIconUrl && /od\=/gi.test(changeInfo.favIconUrl)) ||
-    changeInfo.status ||
-    changeInfo.url
-  ) {
-    notify({ action: 'client-sign', tabId, changeInfo });
+  if (changeInfo.status || changeInfo.url) {
+    notify({ action: 'client-sign', tabId, tab, changeInfo });
   }
 });
