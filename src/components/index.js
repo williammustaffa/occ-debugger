@@ -11,3 +11,4 @@ export * from './Title';
 export * from './Toolbar';
 // export * from './NavGroup';
 export * from './Window';
+export * from './Sidebar';

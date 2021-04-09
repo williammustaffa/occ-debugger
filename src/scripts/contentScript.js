@@ -18,6 +18,12 @@ function injectScript(filePath, tag) {
   node.appendChild(script);
 }
 
+function injectUIContainer() {
+  const container = document.createElement('div');
+  container.setAttribute('id', 'occ-debugger-ui');
+  document.body.appendChild(container);
+}
+
 const DOMAIN_NAME = location.hostname;
 
 async function initialize(configs) {
@@ -31,6 +37,10 @@ async function initialize(configs) {
   if (configs.valid && configs.options.enabled) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occDebugger.js'), 'body');
+
+    // Inject analytics panel
+    injectUIContainer();
+    injectScript(chrome.extension.getURL('views/storefront/index.js'), 'body');
   }
 }
 

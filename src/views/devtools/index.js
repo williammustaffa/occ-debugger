@@ -1,16 +1,14 @@
 import { tabs, storage, emitter, helpers } from '@utils';
 
 // Panels modules
-import OCCAnalytics from './OCCAnalytics';
 import OCCDebugger from './OCCDebugger';
-import OCCLayout from './OCCLayout';
 
 // Messaging between background and devtools
 const { onMessage } = emitter.connect('occ-debugger');
 
 // Local management of panels
 const panels = [];
-const REGISTRY = [OCCDebugger, OCCLayout, OCCAnalytics];
+const REGISTRY = [OCCDebugger];
 
 /**
  * Identify if panel is enabled
@@ -237,3 +235,18 @@ const _updateDebounced = helpers.debounce(_update, 100);
   // Add panels
   _register(state);
 })();
+
+function promiseLike() {
+  const thenChain = [];
+  const catchChain = [];
+
+  const setThen = fn => thenChain.push(fn);
+  const setCatch = fn => catchChain.push(fn);
+
+  
+
+  return {
+    then: setThen,
+    catch: setCatch
+  }
+}

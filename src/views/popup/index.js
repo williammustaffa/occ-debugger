@@ -6,7 +6,7 @@ import { Popup } from './Popup';
 import theme from './theme';
 
 // Add configs context to popup
-const PopupWithConfigs = () => (
+const PopupWithContext = () => (
   <GlobalTheme theme={theme}>
     <ConfigsProvider>
       <Popup />
@@ -14,4 +14,4 @@ const PopupWithConfigs = () => (
   </GlobalTheme>
 );
 
-render(<PopupWithConfigs />, document.body);
+render(<PopupWithContext />, document.body);

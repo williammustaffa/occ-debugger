@@ -25,6 +25,15 @@ export function Content() {
         />
       </Section>
       <Section>
+        <Title>User Interface</Title>
+        <Checkbox
+          disabled={!options.enabled}
+          label="Analytics"
+          checked={options.analytics}
+          onChange={updateConfigs('options.analytics')}
+        />
+      </Section>
+      <Section>
         <Title>Devtools</Title>
         <Checkbox
           disabled={!options.enabled}
@@ -56,18 +65,6 @@ export function Content() {
           label="OCC Debugger"
           checked={options.debuggerPanel}
           onChange={updateConfigs('options.debuggerPanel')}
-        />
-        <Checkbox
-          disabled={!options.enabled}
-          label="OCC Layout"
-          checked={options.layoutPanel}
-          onChange={updateConfigs('options.layoutPanel')}
-        />
-        <Checkbox
-          disabled={!options.enabled}
-          label="OCC Analytics"
-          checked={options.analyticsPanel}
-          onChange={updateConfigs('options.analyticsPanel')}
         />
       </Section>
     </ContentStyled>

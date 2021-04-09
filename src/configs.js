@@ -5,6 +5,9 @@ export default {
     // Enabler
     enabled: true,
 
+    // Interface
+    analytics: true,
+
     // Logging options
     cookies: false,
     topics: false,
@@ -13,7 +16,5 @@ export default {
 
     // Panels
     debuggerPanel: true,
-    layoutPanel: false,
-    analyticsPanel: false
   }
 };
