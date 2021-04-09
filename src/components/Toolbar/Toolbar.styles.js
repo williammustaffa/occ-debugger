@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { TitleStyled } from '@components/Title'
+import { ButtonStyled, ButtonGroupStyled, TitleStyled } from '@components'
 
 export const ToolbarStyled = styled.div`
   min-height: 22px;
@@ -39,4 +39,32 @@ export const ToolbarStyled = styled.div`
     border-bottom: 0;
     box-shadow: none;
   `}
-`
+`;
+
+export const ToolbarActions = styled.div`
+  margin-top: 4px;
+  margin-bottom: 3px;
+  padding-right: 3px;
+  padding-left: 3px;
+  padding-bottom: 3px;
+  -webkit-app-region: drag;
+
+  &:before, &:after {
+    display: table;
+    content: " ";
+  }
+
+  &:after {
+    clear: both;
+  }
+
+  & > ${ButtonStyled},
+  & > ${ButtonGroupStyled} {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  ${props => props.centered && css`
+    text-align: center;
+  `}
+`;

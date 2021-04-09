@@ -1,11 +1,10 @@
 import { h } from 'preact';
-import { ToolbarActions } from './ToolbarActions';
-import { ToolbarStyled } from './Toolbar.styles';
+import { ToolbarStyled, ToolbarActions } from './Toolbar.styles';
 
-export const Toolbar = ({ children, ...props }) => {
-  return <ToolbarStyled {...props}>{children}</ToolbarStyled>
-}
+// Main component
+export const Toolbar = ToolbarStyled;
 
+// subcomponents
 Toolbar.Actions = ToolbarActions;
 
 

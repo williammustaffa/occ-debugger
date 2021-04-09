@@ -1,9 +1,7 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { StorefrontContext } from './StorefrontContext';
-
-// Import occ modules
-const ko = __non_webpack_require__('knockout');
+import { observables } from '@utils';
 
 // hardcoded
 function waitForAnalyticsFile() {
@@ -15,6 +13,7 @@ function waitForMasterViewModel() {
   return new Promise(resolve => {
     const checkIfMasterViewModelIsAvailable = () => {
       try {
+        const ko = __non_webpack_require__('knockout');
         const context = ko.contextFor(document.body);
         const masterViewModel = context.$masterViewModel;
 
@@ -37,15 +36,15 @@ function getWidgetData(masterViewModel) {
   const viewModelRegions = masterViewModel && masterViewModel.regions || [];
 
   const extractWidgets = regions => {
-    const _regions = ko.unwrap(regions);
+    const _regions = observables.unwrap(regions);
 
     _regions.forEach(region => {
-      const regionWidgets = ko.unwrap(region.widgets);
-      const regionRegions = ko.unwrap(region.regions);
+      const regionWidgets = observables.unwrap(region.widgets);
+      const regionRegions = observables.unwrap(region.regions);
 
       if (Array.isArray(regionWidgets) && regionWidgets.length) {
         regionWidgets.forEach(widget => {
-          const widgetName = ko.unwrap(widget.typeId).replace(/_v\d+$/, '');
+          const widgetName = observables.unwrap(widget.typeId).replace(/_v\d+$/, '');
           widgets[widgetName] = widget;
         });
       }

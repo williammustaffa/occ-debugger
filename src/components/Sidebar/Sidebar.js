@@ -1,12 +1,13 @@
 import { h } from 'preact';
-import { SidebarWrapper, SidebarStyled , SidebarContentStyled } from './Sidebar.styles';
+import { SidebarWrapper, SidebarStyled , SidebarContent, SidebarToggler } from './Sidebar.styles';
 
-export const Sidebar = ({ children, height, width, ...props }) => (
+// Main component
+export const Sidebar = ({ children, height, width, collapsed = true, ...props }) => (
   <SidebarWrapper height={height} width={width}>
     <SidebarStyled {...props}>{children}</SidebarStyled>
   </SidebarWrapper>
 );
 
-Sidebar.Content = ({ children, ...props }) => (
-  <SidebarContentStyled {...props}>{children}</SidebarContentStyled>
-);;
+// Subcomponents
+Sidebar.Content = SidebarContent;
+Sidebar.Toggler = SidebarToggler;

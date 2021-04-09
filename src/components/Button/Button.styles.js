@@ -14,7 +14,7 @@ export const ButtonStyled = styled.button`
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  cursor: default;
+  cursor: pointer;
   background-image: none;
   border: 1px solid transparent;
   -webkit-app-region: no-drag;

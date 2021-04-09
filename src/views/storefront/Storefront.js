@@ -3,19 +3,24 @@ import { Sidebar, Toolbar, Title } from '@components';
 import { useStorefront } from '@contexts/storefront';
 
 // Subcomponents
-import { Analytics } from './Analytics';
+import { Tagging } from './Tagging';
+import { useState } from 'preact/hooks';
 
 export function Storefront() {
   const { layout, tagging } = useStorefront();
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   return (
-    <Sidebar modal={true} width={350}>
+    <Sidebar modal={true} width={350} collapsed={isCollapsed}>
       <Toolbar header>
         <Title>OCC Debugger - UI</Title>
       </Toolbar>
       <Sidebar.Content>
-        <Analytics />
+        <Tagging />
       </Sidebar.Content>
+      <Sidebar.Toggler onClick={toggleCollapse}/>
     </Sidebar>
   );
-}
+};

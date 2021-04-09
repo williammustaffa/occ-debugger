@@ -16,7 +16,7 @@ export const WindowStyled = styled.div`
   flex-direction: column;
 `;
 
-export const WindowContentStyled = styled.div`
+export const WindowContent = styled.div`
   position: relative;
   overflow-y: auto;
   display: flex;

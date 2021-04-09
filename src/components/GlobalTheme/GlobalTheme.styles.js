@@ -1,11 +1,35 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 // Add fonts
-import photonEntypoEOT from '@assets/fonts/photon-entypo.eot'
-import photonEntypoWOFF from '@assets/fonts/photon-entypo.woff'
-import photonEntypoTTF from '@assets/fonts/photon-entypo.ttf'
+// import photonEntypoEOT from '@assets/fonts/photon-entypo.eot'
+// import photonEntypoWOFF from '@assets/fonts/photon-entypo.woff'
+// import photonEntypoTTF from '@assets/fonts/photon-entypo.ttf'
+
+const photonEntypoEOT = 'https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/fonts/photon-entypo.eot';
+const photonEntypoWOFF = 'https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/fonts/photon-entypo.woff';
+const photonEntypoTTF = '	https://cdnjs.cloudflare.com/ajax/libs/photon/0.1.2-alpha/fonts/photon-entypo.ttf';
 
 export const GlobalPageStyles = createGlobalStyle`
+  html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+`;
+
+export const GlobalThemeStyled = styled.div`
+  font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: ${({ theme }) => theme.global.color || '#333'};
+  background-color: ${({ theme }) => theme.global.background || 'transparent'};
+
   ${({ theme }) => {
     const fontUrl = theme.typography.fontUrl;
     return fontUrl && `@import url('${fontUrl}');`;
@@ -106,7 +130,7 @@ export const GlobalPageStyles = createGlobalStyle`
     padding: 0;
   }
 
-  * {
+  *:not(pre) {
     cursor: default;
     -webkit-user-select: none;
   }
@@ -114,23 +138,6 @@ export const GlobalPageStyles = createGlobalStyle`
   * {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-  }
-
-  html {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  body {
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
-    font-size: 13px;
-    line-height: 1.6;
-    color: ${({ theme }) => theme.global.color || '#333'};
-    background-color: ${({ theme }) => theme.global.background || 'transparent'};
   }
 
   hr {
@@ -173,5 +180,10 @@ export const GlobalPageStyles = createGlobalStyle`
 
   h6 {
     font-size: 12px;
+  }
+
+  p {
+    font-size: 1em;
+    text-align: center;
   }
 `
