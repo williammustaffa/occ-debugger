@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks';
 import { AccordionWrapper, AccordionTitle, AccordionContent } from './Accordion.styles';
 import { Icon } from '@components';
 
-export const Accordion = ({ children, title, content, collapsed = true }) => {
+export const Accordion = ({ children, title, content, enabled = true, collapsed = true }) => {
   const [isCollapsed, setIsCollapsed] = useState(collapsed);
 
   // Visibility toggler
@@ -11,8 +11,9 @@ export const Accordion = ({ children, title, content, collapsed = true }) => {
 
   return (
     <AccordionWrapper collapsed={isCollapsed}>
-      <AccordionTitle onClick={toggleCollapsed}>
-        {title}<Icon name={isCollapsed ? 'down-open' : 'up-open' } style={{ float: 'right' }}/>
+      <AccordionTitle onClick={enabled && toggleCollapsed} enabled={enabled}>
+        {title}
+        {enabled && <Icon name={isCollapsed ? 'down-open' : 'up-open' } style={{ float: 'right' }}/>}
       </AccordionTitle>
       {
         !isCollapsed

@@ -5,5 +5,5 @@ export const TitleStyled = styled.div`
   font-size: 12px;
   font-weight: 400;
   text-align: center;
-  cursor: default;
+  -webkit-user-select: none;
 `;

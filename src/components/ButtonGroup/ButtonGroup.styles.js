@@ -28,9 +28,9 @@ export const ButtonGroupStyled = styled.div`
     margin-left: -1px;
   }
 
-  /* ${ButtonStyled} + ${ButtonStyled} {
-    border-left: 1px solid #c2c0c2;
-  } */
+  ${ButtonStyled} + ${ButtonStyled} {
+    margin-left: 1px;
+  }
 
   & > ${ButtonStyled} {
     &:first-child {

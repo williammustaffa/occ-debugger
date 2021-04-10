@@ -35,6 +35,14 @@ function buildComponentData(widget, component, commonEvents) {
     triggers.forEach(trigger => {
       const subEvent = $.extend(true, {}, event, { trigger });
 
+      if (!subEvent.detail.action) {
+        subEvent.detail.action = subEvent.trigger;
+      }
+  
+      if (!subEvent.selector) {
+        subEvent.selector = subEvent.trigger;
+      }
+
       commonEvents.forEach(commonEvent => {
         const commonDataTriggers = commonEvent.trigger.split(',');
 
@@ -45,10 +53,6 @@ function buildComponentData(widget, component, commonEvents) {
           subEvent.detail = merge(commonEvent.detail, subEvent.detail);
         }
       });
-
-      if (!subEvent.selector) {
-        subEvent.selector = subEvent.trigger;
-      }
 
       events.push(subEvent);
     })

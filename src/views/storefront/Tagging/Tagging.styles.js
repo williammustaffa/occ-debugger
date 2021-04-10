@@ -1,10 +1,10 @@
-import styled, { css, createGlobalStyle } from 'styled-components'
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components'
 
 export const TaggingStyled = styled.div`
   position: relative;
-  padding: 10px;
+  padding: 0 10px 10px;
   min-height: ${props => props.height || 0}px;
-  width:100%;
+  width: 100%;
 
   ${props => props.centered && css`
     display: flex;
@@ -16,7 +16,6 @@ export const TaggingStyled = styled.div`
 export const Section = styled.div`
   margin: 0 0 10px;
 `;
-
 
 export const TaggingWrapper = styled.div`
   display: block;
@@ -50,6 +49,17 @@ export const TaggingActionsStyled = styled.div`
   padding: 5px 0;
 `;
 
+const highlight = keyframes`
+  0% {
+    outline: 5px solid rgba(100, 100, 255, 1);
+    background: rgba(100, 100, 255, 0.5);
+  }
+  100% {
+    outline: 5px solid transparent;
+    background: transparent;
+  }
+`;
+
 export const GlobalTaggingStyles = createGlobalStyle`
   [data-highlight-state] {
     position: relative;
@@ -77,17 +87,16 @@ export const GlobalTaggingStyles = createGlobalStyle`
       line-height: 0; 
     }
 
-    &[data-highlight-state='active'] {
+    &[data-highlight-state='reset'] {
       &:before {
-        outline: 2px solid rgba(100, 100, 255, 0.5);
-        background: rgba(100, 100, 255, 0.5);
+        animation-delay: -99s;
+        animation: none;
       }
     }
 
-    &[data-highlight-state='fading'] {
+    &[data-highlight-state='active'] {
       &:before {
-        outline: 2px solid transparent;
-        background: transparent;
+        animation: ${highlight} 2s linear forwards;
       }
     }
   }

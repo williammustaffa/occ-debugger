@@ -130,11 +130,6 @@ export const GlobalThemeStyled = styled.div`
     padding: 0;
   }
 
-  *:not(pre) {
-    cursor: default;
-    -webkit-user-select: none;
-  }
-
   * {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

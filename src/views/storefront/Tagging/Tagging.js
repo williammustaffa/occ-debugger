@@ -1,6 +1,7 @@
 import { h, Fragment } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { useStorefront } from '@contexts/storefront';
+import { Screen } from '@components';
 import { Section, TaggingStyled, GlobalTaggingStyles } from './Tagging.styles';
 import { getWidgetEvents } from './utils'; 
 
@@ -10,7 +11,11 @@ import { TaggingRelationship } from './TaggingRelationship';
 export function Tagging() {
   const { layout, tagging } = useStorefront();
 
-  if (!layout || !tagging) return 'Loading...';
+  if (!layout || !tagging) {
+    return (
+      <Screen>Waiting for layout data...</Screen>
+    )
+  };
 
   const taggingRelationships = useMemo(() => {
     return Object.entries(layout.widgets).map(([widgetName, widget]) => {
@@ -25,9 +30,6 @@ export function Tagging() {
   return (
     <TaggingStyled>
       <GlobalTaggingStyles />
-      <Section>
-        Analytics data
-      </Section>
       <Section>
         {
           taggingRelationships.map(relationship => {

@@ -5,8 +5,8 @@ export default {
     color: '#222'
   },
   toolbar: {
-    color: '#222',
-    background: '#e8e6e8',
+    color: '#f5f5f5',
+    background: '#454658',
     gradient: '#d1cfd1',
     border: '#c2c0c2'
   },
@@ -21,13 +21,13 @@ export default {
   },
   primary: {
     color: '#fff',
-    background: '#1a82fb',
+    background: '#6b70c5',
     gradient: '#1a82fb',
     border: '#388df8',
     borderBottom: '#0866dc',
     active: {
-      background: '#3e9bf4',
-      gradient: '#0469de'
+      background: '#888ef6',
+      gradient: '#7e85f1'
     }
   },
   positive: {
@@ -54,7 +54,7 @@ export default {
   },
   warning: {
     color: '#fff',
-    background: '#fece72',
+    background: '#ff8080',
     gradient: '#fcaa0e',
     border: '#fcaa0e',
     borderBottom: '#ee9d02',
@@ -64,13 +64,13 @@ export default {
     }
   },
   secondary: {
-    color: '#333',
-    background: '#fcfcfc',
+    color: '#ffffff',
+    background: '#2f2f37',
     gradient: '#f1f1f1',
     border: '#a19fa1',
     borderBottom: '#c2c0c2',
     active: {
-      background: '#ddd',
+      background: '#5b5b84',
       gradient: '#ddd'
     }
   }
