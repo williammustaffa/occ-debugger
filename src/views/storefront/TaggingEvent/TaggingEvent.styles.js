@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const TaggingEventWrapper = styled.div`
   display: block;
@@ -25,4 +25,49 @@ export const TaggingEventContent = styled.pre`
   background: #f5f5f5;
   color: #222222;
   padding: 10px;
+  overflow: auto;
+  position: relative;
+
+  ${props => props.collapsed && css`
+    max-height: 100px;
+    overflow: hidden;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: linear-gradient(transparent, #f5f5f5);
+    }
+  `}
+`;
+
+export const TaggingEventFooter = styled.div`
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #d9d9d9;
+  border-radius: 0;
+  background: #f5f5f5;
+  color: #222222;
+  display: flex;
+`;
+
+export const TaggingEventAction = styled.div`
+  text-align: center;
+  flex: 1;
+  cursor: pointer;
+  padding: 10px;
+  background: #f5f5f5;
+  color: #828282;
+  transition: all 0.2s ease-in-out;
+
+  & + & {
+    border-left: 1px solid #d9d9d9;
+  }
+
+  &:hover {
+    background: #dfdfdf;
+  }
 `;

@@ -18,7 +18,7 @@ const renderTaggingEvent = event => {
   return (
     <FadeIn>
       <TaggingEvent
-        title={eventTitle}
+        header={eventTitle}
         content={JSON.stringify(event, null, 2)}
         light={isPageview}
       />
@@ -26,7 +26,7 @@ const renderTaggingEvent = event => {
   )
 };
 
-export const TaggingEvents = ({ scrollToBottom }) => {
+export const TaggingEvents = ({ active, scrollToBottom }) => {
   const { events } = useStorefront();
 
   if (!events || !events.length) {
@@ -36,7 +36,11 @@ export const TaggingEvents = ({ scrollToBottom }) => {
   };
 
   // Scroll when an event is added
-  useEffect(scrollToBottom, [events]);
+  useEffect(() => {
+    if (active) {
+      scrollToBottom()
+    }
+  }, [events, active]);
 
   return (
     <StorefrontWrapper>

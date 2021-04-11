@@ -97,10 +97,6 @@ export const GlobalThemeStyled = styled.div`
     bottom: -0.25em;
   }
 
-  pre {
-    overflow: auto;
-  }
-
   code,
   kbd,
   pre,

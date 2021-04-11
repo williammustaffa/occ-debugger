@@ -35,6 +35,10 @@ export const FadeIn = styled.div`
   animation: ${fadein} .5s linear forwards;
 `;
 
+export const TabWrapper = styled.div`
+  display: ${props => props.active ? 'block' : 'none'};
+`;
+
 export const GlobalStorefrontStyle = createGlobalStyle`
   [data-highlight-state] {
     position: relative;

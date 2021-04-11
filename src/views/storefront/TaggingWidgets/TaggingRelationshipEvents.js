@@ -16,7 +16,7 @@ const renderEventDetails = event => {
 const renderTaggingEvent = event => {
   return (
     <TaggingEvent
-      title={renderEventDetails(event)}
+      header={renderEventDetails(event)}
       content={JSON.stringify(event.detail, null, 2)}
     />
   );

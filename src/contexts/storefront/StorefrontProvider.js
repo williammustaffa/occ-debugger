@@ -77,12 +77,17 @@ export function StorefrontProvider({ children }) {
   const [tagging, setTagging] = useState(null);
 
   useEffect(() => {
-    $(document).on('msiCustomDataTransfer.occDebugger', function(event, data) {
+    const eventsListener = (event, data) =>  {
       if (!data) return;
       setEvents([ ...events, data]);
-    });
+    };
 
-    return () => $(document).on('msiCustomDataTransfer.occDebugger').off();
+    $(document).on('msiCustomDataTransfer.occDebugger', eventsListener);
+
+    return () => {
+      // Unsubscribe listener
+      $(document).off('msiCustomDataTransfer.occDebugger', eventsListener);
+    };
   }, [events]);
 
   useEffect(async () => {

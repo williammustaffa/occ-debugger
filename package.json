@@ -37,8 +37,9 @@
     "zip-folder": "^1.0.0"
   },
   "dependencies": {
-    "preact": "^10.0.5",
+    "clipboard-copy": "^4.0.1",
     "core-js": "^3.8.1",
+    "preact": "^10.0.5",
     "regenerator-runtime": "^0.13.7"
   }
 }
