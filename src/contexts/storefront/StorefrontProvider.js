@@ -73,7 +73,17 @@ export function StorefrontProvider({ children }) {
   
   // data
   const [layout, setLayout] = useState(null);
+  const [events, setEvents] = useState([]);
   const [tagging, setTagging] = useState(null);
+
+  useEffect(() => {
+    $(document).on('msiCustomDataTransfer.occDebugger', function(event, data) {
+      if (!data) return;
+      setEvents([ ...events, data]);
+    });
+
+    return () => $(document).on('msiCustomDataTransfer.occDebugger').off();
+  }, [events]);
 
   useEffect(async () => {
     let subscription;
@@ -103,11 +113,11 @@ export function StorefrontProvider({ children }) {
     }
 
     // Clean subscription on unmount
-    return subscription && subscription.dispatch();
+    return () => subscription && subscription.dispatch();
   }, []);
 
   return (
-    <StorefrontContext.Provider value={{ loading, configs, layout, tagging }}>
+    <StorefrontContext.Provider value={{ loading, configs, layout, tagging, events }}>
       {children}
     </StorefrontContext.Provider>
   )

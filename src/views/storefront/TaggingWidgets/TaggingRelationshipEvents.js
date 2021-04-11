@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { TaggingEvent, TaggingDetail, TaggingWrapper } from './Tagging.styles';
+import { TaggingEvent } from '../TaggingEvent';
 
 const renderEventDetails = event => {
   return Object.entries(event).map(([name, value]) => {
@@ -15,10 +15,10 @@ const renderEventDetails = event => {
 
 const renderTaggingEvent = event => {
   return (
-    <TaggingWrapper>
-      <TaggingEvent>{renderEventDetails(event)}</TaggingEvent>
-      <TaggingDetail>{JSON.stringify(event.detail, null, 2)}</TaggingDetail>
-    </TaggingWrapper>
+    <TaggingEvent
+      title={renderEventDetails(event)}
+      content={JSON.stringify(event.detail, null, 2)}
+    />
   );
 }
 

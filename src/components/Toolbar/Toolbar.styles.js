@@ -8,6 +8,7 @@ export const ToolbarStyled = styled.div`
   background-color: ${({ theme }) => theme.toolbar.background};
   background-image: ${({ theme }) => theme.flat ? 'none' : css`linear-gradient(to bottom, ${theme.toolbar.background} 0%, ${theme.toolbar.gradient} 100%);`};
   -webkit-user-select: none;
+  box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.1);
 
   &:before, &:after {
     display: table;

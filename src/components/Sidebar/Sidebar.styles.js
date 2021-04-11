@@ -27,7 +27,6 @@ export const SidebarStyled = styled.div`
 export const SidebarContent = styled.div`
   position: relative;
   overflow-y: auto;
-  display: flex;
   flex: 1;
 `;
 

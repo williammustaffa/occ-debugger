@@ -70,7 +70,7 @@ export default {
     border: '#a19fa1',
     borderBottom: '#c2c0c2',
     active: {
-      background: '#5b5b84',
+      background: '#867fd8',
       gradient: '#ddd'
     }
   }

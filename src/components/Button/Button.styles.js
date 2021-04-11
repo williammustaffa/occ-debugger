@@ -79,10 +79,22 @@ export const ButtonStyled = styled.button`
       border-bottom-color: ${theme.flat ? 'transparent' : getProp('borderBottom')};
       background-image: ${theme.flat ? 'none' : `linear-gradient(to bottom, ${getProp('background')} 0%, ${getProp('gradient')} 100%)`};
 
-      &:active {
-        background-color: ${getProp('active.background')};
-        background-image: ${theme.flat ? 'none' : `linear-gradient(to bottom, ${getProp('active.background')} 0%, ${getProp('active.gradient')} 100%)`};
-      }
+      ${props => {
+        return props.active && css`
+          color: #fff;
+          border: 1px solid transparent;
+          background-color: ${getProp('active.background')};
+          background-image: none;
+    
+          &:not(:first-child) {
+            border-left: 0 !important;
+          }
+    
+          ${IconStyled} {
+            color: #fff;
+          }
+        `
+      }}
     `;
   }}
 
@@ -92,24 +104,6 @@ export const ButtonStyled = styled.button`
     return props.form && css`
       padding-right: 20px;
       padding-left: 20px;
-    `
-  }}
-
-  // Active for button group
-  ${props => {
-    return props.active && css`
-      color: #fff;
-      border: 1px solid transparent;
-      background-color: #6d6c6d;
-      background-image: none;
-
-      &:not(:first-child) {
-        border-left: 0!important;
-      }
-
-      ${IconStyled} {
-        color: #fff;
-      }
     `
   }}
 `;

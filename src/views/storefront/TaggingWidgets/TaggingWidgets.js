@@ -1,19 +1,19 @@
-import { h, Fragment } from 'preact';
+import { h } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { useStorefront } from '@contexts/storefront';
 import { Screen } from '@components';
-import { Section, TaggingStyled, GlobalTaggingStyles } from './Tagging.styles';
+import { StorefrontWrapper } from '../Storefront.styles';
 import { getWidgetEvents } from './utils'; 
 
 // Subcomponents
 import { TaggingRelationship } from './TaggingRelationship';
 
-export function Tagging() {
+export function TaggingWidgets() {
   const { layout, tagging } = useStorefront();
 
   if (!layout || !tagging) {
     return (
-      <Screen>Waiting for layout data...</Screen>
+      <Screen>Waiting for layout data</Screen>
     )
   };
 
@@ -28,15 +28,12 @@ export function Tagging() {
   }, [tagging, layout]);
 
   return (
-    <TaggingStyled>
-      <GlobalTaggingStyles />
-      <Section>
-        {
-          taggingRelationships.map(relationship => {
-            return <TaggingRelationship relationship={relationship}/>
-          })
-        }
-      </Section>
-    </TaggingStyled>
+    <StorefrontWrapper>
+      {
+        taggingRelationships.map(relationship => {
+          return <TaggingRelationship relationship={relationship}/>
+        })
+      }
+    </StorefrontWrapper>
   );
 }

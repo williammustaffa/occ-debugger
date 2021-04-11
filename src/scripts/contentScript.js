@@ -38,9 +38,11 @@ async function initialize(configs) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occDebugger.js'), 'body');
 
-    // Inject analytics panel
-    injectUIContainer();
-    injectScript(chrome.extension.getURL('views/storefront/index.js'), 'body');
+    if (configs.options.analytics) {
+      // Inject analytics panel
+      injectUIContainer();
+      injectScript(chrome.extension.getURL('views/storefront/index.js'), 'body');
+    }
   }
 }
 

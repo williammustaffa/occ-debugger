@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { Button } from '@components'; 
-import { TaggingActionsStyled } from './Tagging.styles';
+import { TaggingActionsStyled } from './TaggingWidgets.styles';
 import { observables } from '@utils';
 
 const highlightElement = relationship => {
