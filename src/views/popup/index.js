@@ -7,7 +7,7 @@ import theme from '../theme';
 
 // Add configs context to popup
 const PopupWithContext = () => (
-  <GlobalTheme theme={theme}>
+  <GlobalTheme theme={theme} injectGlobalStyle={true}>
     <ConfigsProvider>
       <Popup />
     </ConfigsProvider>

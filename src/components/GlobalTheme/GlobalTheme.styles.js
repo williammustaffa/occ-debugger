@@ -30,11 +30,6 @@ export const GlobalThemeStyled = styled.div`
   color: ${({ theme }) => theme.global.color || '#333'};
   background-color: ${({ theme }) => theme.global.background || 'transparent'};
 
-  ${({ theme }) => {
-    const fontUrl = theme.typography.fontUrl;
-    return fontUrl && `@import url('${fontUrl}');`;
-  }}
-
   @font-face {
     font-family: "photon-entypo";
     src: url(${photonEntypoEOT});

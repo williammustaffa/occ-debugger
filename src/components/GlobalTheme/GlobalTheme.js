@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { ThemeProvider } from 'styled-components';
 import { GlobalPageStyles, GlobalThemeStyled } from './GlobalTheme.styles';
 
-export function GlobalTheme({ children, injectGlobalStyle = true, theme = {} }) {
+export function GlobalTheme({ children, injectGlobalStyle, theme = {} }) {
   return (
    <ThemeProvider theme={theme}>
      <GlobalThemeStyled>
