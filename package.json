@@ -1,6 +1,6 @@
 {
   "name": "occ-debugger",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "A simple debugger to help occ developers",
   "scripts": {
     "start": "webpack --config ./webpack/webpack.dev.js --watch ",
