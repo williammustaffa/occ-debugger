@@ -46,6 +46,7 @@ export const SidebarStyled = styled.div`
 `;
 
 export const SidebarContent = styled.div`
+  display: ${props => props.hide ? 'none' : 'block'};
   position: relative;
   overflow-y: auto;
   flex: 1;

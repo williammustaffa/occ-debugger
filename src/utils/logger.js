@@ -7,8 +7,8 @@ const TYPES = {
 
 const STYLES = {
   prefix: 'font-weight: bold; color: #ffffff; background-color: __type__; padding: 1px 5px; border-radius: 3px',
-  label: 'font-weight: bold; color: #222; padding: 1px 5px;',
-  suffix: 'font-weight: normal; color: #222; padding: 1px 5px;'
+  label: 'font-weight: bold; ; padding: 1px 5px;',
+  suffix: 'font-weight: normal; padding: 1px 5px;'
 };
 
 function getBadge(type, options) {

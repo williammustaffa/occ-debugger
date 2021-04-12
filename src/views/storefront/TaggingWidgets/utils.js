@@ -1,7 +1,7 @@
 import { isObject } from 'lodash';
 import { observables } from '@utils';
 
-function merge(target, source) {
+export function merge(target, source) {
   target = $.extend(true, {}, target);
 
   const processMerge = (target, source) => {
@@ -67,4 +67,31 @@ export function getWidgetEvents(widgetName, widget, tagging) {
   const component = custom.find(data => data.component === widgetName);
 
   return buildComponentData(widget, component, common);
+}
+
+export function getPageEvent(page, tagging) {
+  const pagesTagging = tagging.pages;
+  const commonTagging = tagging.pages.find(page => page.pageId === "all");
+
+  let foundByPageId, foundByContextId;
+
+  for (const pageTagging of pagesTagging) {
+    if (pageTagging?.pageId === page?.pageId) {
+      foundByPageId = pageTagging;
+      break;
+    }
+
+    if (pageTagging?.contextId?.split(',').indexOf(page?.contextId)) {
+      foundByContextId = pageTagging;
+    }
+  }
+
+  const foundTagging = foundByPageId || foundByContextId;
+  const event = merge(commonTagging, foundTagging);
+
+  if (event) {
+    event.detail.action = "pageview";
+  };
+
+  return event;
 }

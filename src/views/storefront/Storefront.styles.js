@@ -1,18 +1,5 @@
 import styled, { createGlobalStyle, keyframes } from 'styled-components';
 
-export const StorefrontWrapper = styled.div`
-  position: relative;
-  padding: 0 10px 10px;
-  min-height: ${props => props.height || 0}px;
-  width: 100%;
-
-  ${props => props.centered && css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `}
-`;
-
 const highlight = keyframes`
   0% {
     background: rgba(100, 100, 255, 0.5);
@@ -37,6 +24,10 @@ export const FadeIn = styled.div`
 
 export const TabWrapper = styled.div`
   display: ${props => props.active ? 'block' : 'none'};
+`;
+
+export const TaggingEventwrapper = styled.div`
+  margin: 10px;
 `;
 
 export const GlobalStorefrontStyle = createGlobalStyle`

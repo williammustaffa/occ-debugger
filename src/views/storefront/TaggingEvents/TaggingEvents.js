@@ -1,10 +1,10 @@
 import { h } from 'preact';
-import { Screen } from '@components';
+import { useRef, useCallback } from 'preact/hooks';
+import { Sidebar, Screen } from '@components';
 import { useStorefront } from '@contexts/storefront';
-import { StorefrontWrapper, FadeIn } from '../Storefront.styles';
+import { FadeIn, TaggingEventwrapper } from '../Storefront.styles';
 import { TaggingEvent } from '../TaggingEvent';
 import { useEffect } from 'preact/hooks';
-
 
 const renderTaggingEvent = event => {
   const { action } = event;;
@@ -17,34 +17,40 @@ const renderTaggingEvent = event => {
 
   return (
     <FadeIn>
-      <TaggingEvent
-        header={eventTitle}
-        content={JSON.stringify(event, null, 2)}
-        light={isPageview}
-      />
+      <TaggingEventwrapper>
+        <TaggingEvent
+          header={eventTitle}
+          content={JSON.stringify(event, null, 2)}
+          light={isPageview}
+        />
+      </TaggingEventwrapper>
     </FadeIn>
   )
 };
 
-export const TaggingEvents = ({ active, scrollToBottom }) => {
+export const TaggingEvents = ({ active }) => {
+  const scrollRef = useRef()
+
   const { events } = useStorefront();
 
-  if (!events || !events.length) {
-    return (
-      <Screen>No events triggered</Screen>
-    )
-  };
+  const scrollToBottom = useCallback(() => {
+    const element = scrollRef && scrollRef.current;
+
+    if (element) {
+      element.scrollTo({ behavior: 'smooth', top: element.scrollHeight });
+    }
+  }, [scrollRef]);
 
   // Scroll when an event is added
-  useEffect(() => {
-    if (active) {
-      scrollToBottom()
-    }
-  }, [events, active]);
+  useEffect(scrollToBottom, [events]);
 
   return (
-    <StorefrontWrapper>
-      {events.map(renderTaggingEvent)}
-    </StorefrontWrapper>
+    <Sidebar.Content hide={!active} ref={scrollRef}>
+      {
+        Array.isArray(events) && events.length ?
+        events.map(renderTaggingEvent) : 
+        <Screen>No events triggered</Screen>
+      }
+    </Sidebar.Content>
   )
 };

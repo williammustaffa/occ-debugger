@@ -15,6 +15,5 @@ export const AccordionContent = styled.div`
 
 export const AccordionWrapper = styled.div`
   display: block;
-  margin: 0 -10px;
 `;
 

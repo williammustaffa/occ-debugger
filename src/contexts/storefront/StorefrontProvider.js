@@ -3,6 +3,8 @@ import { useEffect, useState } from 'preact/hooks';
 import { StorefrontContext } from './StorefrontContext';
 import { observables } from '@utils';
 
+let ko, pubsub;
+
 // hardcoded
 function waitForAnalyticsFile() {
   return fetch('/oe-files/analytics/main.json')
@@ -13,7 +15,9 @@ function waitForMasterViewModel() {
   return new Promise(resolve => {
     const checkIfMasterViewModelIsAvailable = () => {
       try {
-        const ko = __non_webpack_require__('knockout');
+        ko = __non_webpack_require__('knockout');
+        pubsub = __non_webpack_require__('pubsub');
+
         const context = ko.contextFor(document.body);
         const masterViewModel = context.$masterViewModel;
 
@@ -61,10 +65,8 @@ function getWidgetData(masterViewModel) {
   return widgets;
 }
 
-function getLayoutData(masterViewModel) {
-  const widgets = getWidgetData(masterViewModel);
-
-  return { widgets };
+function getPageData(masterViewModel) {
+  return masterViewModel?.data?.page;
 }
 
 export function StorefrontProvider({ children }) {
@@ -72,7 +74,8 @@ export function StorefrontProvider({ children }) {
   const [loading, setLoading] = useState(true);
   
   // data
-  const [layout, setLayout] = useState(null);
+  const [page, setPage] = useState(null);
+  const [widgets, setWidgets] = useState(null);
   const [events, setEvents] = useState([]);
   const [tagging, setTagging] = useState(null);
 
@@ -91,21 +94,26 @@ export function StorefrontProvider({ children }) {
   }, [events]);
 
   useEffect(async () => {
-    let subscription;
+    let widgetsSubscription, pageListener;
 
     setLoading(true);
 
     const loadData = async () => {
-      const viewModel = await waitForMasterViewModel();
+      const masterViewModel = await waitForMasterViewModel();
       const taggingData = await waitForAnalyticsFile();
 
-      // Updating layout data
-      subscription = viewModel.regions.subscribe(() => {
-        setLayout(getLayoutData(viewModel));
+      // Updating page data
+      pageListener = updatedMasterViewModel => setPage(getPageData(updatedMasterViewModel));
+      $.Topic(pubsub.topicNames.PAGE_LAYOUT_LOADED).subscribe(pageListener);
+
+      // Updating widgets data
+      widgetsSubscription = masterViewModel.regions.subscribe(() => {
+        setWidgets(getWidgetData(masterViewModel));
       });
 
       // First layout udpate
-      setLayout(getLayoutData(viewModel));
+      setWidgets(getWidgetData(masterViewModel));
+      setPage(getPageData(masterViewModel));
       setTagging(taggingData);
       setLoading(false);
     }
@@ -118,11 +126,14 @@ export function StorefrontProvider({ children }) {
     }
 
     // Clean subscription on unmount
-    return () => subscription && subscription.dispatch();
+    return () => {
+      if (widgetsSubscription) widgetsSubscription.dispatch();
+      if (pageListener) $.Topic(pubsub.topicNames.PAGE_LAYOUT_LOADED).unsubscribe(pageListener);
+    }
   }, []);
 
   return (
-    <StorefrontContext.Provider value={{ loading, configs, layout, tagging, events }}>
+    <StorefrontContext.Provider value={{ loading, configs, widgets, page, tagging, events }}>
       {children}
     </StorefrontContext.Provider>
   )

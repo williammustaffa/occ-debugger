@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 
 export const TaggingEventWrapper = styled.div`
   display: block;
-  margin: 10px 0;
   border-radius: 3px;
   overflow: hidden;
   font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;

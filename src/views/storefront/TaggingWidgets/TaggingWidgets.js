@@ -1,39 +1,44 @@
 import { h } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { useStorefront } from '@contexts/storefront';
-import { Screen } from '@components';
-import { StorefrontWrapper } from '../Storefront.styles';
-import { getWidgetEvents } from './utils'; 
+import { Sidebar } from '@components';
+import { TaggingHeading } from './TaggingWidgets.styles';
+import { TaggingPageDetail } from './TaggingPageDetail';
+import { getWidgetEvents, getPageEvent } from './utils'; 
 
 // Subcomponents
 import { TaggingRelationship } from './TaggingRelationship';
 
-export function TaggingWidgets() {
-  const { layout, tagging } = useStorefront();
+export function TaggingWidgets({ active }) {
+  const { widgets, tagging, page } = useStorefront();
 
-  if (!layout || !tagging) {
-    return (
-      <Screen>Waiting for layout data</Screen>
-    )
-  };
+  const pageRelationship = useMemo(() => {
+    return {
+      page,
+      event: getPageEvent(page, tagging)
+    };
+  }, [tagging, page]);
 
   const taggingRelationships = useMemo(() => {
-    return Object.entries(layout.widgets).map(([widgetName, widget]) => {
+    return Object.entries(widgets).map(([widgetName, widget]) => {
       return {
         widgetName,
         widget,
         events: getWidgetEvents(widgetName, widget, tagging)
       };
     });
-  }, [tagging, layout]);
+  }, [tagging, widgets]);
 
   return (
-    <StorefrontWrapper>
+    <Sidebar.Content hide={!active}>
+      <TaggingHeading>Page</TaggingHeading>
+      <TaggingPageDetail pageRelationship={pageRelationship} />
+      <TaggingHeading>Widgets</TaggingHeading>
       {
         taggingRelationships.map(relationship => {
           return <TaggingRelationship relationship={relationship}/>
         })
       }
-    </StorefrontWrapper>
+    </Sidebar.Content>
   );
 }
