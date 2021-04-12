@@ -6,7 +6,7 @@ export default {
     enabled: true,
 
     // Interface
-    analytics: true,
+    tagging: false,
 
     // Logging options
     cookies: false,

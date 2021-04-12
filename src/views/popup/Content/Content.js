@@ -28,9 +28,9 @@ export function Content() {
         <Title>User Interface</Title>
         <Checkbox
           disabled={!options.enabled}
-          label="Analytics"
-          checked={options.analytics}
-          onChange={updateConfigs('options.analytics')}
+          label="Tagging"
+          checked={options.tagging}
+          onChange={updateConfigs('options.tagging')}
         />
       </Section>
       <Section>

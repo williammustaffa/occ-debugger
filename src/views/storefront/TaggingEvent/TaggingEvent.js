@@ -30,6 +30,7 @@ export const TaggingEvent = ({ header, content, footer, light }) => {
         <TaggingEventAction onClick={!isCopied && copyContent}>
           {isCopied ? 'Copied!' : 'Copy'}
         </TaggingEventAction>
+        {footer}
         <TaggingEventAction onClick={toggleIsCollapse}>
           {isCollapsed ? 'See more' : 'See less'}
         </TaggingEventAction>

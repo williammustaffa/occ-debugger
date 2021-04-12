@@ -1,6 +1,15 @@
 import { h } from 'preact';
 import { TaggingEvent } from '../TaggingEvent';
 
+const NATIVE_EVENTS = ['click', 'mouseup', 'mousedown', 'focus', 'focusout', 'blur', 'hover'];
+
+const simulateEvent = event => () => {
+  const eventName = event.trigger;
+  const eventSelector = event.selector;
+
+  $(eventSelector).trigger(eventName);
+};
+
 const renderEventDetails = event => {
   return Object.entries(event).map(([name, value]) => {
     if (name === 'detail') return null;
@@ -14,6 +23,13 @@ const renderEventDetails = event => {
 };
 
 const renderTaggingEvent = event => {
+  // We can't implement this right away, since it dependeds on a lot of things
+  // const eventElements = event.selector && $(event.selector) || [];
+  // const canSimulate = NATIVE_EVENTS.indexOf(event.trigger) > -1 && !!eventElements.length;
+  // const simulateAction = canSimulate && (
+  //   <TaggingEvent.Action onClick={simulateEvent(event)}>Simulate</TaggingEvent.Action>
+  // );
+
   return (
     <TaggingEvent
       header={renderEventDetails(event)}

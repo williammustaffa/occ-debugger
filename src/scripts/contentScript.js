@@ -38,7 +38,7 @@ async function initialize(configs) {
     injectConfigs(configs, 'body');
     injectScript(chrome.extension.getURL('scripts/occDebugger.js'), 'body');
 
-    if (configs.options.analytics) {
+    if (configs.options.tagging) {
       // Inject analytics panel
       injectUIContainer();
       injectScript(chrome.extension.getURL('views/storefront/index.js'), 'body');
