@@ -35,9 +35,6 @@ Popup is built using [Preact](https://preactjs.com/) and [Photon](http://photonk
 
 ## Features
 
-### Devtools
-A panel is available in devtools called "OCC debugger". This will provide information regarding the inspected element.
-
 ### Popup
 #### Enabled 
 Enable OCC debugger to run on current site.
@@ -46,6 +43,9 @@ Enable OCC debugger to run on current site.
 
 #### Tagging
 Enable tagging debugging on OCC Debugger UI
+
+### Devtools
+A panel is available in devtools called "OCC debugger". This will provide information regarding the inspected element.
 
 #### Cookies
 Enable cookies debugging. Listen to changes in cookies and log it into devtools console.
