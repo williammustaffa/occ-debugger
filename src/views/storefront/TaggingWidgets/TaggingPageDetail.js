@@ -3,6 +3,10 @@ import { TaggingEvent } from '../TaggingEvent';
 import { TaggingEventwrapper } from '../Storefront.styles';
 
 export const TaggingPageDetail = ({ pageRelationship }) => {
+  if (!pageRelationship?.page) {
+    return null;
+  }
+
   return (
     <TaggingEventwrapper>
       <TaggingEvent

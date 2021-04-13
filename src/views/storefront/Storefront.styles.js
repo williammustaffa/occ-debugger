@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle, keyframes } from 'styled-components';
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 
 const highlight = keyframes`
   0% {
@@ -27,7 +27,7 @@ export const TabWrapper = styled.div`
 `;
 
 export const TaggingEventwrapper = styled.div`
-  margin: 10px;
+  margin: ${props => props.margin ? props.margin : '10px' };
 `;
 
 export const GlobalStorefrontStyle = createGlobalStyle`

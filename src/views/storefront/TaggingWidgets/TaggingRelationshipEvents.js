@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { TaggingEventwrapper } from '../Storefront.styles';
 import { TaggingEvent } from '../TaggingEvent';
 
 const NATIVE_EVENTS = ['click', 'mouseup', 'mousedown', 'focus', 'focusout', 'blur', 'hover'];
@@ -31,10 +32,12 @@ const renderTaggingEvent = event => {
   // );
 
   return (
-    <TaggingEvent
-      header={renderEventDetails(event)}
-      content={JSON.stringify(event.detail, null, 2)}
-    />
+    <TaggingEventwrapper margin="0 0 10px 0">
+      <TaggingEvent
+        header={renderEventDetails(event)}
+        content={JSON.stringify(event.detail, null, 2)}
+      />
+    </TaggingEventwrapper>
   );
 }
 
