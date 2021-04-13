@@ -42,6 +42,11 @@ A panel is available in devtools called "OCC debugger". This will provide inform
 #### Enabled 
 Enable OCC debugger to run on current site.
 
+### Interface 
+
+#### Tagging
+Enable tagging debugging on OCC Debugger UI
+
 #### Cookies
 Enable cookies debugging. Listen to changes in cookies and log it into devtools console.
 
