@@ -31,7 +31,7 @@ function setStoredValue(key, value) {
 }
 
 export function Storefront() {  
-  const [isCollapsed, setIsCollapsed] = useState(getStoredValue('collapsed', true));
+  const [isCollapsed, setIsCollapsed] = useState(getStoredValue('collapsed', false));
   const [activeTab, setActiveTab] = useState(getStoredValue('tab-name', 'Tagging Schema'));
   const [orientation, setOrientation] = useState(getStoredValue('orientation', 'right'));
   const { loading } = useStorefront();
@@ -64,16 +64,7 @@ export function Storefront() {
     });
 
   return (
-    <Sidebar
-      modal={true}
-      width={350}
-      collapsed={isCollapsed}
-      orientation={orientation}
-      actions={[
-        <Sidebar.Toggler onClick={toggleCollapse} rotate={isCollapsed ? 0 : 45} icon="plus"/>,
-        <Sidebar.Toggler onClick={toggleOrientation} hide={isCollapsed} icon="switch"/>
-      ]}
-    >
+    <Sidebar>
       <Toolbar header>
         <Title>OCC Debugger - UI</Title>
         <Toolbar.Actions centered>

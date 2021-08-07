@@ -23,6 +23,17 @@ export const GlobalPageStyles = createGlobalStyle`
   }
 `;
 
+export const GlobalUIStyles = createGlobalStyle`
+  #occ-debugger-ui {
+    z-index: 2147483647;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+`;
+
 export const GlobalThemeStyled = styled.div`
   font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Helvetica, "Segoe UI", sans-serif;
   font-size: 13px;

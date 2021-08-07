@@ -2,8 +2,8 @@ import styled, { css } from 'styled-components';
 
 export const SidebarWrapper = styled.div`
   position: fixed;
-  height: 100vh;
-  width: ${props => props.width ? `${props.width}px`: 'auto'};
+  height: ${props => props.height ? `${props.height}`: '100%'};
+  width: ${props => props.width ? `${props.width}`: '100%'};
   top: 0;
   z-index: 999999;
   color: ${({ theme }) => theme.global.color || '#333'};
