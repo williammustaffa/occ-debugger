@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { get } from 'lodash';
 import { useEffect, useState } from 'preact/hooks';
 import { StorefrontContext } from './StorefrontContext';
 import { observables } from '@utils';
@@ -35,6 +36,22 @@ function waitForMasterViewModel() {
   })
 }
 
+function getViewModelInstance(viewModel) {
+  return new Promise(resolve => {
+    __non_webpack_require__(
+      ['jquery', 'pubsub', viewModel],
+      ($, pubsub, ViewModel) => {
+        const resolver = () => {
+          $.Topic(pubsub.topicNames.LOCALE_READY).unsubscribe(resolver);
+          resolve(ViewModel.getInstance());
+        }
+
+        $.Topic(pubsub.topicNames.LOCALE_READY).subscribe(resolver);
+      }
+    );
+  });
+}
+
 function getWidgetData(masterViewModel) {
   const widgets = {};
   const viewModelRegions = masterViewModel && masterViewModel.regions || [];
@@ -66,7 +83,7 @@ function getWidgetData(masterViewModel) {
 }
 
 function getPageData(masterViewModel) {
-  return masterViewModel?.data?.page;
+  return get(masterViewModel, 'data.page', null);
 }
 
 export function StorefrontProvider({ children }) {
@@ -75,6 +92,9 @@ export function StorefrontProvider({ children }) {
   
   // data
   const [page, setPage] = useState(null);
+  const [user, setUser] = useState(null);
+  const [cart, setCart] = useState(null);
+  const [site, setSite] = useState(null);
   const [widgets, setWidgets] = useState(null);
   const [events, setEvents] = useState([]);
   const [tagging, setTagging] = useState(null);
@@ -98,7 +118,7 @@ export function StorefrontProvider({ children }) {
 
     setLoading(true);
 
-    const loadData = async () => {
+    const loadTaggingData = async () => {
       const masterViewModel = await waitForMasterViewModel();
       const taggingData = await waitForAnalyticsFile();
 
@@ -118,8 +138,26 @@ export function StorefrontProvider({ children }) {
       setLoading(false);
     }
 
+    const loadUserData = async () => {
+      const user = await getViewModelInstance('pageLayout/user');
+      setUser(user);
+    }
+
+    const loadCartData = async () => {
+      const cart = await getViewModelInstance('pageLayout/cart');
+      setCart(cart);
+    }
+
+    const loadSiteData = async () => {
+      const site = await getViewModelInstance('pageLayout/site');
+      setSite(site);
+    }
+
     try {
-      loadData();
+      loadTaggingData();
+      loadUserData();
+      loadCartData();
+      loadSiteData();
     } catch(e) {
       setLoading(false);
       console.log("[OCC Debugger - Analytics] Failed initializing...");
@@ -133,7 +171,17 @@ export function StorefrontProvider({ children }) {
   }, []);
 
   return (
-    <StorefrontContext.Provider value={{ loading, configs, widgets, page, tagging, events }}>
+    <StorefrontContext.Provider value={{
+      loading,
+      configs,
+      widgets,
+      page,
+      tagging,
+      events,
+      user,
+      cart,
+      site
+    }}>
       {children}
     </StorefrontContext.Provider>
   )

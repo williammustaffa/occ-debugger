@@ -6,3 +6,5 @@ export * from './logger';
 export * from './helpers';
 export * from './resources';
 export * from './observables';
+export * from './string';
+

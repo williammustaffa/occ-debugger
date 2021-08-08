@@ -6,10 +6,12 @@ import { Sidebar, Toolbar, Title, Button, ButtonGroup, Screen } from '@component
 // Subcomponents
 import { TaggingWidgets } from './TaggingWidgets';
 import { TaggingEvents } from './TaggingEvents';
+import { PageContext } from './PageContext';
 
 const tabs = {
   'Tagging Schema': TaggingWidgets,
-  'Tagging Events': TaggingEvents
+  'Tagging Events': TaggingEvents,
+  'Page Context': PageContext
 };
 
 function getStoredValue(key, defaultValue, boolean) {
