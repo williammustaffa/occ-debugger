@@ -14,7 +14,7 @@ export function PageContextResultPrimitive({ parent, type, label, value }) {
           get(parent, 'label', label),
           get(parent, 'value', value)
         )}
-      >{label}:</PageContextLink>&nbsp;
+      >{label}{parent && `()`}:</PageContextLink>&nbsp;
       <PageContextValue color={primitiveColor}>{primitiveValue}</PageContextValue>
     </PageContextResultStyled>
   );

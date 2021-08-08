@@ -14,8 +14,8 @@ export function PageContextResultNonPrimitive({ parent, type, label, value }) {
           get(parent, 'label', label),
           get(parent, 'value', value)
         )}
-      >{label}:</PageContextLink>&nbsp;
-      <PageContextValue color={'#2c3e50'}>
+        >{label}{parent && `()`}:</PageContextLink>&nbsp;
+        <PageContextValue color={'#2c3e50'}>
         {`<${capitalizeFirstLetter(type)}>`}
         {isDataEmpty && <i>(empty)</i>}
       </PageContextValue>

@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { get } from 'lodash';
 import { PageContextResultStyled, PageContextLink, PageContextValue } from './PageContext.styles';
 import { storeInGlobalScope } from './PageContextData';
+import { capitalizeFirstLetter } from '@utils';
 
 export function PageContextResultNoData({ parent, type, label, value }) {
   return (
@@ -11,7 +12,7 @@ export function PageContextResultNoData({ parent, type, label, value }) {
           get(parent, 'label', label),
           get(parent, 'value', value)
         )}
-      >{label}:</PageContextLink>&nbsp;
+      >{label}{parent && `()`}:</PageContextLink>&nbsp;
       <PageContextValue color={'#c0392b'}>{String(value)}</PageContextValue>
     </PageContextResultStyled>
   );

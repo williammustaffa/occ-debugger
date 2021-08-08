@@ -7,11 +7,16 @@ export const PageContextDataStyled = styled.div`
 `;
 
 export const PageContextValue = styled.span`
-  color: ${({ theme, color }) => color || theme.negative.background};
+  color: ${({ theme, color }) => color || '#222'};
 `;
 
 export const PageContextLink = styled.a`
   cursor: pointer;
+
+  small {
+    font-size: 8px;
+    color: #222;
+  }
 `;
 
 export const PageContextResultStyled = styled.div`
