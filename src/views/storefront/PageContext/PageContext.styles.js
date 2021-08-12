@@ -47,3 +47,24 @@ export const PageContextHeading = styled.div`
     border-top: 1px solid #dadada;
   }
 `;
+
+export const PageContextGrid = styled.div`
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  position: relative;
+  height: 100%;
+`;
+
+export const PageContextSidebar = styled.div`
+  grid-column: 1;
+  overflow: hidden;
+  overflow-y: auto;
+`;
+
+export const PageContextContent = styled.div`
+  position: relative;
+  grid-column: 2;
+  background: #f5f5f5f5;
+  overflow: scroll;
+  overflow-y: auto;
+`;

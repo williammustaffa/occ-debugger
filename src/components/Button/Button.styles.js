@@ -98,6 +98,35 @@ export const ButtonStyled = styled.button`
     `;
   }}
 
+  // Dropdown
+  ${props => {
+    return props.sidebar && css`
+      display: block;
+      position: relative;
+      padding: 5px 10px;
+      text-align: left;
+      width: 100%;
+      border-radius: 0;
+      border-bottom: 1px solid #dadada;
+      background: white;
+      color: #222;
+
+      &:after {
+        float: right;
+        font-family: "photon-entypo";
+        margin-left: 5px;
+        content: '\\${iconMap['right-open']}';
+      }
+    `
+  }}
+
+  ${props => {
+    return props.selected && css`
+      background: #2f2f37;
+      color: white;
+    `
+  }}
+
   /* Other components interaction */
   // Button form
   ${props => {

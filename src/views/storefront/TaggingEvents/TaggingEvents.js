@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useRef, useCallback } from 'preact/hooks';
 import { format } from 'date-fns';
 import { identity } from 'lodash';
-import { Sidebar, Screen } from '@components';
+import { Sidepanel, Screen } from '@components';
 import { useStorefront } from '@contexts/storefront';
 import { FadeIn, TaggingEventwrapper } from '../Storefront.styles';
 import { TaggingEvent } from '../TaggingEvent';
@@ -61,12 +61,12 @@ export const TaggingEvents = ({ active }) => {
   useEffect(scrollToBottom, [events]);
 
   return (
-    <Sidebar.Content hide={!active} ref={scrollRef}>
+    <Sidepanel.Content hide={!active} ref={scrollRef}>
       {
         Array.isArray(events) && events.length ?
         events.map(renderTaggingEvent) : 
         <Screen>No events triggered</Screen>
       }
-    </Sidebar.Content>
+    </Sidepanel.Content>
   )
 };

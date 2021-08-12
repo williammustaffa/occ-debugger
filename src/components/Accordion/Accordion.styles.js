@@ -2,7 +2,6 @@ import styled, { keyframes, css } from 'styled-components';
 
 export const AccordionTitle = styled.div`
   cursor: ${props => props.enabled ? 'pointer' : 'normal'};
-  background: #fff;
   padding: 5px 10px;
   border-bottom: 1px solid #dadada;
 `;

@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { useStorefront } from '@contexts/storefront';
-import { Sidebar } from '@components';
+import { Sidepanel } from '@components';
 import { TaggingHeading } from './TaggingWidgets.styles';
 import { TaggingPageDetail } from './TaggingPageDetail';
 import { getWidgetEvents, getPageEvent } from './utils'; 
@@ -30,7 +30,7 @@ export function TaggingWidgets({ active }) {
   }, [tagging, widgets]);
 
   return (
-    <Sidebar.Content hide={!active}>
+    <Sidepanel.Content hide={!active}>
       <TaggingHeading>Page</TaggingHeading>
       <TaggingPageDetail pageRelationship={pageRelationship} />
       <TaggingHeading>Widgets</TaggingHeading>
@@ -39,6 +39,6 @@ export function TaggingWidgets({ active }) {
           return <TaggingRelationship relationship={relationship}/>
         })
       }
-    </Sidebar.Content>
+    </Sidepanel.Content>
   );
 }

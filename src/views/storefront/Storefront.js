@@ -1,18 +1,26 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { useStorefront } from '@contexts/storefront';
-import { Sidebar, Toolbar, Title, Button, ButtonGroup, Screen } from '@components';
+import { Sidepanel, Toolbar, Title, Button, ButtonGroup, Screen } from '@components';
+import logoImage from '@assets/icons/icon16.png';
 
 // Subcomponents
 import { TaggingWidgets } from './TaggingWidgets';
 import { TaggingEvents } from './TaggingEvents';
 import { PageContext } from './PageContext';
 
-const tabs = {
+const TABS = {
   'Tagging Schema': TaggingWidgets,
   'Tagging Events': TaggingEvents,
   'Page Context': PageContext
 };
+
+const ORIENTATIONS = [
+  { label: 'Left', value: 'left' },
+  { label: 'Bottom', value: 'bottom' },
+  { label: 'Right', value: 'right' },
+  { label: 'Top', value: 'top' },
+];
 
 function getStoredValue(key, defaultValue, boolean) {
   const value = localStorage.getItem(`occ-debugger-${key}`);
@@ -35,7 +43,7 @@ function setStoredValue(key, value) {
 export function Storefront() {  
   const [isCollapsed, setIsCollapsed] = useState(getStoredValue('collapsed', true));
   const [activeTab, setActiveTab] = useState(getStoredValue('tab-name', 'Tagging Schema'));
-  const [orientation, setOrientation] = useState(getStoredValue('orientation', 'right'));
+  const [orientation, setOrientation] = useState(getStoredValue('orientation', 'bottom'));
   const { loading } = useStorefront();
 
   const toggleCollapse = () => {
@@ -43,10 +51,9 @@ export function Storefront() {
     setIsCollapsed(!isCollapsed);
   };
 
-  const toggleOrientation = () => {
-    const newOrientation = orientation === 'right' ? 'left' : 'right';
-    setStoredValue('orientation', newOrientation);
-    setOrientation(newOrientation);
+  const updateOrientation = value => () => {
+    setStoredValue('orientation', value);
+    setOrientation(value);
   };
 
   const updateTab = tabName => () => {
@@ -54,35 +61,40 @@ export function Storefront() {
     setActiveTab(tabName);
   };
 
-  const tabButtons = Object.keys(tabs).map(key => (
+  const tabButtons = Object.keys(TABS).map(key => (
     <Button secondary onClick={updateTab(key)} active={activeTab === key}>{key}</Button>
   ));
 
   const tabComponents = loading ?
     <Screen>Loading initial data</Screen> :
-    Object.entries(tabs).map(([tabName, TabContent]) => {
+    Object.entries(TABS).map(([tabName, TabContent]) => {
       const isActive = activeTab === tabName;
       return <TabContent active={isActive} />;
     });
 
   return (
-    <Sidebar
+    <Sidepanel
       modal={true}
       width={350}
       collapsed={isCollapsed}
       orientation={orientation}
-      actions={[
-        <Sidebar.Toggler onClick={toggleCollapse} rotate={isCollapsed ? 0 : 45} icon="plus"/>,
-        <Sidebar.Toggler onClick={toggleOrientation} hide={isCollapsed} icon="switch"/>
-      ]}
+      actions={[]}
     >
       <Toolbar header>
-        <Title>OCC Debugger - UI</Title>
-        <Toolbar.Actions centered>
+        <Toolbar.Actions align="right">
+          {
+            ORIENTATIONS.map(orient => (
+              <Button onClick={updateOrientation(orient.value)}>{orient.label}</Button>
+            ))
+          }
+          
+        </Toolbar.Actions>
+        <Toolbar.Actions alogn="left">
+          <img src={logoImage} />
           <ButtonGroup>{tabButtons}</ButtonGroup>
         </Toolbar.Actions>
       </Toolbar>
       {tabComponents}
-    </Sidebar>
+    </Sidepanel>
   );
 };

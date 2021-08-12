@@ -36,14 +36,23 @@ const configs = {
         loader: 'babel-loader'
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        test: /\.png$/,
+        loader: 'url-loader'
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
         loader: 'file-loader',
         options: {
           limit: 100000,
           name: '/assets/fonts/[name].[ext]',
         }
       }
-    ]
+    ],
+    parser: {
+      javascript: {
+        commonjsMagicComments: true,
+      },
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -77,6 +86,7 @@ const configs = {
       'react-dom': 'preact/compat',
       'react-dom/test-utils': 'preact/test-utils',
       '@utils': path.resolve(__dirname, '../src/utils'),
+      '@hooks': path.resolve(__dirname, '../src/hooks'),
       '@components': path.resolve(__dirname, '../src/components'),
       '@contexts': path.resolve(__dirname, '../src/contexts'),
       '@assets': path.resolve(__dirname, '../src/assets')

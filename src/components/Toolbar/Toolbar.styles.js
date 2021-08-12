@@ -7,6 +7,7 @@ export const ToolbarStyled = styled.div`
   padding: 5px 0 3px;
   background-color: ${({ theme }) => theme.toolbar.background};
   background-image: ${({ theme }) => theme.flat ? 'none' : css`linear-gradient(to bottom, ${theme.toolbar.background} 0%, ${theme.toolbar.gradient} 100%);`};
+  user-select: none;
   -webkit-user-select: none;
   box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.1);
 
@@ -65,6 +66,15 @@ export const ToolbarActions = styled.div`
     margin-left: 4px;
     margin-right: 4px;
   }
+
+  ${props => {
+    switch (props.align) {
+      case 'left':
+        return css`float: left;`;
+      case 'right':
+        return css`float: right`; 
+    }
+  }}
 
   ${props => props.centered && css`
     text-align: center;
