@@ -1,23 +1,24 @@
 import styled, { css } from 'styled-components';
 
-export const TaggingEventWrapper = styled.div`
+export const EventWrapper = styled.div`
   display: block;
   border-radius: 3px;
   overflow: hidden;
   font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
   font-size: 11px;
+  margin: 10px 0;
 `;
 
-export const TaggingEventHeader = styled.pre`
+export const EventHeader = styled.pre`
   margin: 0;
   border: 0;
   border-radius: 0;
-  background: ${props => props.light ? '#6b70c5' : '#454658'};
+  background: ${props => props.light ? '#6b70c5' : props.theme.toolbar.background};
   color: #f5f5f5;
   padding: 10px;
 `;
 
-export const TaggingEventContent = styled.pre`
+export const EventContent = styled.pre`
   margin: 0;
   border: 0;
   border-radius: 0;
@@ -43,7 +44,7 @@ export const TaggingEventContent = styled.pre`
   `}
 `;
 
-export const TaggingEventFooter = styled.div`
+export const EventFooter = styled.div`
   margin: 0;
   border: 0;
   border-top: 1px solid #d9d9d9;
@@ -53,7 +54,7 @@ export const TaggingEventFooter = styled.div`
   display: flex;
 `;
 
-export const TaggingEventAction = styled.div`
+export const EventAction = styled.div`
   text-align: center;
   flex: 1;
   cursor: pointer;

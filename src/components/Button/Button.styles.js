@@ -79,6 +79,21 @@ export const ButtonStyled = styled.button`
       border-bottom-color: ${theme.flat ? 'transparent' : getProp('borderBottom')};
       background-image: ${theme.flat ? 'none' : `linear-gradient(to bottom, ${getProp('background')} 0%, ${getProp('gradient')} 100%)`};
 
+      &:hover {
+        color: #fff;
+        border: 1px solid transparent;
+        background-color: ${getProp('active.background')};
+        background-image: none;
+  
+        &:not(:first-child) {
+          border-left: 0 !important;
+        }
+  
+        ${IconStyled} {
+          color: #fff;
+        }
+      }
+
       ${props => {
         return props.active && css`
           color: #fff;

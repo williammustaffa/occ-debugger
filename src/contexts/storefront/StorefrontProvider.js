@@ -135,7 +135,6 @@ export function StorefrontProvider({ children }) {
       setWidgets(getWidgetData(masterViewModel));
       setPage(getPageData(masterViewModel));
       setTagging(taggingData);
-      setLoading(false);
     }
 
     const loadUserData = async () => {
@@ -154,10 +153,13 @@ export function StorefrontProvider({ children }) {
     }
 
     try {
-      loadTaggingData();
-      loadUserData();
-      loadCartData();
-      loadSiteData();
+      Promise.all([
+        loadTaggingData(),
+        loadUserData(),
+        loadCartData(),
+        loadSiteData()
+      ]).then(() => setLoading(false));
+
     } catch(e) {
       setLoading(false);
       console.log("[OCC Debugger - Analytics] Failed initializing...");

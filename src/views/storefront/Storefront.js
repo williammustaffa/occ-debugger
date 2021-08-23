@@ -1,25 +1,33 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { useStorefront } from '@contexts/storefront';
-import { Sidepanel, Toolbar, Title, Button, ButtonGroup, Screen } from '@components';
-import logoImage from '@assets/icons/icon16.png';
+import {
+  Window,
+  Toolbar,
+  Button,
+  ButtonGroup,
+  Screen
+} from '@components';
+import { OrientationIcon } from './Storefront.styles';
 
 // Subcomponents
-import { TaggingWidgets } from './TaggingWidgets';
-import { TaggingEvents } from './TaggingEvents';
+import { Tagging } from './Tagging';
 import { PageContext } from './PageContext';
+import { Events } from './Events';
+
+// Assets
+import logoImage from '@assets/icons/icon16.png';
 
 const TABS = {
-  'Tagging Schema': TaggingWidgets,
-  'Tagging Events': TaggingEvents,
-  'Page Context': PageContext
+  'Tagging': Tagging,
+  'Context': PageContext
 };
 
 const ORIENTATIONS = [
+  { label: 'Top', value: 'top' },
   { label: 'Left', value: 'left' },
   { label: 'Bottom', value: 'bottom' },
   { label: 'Right', value: 'right' },
-  { label: 'Top', value: 'top' },
 ];
 
 function getStoredValue(key, defaultValue, boolean) {
@@ -42,7 +50,7 @@ function setStoredValue(key, value) {
 
 export function Storefront() {  
   const [isCollapsed, setIsCollapsed] = useState(getStoredValue('collapsed', true));
-  const [activeTab, setActiveTab] = useState(getStoredValue('tab-name', 'Tagging Schema'));
+  const [activeTab, setActiveTab] = useState(getStoredValue('tab-name', 'Tagging'));
   const [orientation, setOrientation] = useState(getStoredValue('orientation', 'bottom'));
   const { loading } = useStorefront();
 
@@ -66,35 +74,33 @@ export function Storefront() {
   ));
 
   const tabComponents = loading ?
-    <Screen>Loading initial data</Screen> :
+    <Screen>Loading...</Screen> :
     Object.entries(TABS).map(([tabName, TabContent]) => {
       const isActive = activeTab === tabName;
       return <TabContent active={isActive} />;
     });
 
   return (
-    <Sidepanel
-      modal={true}
-      width={350}
-      collapsed={isCollapsed}
-      orientation={orientation}
-      actions={[]}
-    >
+    <Window orientation={orientation} floating={true}>
       <Toolbar header>
-        <Toolbar.Actions align="right">
-          {
-            ORIENTATIONS.map(orient => (
-              <Button onClick={updateOrientation(orient.value)}>{orient.label}</Button>
-            ))
-          }
-          
-        </Toolbar.Actions>
-        <Toolbar.Actions alogn="left">
+        <Toolbar.Actions>
           <img src={logoImage} />
           <ButtonGroup>{tabButtons}</ButtonGroup>
+          <ButtonGroup pullRight>
+          {
+            ORIENTATIONS.map(orient => (
+              <Button
+                onClick={updateOrientation(orient.value)}
+                active={orient.value === orientation}
+              >
+                <OrientationIcon orientation={orient.value} size={12} border={2} />
+              </Button>
+            ))
+          }
+          </ButtonGroup>
         </Toolbar.Actions>
       </Toolbar>
       {tabComponents}
-    </Sidepanel>
+    </Window>
   );
 };

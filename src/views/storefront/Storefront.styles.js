@@ -26,8 +26,15 @@ export const TabWrapper = styled.div`
   display: ${props => props.active ? 'block' : 'none'};
 `;
 
-export const TaggingEventwrapper = styled.div`
-  margin: ${props => props.margin ? props.margin : '10px' };
+export const OrientationIcon = styled.span`
+  border: ${props => props.border}px solid white;
+  display: block;
+  height: ${props => `${props.size}px`};
+  width: ${props => `${props.size * 1.3}px`};
+
+  ${props => css`
+    border-${props.orientation}-width: ${props.size / 3}px;
+  `}
 `;
 
 export const GlobalStorefrontStyle = createGlobalStyle`

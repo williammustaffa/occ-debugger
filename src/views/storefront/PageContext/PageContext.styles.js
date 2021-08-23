@@ -36,29 +36,24 @@ export const PageContextResultStyled = styled.div`
   }
 `;
 
+export const PageContextWrapper = styled.div`
+  position: relative;
+  padding: 10px 0;
+`;
+
 export const PageContextHeading = styled.div`
   font-size: 1.25em;
   text-align: center;
   padding: 5px 10px;
   background: #f5f5f5;
   border-bottom: 1px solid #dadada;
-
-  &:not(:first-of-type) {
-    border-top: 1px solid #dadada;
-  }
-`;
-
-export const PageContextGrid = styled.div`
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  position: relative;
-  height: 100%;
 `;
 
 export const PageContextSidebar = styled.div`
   grid-column: 1;
   overflow: hidden;
   overflow-y: auto;
+  border-right: 1px solid #dadada;
 `;
 
 export const PageContextContent = styled.div`

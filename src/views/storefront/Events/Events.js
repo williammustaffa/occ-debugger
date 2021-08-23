@@ -1,12 +1,15 @@
 import { h } from 'preact';
-import { useRef, useCallback } from 'preact/hooks';
+import { useRef, useEffect, useCallback } from 'preact/hooks';
 import { format } from 'date-fns';
 import { identity } from 'lodash';
-import { Sidepanel, Screen } from '@components';
+import { Screen } from '@components';
 import { useStorefront } from '@contexts/storefront';
-import { FadeIn, TaggingEventwrapper } from '../Storefront.styles';
-import { TaggingEvent } from '../TaggingEvent';
-import { useEffect } from 'preact/hooks';
+
+// Styles
+import { FadeIn } from '../Storefront.styles';
+
+// Components
+import { Event } from '../Event';
 
 const renderTaggingEvent = event => {
   const { action } = event;;
@@ -33,18 +36,16 @@ const renderTaggingEvent = event => {
 
   return (
     <FadeIn>
-      <TaggingEventwrapper>
-        <TaggingEvent
-          header={header}
-          content={JSON.stringify(event, null, 2)}
-          light={isPageview}
-        />
-      </TaggingEventwrapper>
+      <Event
+        header={header}
+        content={JSON.stringify(event, null, 2)}
+        light={isPageview}
+      />
     </FadeIn>
   )
 };
 
-export const TaggingEvents = ({ active }) => {
+export const Events = ({ active }) => {
   const scrollRef = useRef()
 
   const { events } = useStorefront();
@@ -61,12 +62,12 @@ export const TaggingEvents = ({ active }) => {
   useEffect(scrollToBottom, [events]);
 
   return (
-    <Sidepanel.Content hide={!active} ref={scrollRef}>
+    <div>
       {
         Array.isArray(events) && events.length ?
         events.map(renderTaggingEvent) : 
         <Screen>No events triggered</Screen>
       }
-    </Sidepanel.Content>
+    </div>
   )
 };

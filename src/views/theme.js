@@ -6,7 +6,7 @@ export default {
   },
   toolbar: {
     color: '#f5f5f5',
-    background: '#454658',
+    background: '#323639',
     gradient: '#d1cfd1',
     border: '#c2c0c2'
   },
@@ -64,13 +64,13 @@ export default {
     }
   },
   secondary: {
-    color: '#ffffff',
-    background: '#2f2f37',
+    color: '#D6D6D7',
+    background: '#323639',
     gradient: '#f1f1f1',
     border: '#a19fa1',
     borderBottom: '#c2c0c2',
     active: {
-      background: '#867fd8',
+      background: '#202124',
       gradient: '#ddd'
     }
   }

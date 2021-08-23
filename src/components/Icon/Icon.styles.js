@@ -16,6 +16,16 @@ export const IconStyled = styled.span`
    -moz-osx-font-smoothing: grayscale;
   }
 
+  ${({ float }) => float && css`
+    float: ${float};
+  `}
+
+  ${({ inline }) => inline && css`
+    float: none;
+    margin-left: 10px;
+    color: #b2b2b2;
+  `}
+  
   ${({ text }) => text && css`
     margin-right: 5px;
   `}

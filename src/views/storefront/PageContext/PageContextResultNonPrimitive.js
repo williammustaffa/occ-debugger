@@ -24,7 +24,7 @@ export function PageContextResultNonPrimitive({ parent, type, label, value }) {
 
   return (
     <PageContextResultStyled>
-      <Accordion title={title} enabled={!isDataEmpty}>
+      <Accordion title={title} enabled={!isDataEmpty} inline={true}>
         <PageContextData data={value} />
       </Accordion>
     </PageContextResultStyled>

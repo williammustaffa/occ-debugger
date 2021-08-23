@@ -11,5 +11,4 @@ export * from './Title';
 export * from './Toolbar';
 export * from './Window';
 export * from './Sidebar';
-export * from './Sidepanel';
 export * from './Screen';

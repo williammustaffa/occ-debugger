@@ -1,9 +1,12 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ButtonStyled } from '@components/Button';
+import { propertiesCss } from '../properties.css';
 
 export const ButtonGroupStyled = styled.div`
+  ${propertiesCss}
+
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   vertical-align: middle;
   -webkit-app-region: no-drag;
 

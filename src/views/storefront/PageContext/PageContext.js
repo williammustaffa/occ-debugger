@@ -1,51 +1,54 @@
 import { h } from 'preact';
 import { useRef, useState } from 'preact/hooks';
 import { toPairs, map } from 'lodash';
-import { Button, Sidepanel, Screen } from '@components';
+import { Button, Window, Screen } from '@components';
 import { useStorefront } from '@contexts/storefront';
 import { PageContextData } from './PageContextData';
-import { PageContextGrid, PageContextHeading, PageContextSidebar, PageContextContent } from './PageContext.styles';
+import { PageContextHeading, PageContextWrapper } from './PageContext.styles';
 
 export const PageContext = ({ active }) => {
   const scrollRef = useRef()
 
-  const [context, setContext] = useState(-1);
+  const [context, setContext] = useState({});
   const { user, cart, site, widgets } = useStorefront();
 
   const selectContext = ctx => () => setContext(ctx)
 
   const renderWidgetAccordion = ([widgetName, widgetData]) => {
+    const contextOption = {
+      name: widgetName,
+      data: widgetData
+    };
+
     return (
       <Button
         sidebar
-        selected={context === widgetData}
-        onClick={selectContext(widgetData)}
+        active={context.name === widgetName}
+        onClick={selectContext(contextOption)}
       >{widgetName}</Button>
     )
   };
 
   return (
-    <Sidepanel.Content hide={!active} ref={scrollRef}>
-      <PageContextGrid>
+    <Window.Content visible={active} ref={scrollRef} layout={true}>
+      <Window.Sidebar>
+        <PageContextHeading>Page</PageContextHeading>
+        <Button sidebar active={context.name === 'site'} onClick={selectContext({ name: 'site', data: site })}>Site</Button>
+        <Button sidebar active={context.name === 'user'} onClick={selectContext({ name: 'user', data: user })}>User</Button>
+        <Button sidebar active={context.name === 'cart'} onClick={selectContext({ name: 'cart', data: cart })}>Cart</Button>
+        <PageContextHeading>Widgets</PageContextHeading>
+        {map(toPairs(widgets), renderWidgetAccordion)}
+      </Window.Sidebar>
 
-        <PageContextSidebar>
-          <PageContextHeading>Page</PageContextHeading>
-          <Button sidebar selected={context === site} onClick={selectContext(site)}>Site</Button>
-          <Button sidebar selected={context === user} onClick={selectContext(user)}>User</Button>
-          <Button sidebar selected={context === cart} onClick={selectContext(cart)}>Cart</Button>
-          <PageContextHeading>Widgets</PageContextHeading>
-          {map(toPairs(widgets), renderWidgetAccordion)}
-        </PageContextSidebar>
-
-        <PageContextContent>
-          {
-            context ?
-              <PageContextData data={context} /> :
-              <Screen>Select a context</Screen>
-          }
-        </PageContextContent>
-  
-      </PageContextGrid>
-    </Sidepanel.Content>
+      <Window.Main>
+        {
+          context?.data
+            ? <PageContextWrapper>
+                <PageContextData data={context.data} />
+              </PageContextWrapper>
+            : <Screen>Select a context</Screen>
+        }
+      </Window.Main>
+    </Window.Content>
   )
 };

@@ -66,17 +66,4 @@ export const ToolbarActions = styled.div`
     margin-left: 4px;
     margin-right: 4px;
   }
-
-  ${props => {
-    switch (props.align) {
-      case 'left':
-        return css`float: left;`;
-      case 'right':
-        return css`float: right`; 
-    }
-  }}
-
-  ${props => props.centered && css`
-    text-align: center;
-  `}
 `;
