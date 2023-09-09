@@ -18,6 +18,9 @@ __non_webpack_require__(['common/container/pageContainer'], (pageContainer) => {
       const result = await _controllerInitialize.apply(this, arguments);
 
       for (const route of routes) {
+        const { extensionPath } = window._occDebugger;
+        route.modulePath = `${extensionPath}${route.modulePath}`;
+        route.viewPath = `${extensionPath}${route.viewPath}`;
         model.pageConfigurations.push(route);
       }
 

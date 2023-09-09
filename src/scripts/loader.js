@@ -89,6 +89,8 @@ async function setup(configs) {
     configs.registered = true;
   }
 
+  configs.extensionPath = `chrome-extension://${chrome.runtime.id}/`;
+
   return configs;
 }
 

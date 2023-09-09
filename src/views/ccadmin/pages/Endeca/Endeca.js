@@ -1,4 +1,4 @@
-define('ccadmin/pages/Endeca', function (require) {
+define(function (require) {
   const i18n = require('common/util/i18n');
   const Page = require('common/pages/Page');
   const ReportingPanel = require('admin/pages/home/ReportingPanel');

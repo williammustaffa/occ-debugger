@@ -1,9 +1,10 @@
 export default [
   {
-    modulePath: "views/ccadmin/pages/endeca",
+    viewPath: "views/ccadmin/pages/Endeca/Endeca",
+    modelPath: "views/ccadmin/pages/Endeca/Endeca",
     displayName: "Endeca",
     displayResource: "Endeca",
-    url: "/occs-admin/#/endeca",
+    url: "/occs-admin/endeca",
     iconClass: "oj-ux-ico-products",
     isDefault: false,
     shouldCache: false,
