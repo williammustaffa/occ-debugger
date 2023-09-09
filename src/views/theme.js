@@ -1,12 +1,12 @@
 export default {
   flat: true,
   global: {
-    background: '#fff',
-    color: '#222'
+    background: '#333',
+    color: '#f5f5f5'
   },
   toolbar: {
     color: '#f5f5f5',
-    background: '#454658',
+    background: '#222',
     gradient: '#d1cfd1',
     border: '#c2c0c2'
   },

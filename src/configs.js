@@ -1,4 +1,5 @@
 export default {
+  type: null,
   registered: false,
   valid: false,
   options: {

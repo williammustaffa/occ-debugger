@@ -1,7 +1,5 @@
 import { logger } from '@utils/logger';
 
-const occRequire = __non_webpack_require__;
-const occDependencies = ['pubsub', 'spinner', 'knockout'];
 const options = window._occDebugger.options;
 
 function init(...dependencies) {
@@ -43,7 +41,7 @@ function init(...dependencies) {
   }
 }
 
-function debugSpinner(pubsub, spinner) {
+function debugSpinner(_pubsub, spinner) {
   // Save original methods
   const create = spinner.create;
   const destroyWithoutDelay = spinner.destroyWithoutDelay;
@@ -73,7 +71,7 @@ function debugSpinner(pubsub, spinner) {
   };
 }
 
-function debugTopics(pubsub, spinner) {
+function debugTopics(pubsub, _spinner) {
   Object.keys(pubsub.topicNames).map(function (topicName) {
     $.Topic(pubsub.topicNames[topicName]).subscribe((...args) => {
       logger.debug({ label: 'Topic Triggered', suffix: topicName }, ...args);
@@ -81,7 +79,7 @@ function debugTopics(pubsub, spinner) {
   });
 }
 
-function debugCookies(pubsub, spinner) {
+function debugCookies(_pubsub, _spinner) {
   const findDiff = (object1, object2) => {
     const target = { ...object1, ...object2 };
     const result = {
@@ -157,4 +155,6 @@ function debugCookies(pubsub, spinner) {
 }
 
 // Require and init
-occRequire(occDependencies, init);
+if (typeof __non_webpack_require__ !== 'undefined') {
+  __non_webpack_require__(['pubsub', 'spinner', 'knockout'], init);
+}

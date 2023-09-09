@@ -15,14 +15,23 @@ const setManifestVersion = content => {
   return content.toString().replace(/__version__/g, pkg.version);
 }
 
+const views = {
+  'views/popup/index': path.join(SRC_PATH, 'views/popup/index.js'),
+  'views/devtools/index': path.join(SRC_PATH, 'views/devtools/index.js'),
+  'views/ccstore/index': path.join(SRC_PATH, 'views/ccstore/index.js'),
+  'views/ccadmin/index': path.join(SRC_PATH, 'views/ccadmin/index.js'),
+};
+
+const scripts = {
+  'scripts/loader': path.join(SRC_PATH, 'scripts/loader.js'),
+  'scripts/background': path.join(SRC_PATH, 'scripts/background.js'),
+  'scripts/occDebugger': path.join(SRC_PATH, 'scripts/occDebugger.js')
+};
+
 const configs = {
   entry: {
-    'views/popup/index': path.join(SRC_PATH, 'views/popup/index.js'),
-    'views/devtools/index': path.join(SRC_PATH, 'views/devtools/index.js'),
-    'views/storefront/index': path.join(SRC_PATH, 'views/storefront/index.js'),
-    'scripts/background': path.join(SRC_PATH, 'scripts/background.js'),
-    'scripts/contentScript': path.join(SRC_PATH, 'scripts/contentScript.js'),
-    'scripts/occDebugger': path.join(SRC_PATH, 'scripts/occDebugger.js')
+    ...views,
+    ...scripts
   },
   output: {
     filename: '[name].js',
@@ -62,6 +71,11 @@ const configs = {
       patterns: [
         { from: 'src/assets/icons', to: 'assets/icons' },
         { from: 'src/manifest.json', to: 'manifest.json', transform: setManifestVersion }
+      ]
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/views/ccadmin/pages/', to: 'views/ccadmin/pages' },
       ]
     })
   ],

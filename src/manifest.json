@@ -7,7 +7,8 @@
   "permissions": ["tabs", "storage", "<all_urls>"],
   "web_accessible_resources": [
     "scripts/occDebugger.js",
-    "views/storefront/index.js"
+    "views/ccadmin/index.js",
+    "views/ccstore/index.js"
   ],
   "devtools_page": "views/devtools/index.html",
   "background": {
@@ -16,8 +17,9 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["scripts/contentScript.js"],
-      "all_frames": false
+      "js": ["scripts/loader.js"],
+      "all_frames": false,
+      "run_at":"document_start"
     }
   ],
   "browser_action": {

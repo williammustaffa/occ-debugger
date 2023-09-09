@@ -1,0 +1,18 @@
+<!-- Copyright (C) 1994, 2019, Oracle and/or its affiliates. All rights reserved. -->
+<!-- admin/pages/home/Endeca -->
+
+<oj-oc-slate-page :id="[[pageId]]" page="[[$data]]" background-transparency="true">
+
+  <oj-oc-page-header slot="pageHeader" page="[[$data]]"></oj-oc-page-header>
+
+  <div slot="content" class="oj-flex oj-sm-only-flex-direction-column oj-md-only-flex-direction-column oj-sm-padding-6x ">
+      <div id="cc-dashboard-reporting-panel" class="oj-lg-9 oj-flex-item oj-lg-padding-6x-end">
+          <oj-module config="[[reportingPanelConfig]]"></oj-module>
+      </div>
+      <div class="oj-lg-3 oj-flex-item">
+          <oj-module config="[[resourcesPanelConfig]]"></oj-module>
+      </div>
+  </div>
+</oj-oc-slate-page>
+
+<!-- end admin/pages/home/Endeca -->
