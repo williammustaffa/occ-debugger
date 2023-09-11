@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { StorefrontContext } from './StorefrontContext';
-import { observables } from '@utils';
+import { observables, getDOMConfigs } from '@utils';
 
 let ko, pubsub;
 
@@ -15,8 +15,8 @@ function waitForMasterViewModel() {
   return new Promise(resolve => {
     const checkIfMasterViewModelIsAvailable = () => {
       try {
-        ko = __non_webpack_require__('knockout');
-        pubsub = __non_webpack_require__('pubsub');
+        ko = require('knockout'), // __non_webpack_require__
+        pubsub = require('pubsub'); // __non_webpack_require__
 
         const context = ko.contextFor(document.body);
         const masterViewModel = context.$masterViewModel;
@@ -70,7 +70,7 @@ function getPageData(masterViewModel) {
 }
 
 export function StorefrontProvider({ children }) {
-  const [configs, setConfigs] = useState(window._occDebugger);
+  const [configs, setConfigs] = useState(getDOMConfigs());
   const [loading, setLoading] = useState(true);
   
   // data
@@ -122,7 +122,6 @@ export function StorefrontProvider({ children }) {
       loadData();
     } catch(e) {
       setLoading(false);
-      console.log("[OCC Debugger - Analytics] Failed initializing...");
     }
 
     // Clean subscription on unmount

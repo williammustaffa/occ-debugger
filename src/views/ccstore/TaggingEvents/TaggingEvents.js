@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import { useRef, useCallback } from 'preact/hooks';
 import { format } from 'date-fns';
-import { identity } from 'lodash';
 import { Sidebar, Screen } from '@components';
 import { useStorefront } from '@contexts/storefront';
 import { FadeIn, TaggingEventwrapper } from '../Storefront.styles';
@@ -21,7 +20,7 @@ const renderTaggingEvent = event => {
   const componentDetail = [
     dataUet.cname,
     dataUet['add-detail']
-  ].filter(identity).join(' - ');
+  ].filter(Boolean).join(' - ');
 
   const header = (
     <div>

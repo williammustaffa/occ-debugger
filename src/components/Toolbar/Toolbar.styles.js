@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
-import { ButtonStyled, ButtonGroupStyled, TitleStyled } from '@components'
+import { TitleStyled } from '@components/Title/Title.styles';
+import { ButtonStyled } from '@components/Button/Button.styles';
+import { ButtonGroupStyled } from '@components/ButtonGroup/ButtonGroup.styles';
 
 export const ToolbarStyled = styled.div`
   min-height: 22px;

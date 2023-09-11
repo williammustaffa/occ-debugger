@@ -1,28 +1,39 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "OCC Debugger",
   "version": "__version__",
   "description": "Add some functionalities to debug occ",
   "short_name": "Occ Debugger",
-  "permissions": ["tabs", "storage", "<all_urls>"],
+  "permissions": ["tabs", "storage", "scripting", "activeTab"],
+  "host_permissions": [
+    "*://*/*"
+  ],
   "web_accessible_resources": [
-    "scripts/occDebugger.js",
-    "views/ccadmin/index.js",
-    "views/ccstore/index.js"
+    {
+      "resources": [
+        "scripts/occDebugger.js",
+        "views/ccadmin/index.js",
+        "views/ccstore/index.js"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
+    }
   ],
   "devtools_page": "views/devtools/index.html",
   "background": {
-    "scripts": ["scripts/background.js"]
+    "service_worker": "scripts/background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["*://*/*"],
       "js": ["scripts/loader.js"],
       "all_frames": false,
       "run_at":"document_start"
     }
   ],
-  "browser_action": {
+  "action": {
     "default_title": "OCC Debugger",
     "default_popup": "views/popup/index.html",
     "default_icon": {

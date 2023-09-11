@@ -1,6 +1,8 @@
 import { logger } from '@utils/logger';
+import { getDOMConfigs, setDOMConfigs } from '@utils/configs-dom';
 
-const options = window._occDebugger.options;
+const configs = getDOMConfigs();
+const options = configs.options;
 
 function init(...dependencies) {
   const optionsMap = {
@@ -26,7 +28,9 @@ function init(...dependencies) {
     const [pubsub] = dependencies;
 
     // This is used by devtools
-    const update = isReady => () => window._occDebugger.isReady = isReady;
+    const update = isReady => () => {
+      setDOMConfigs({ ...configs, isReady });
+    };
 
     // Inform devtools page will transition
     $.Topic(pubsub.topicNames.HISTORY_PUSH_STATE)
@@ -155,6 +159,6 @@ function debugCookies(_pubsub, _spinner) {
 }
 
 // Require and init
-if (typeof __non_webpack_require__ !== 'undefined') {
-  __non_webpack_require__(['pubsub', 'spinner', 'knockout'], init);
+if (typeof require !== 'undefined') {
+  require(['pubsub', 'spinner', 'knockout'], init);
 }

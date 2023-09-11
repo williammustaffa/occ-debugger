@@ -1,7 +1,7 @@
-import { h,  } from 'preact';
+import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { AccordionWrapper, AccordionTitle, AccordionContent } from './Accordion.styles';
-import { Icon } from '@components';
+import { Icon } from '@components/Icon';
 
 export const Accordion = ({ children, title, content, enabled = true, collapsed = true }) => {
   const [isCollapsed, setIsCollapsed] = useState(collapsed);

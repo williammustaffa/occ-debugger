@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 
 export const AccordionTitle = styled.div`
   cursor: ${props => props.enabled ? 'pointer' : 'normal'};

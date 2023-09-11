@@ -1,3 +1,5 @@
+import extension from '@api/extension';
+
 function _processTab(tab) {
   if (tab) tab.domainName = _getTabUrl(tab);
   return tab;
@@ -12,7 +14,7 @@ function getCurrent() {
   return new Promise((resolve) => {
     const query = { active: true, currentWindow: true };
 
-    chrome.tabs.query(query, tabs => {
+    extension.queryTab(query, tabs => {
       resolve(_processTab(tabs.pop()));
     });
   });
@@ -20,13 +22,13 @@ function getCurrent() {
 
 function refreshTab(tab) {
   return new Promise(resolve => {
-    chrome.tabs.reload(tab.id, { bypassCache: true }, resolve);
+    extension.reloadTab(tab.id, { bypassCache: true }, resolve);
   });
 }
 
 function getTabById(id) {
   return new Promise(resolve => {
-    chrome.tabs.get(id, tab => {
+    extension.getTab(id, tab => {
       resolve(_processTab(tab));
     });
   });

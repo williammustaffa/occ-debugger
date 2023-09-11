@@ -4,5 +4,5 @@ export * from './tabs';
 export * from './emitter';
 export * from './logger';
 export * from './helpers';
-export * from './resources';
 export * from './observables';
+export * from './configs-dom';

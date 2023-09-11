@@ -13,12 +13,12 @@ function parser(configs) {
   try {
     const result = { __proto__: null };
 
-    if (!__non_webpack_require__) {
+    if (!window.require) { // __non_webpack_require__
       throw new Error('Require is not loaded yet.');
     }
 
     // Require knockout
-    const ko = __non_webpack_require__('knockout');
+    const ko = require('knockout'); // __non_webpack_require__
 
     if (!ko) {
       throw new Error('Knockout is not loaded yet.');

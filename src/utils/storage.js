@@ -1,8 +1,9 @@
+import extension from '@api/extension';
 import configs from '../configs';
 
 function getItem(key, defaultValue, json = true) {
   return new Promise(resolve => {
-    chrome.storage.local.get(key, data => {
+    extension.getLocalStorageItem(key, data => {
       const raw = data[key] || defaultValue;
 
       if (json && typeof raw === 'string') {
@@ -21,7 +22,7 @@ function getItem(key, defaultValue, json = true) {
 
 function setItem(key, value, json = true) {
   const strConfigs = json ? JSON.stringify(value) : value;
-  chrome.storage.local.set({ [key]: strConfigs });
+  extension.setLocalStorageItem({ [key]: strConfigs });
 }
 
 function getConfigs(domainName) {
@@ -55,7 +56,7 @@ function listenConfigs(domain, callback) {
     }
   };
 
-  chrome.storage.onChanged.addListener(listener);
+  extension.onLocalStorageChange(listener);
 
   return { updateDomain };
 }

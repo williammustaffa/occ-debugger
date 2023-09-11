@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { Icon } from '@components';
+import { Icon } from '@components/Icon';
 import { SidebarWrapper, SidebarStyled , SidebarContent, SidebarTogglerStyled, SidebarActions } from './Sidebar.styles';
 
 // Main component

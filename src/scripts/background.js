@@ -1,6 +1,6 @@
-import { tabs, emitter } from '@utils';
-
-const { notify } = emitter.create('occ-debugger');
+// import extension from '@api/extension';
+// import { emitter } from '@utils';
+// const { notify } = emitter.create('occ-debugger');
 
 // // You cannot use the chrome.windows api in the devtools.js page.
 // chrome.windows.onFocusChanged.addListener(async () => {
@@ -11,9 +11,10 @@ const { notify } = emitter.create('occ-debugger');
 //   notify({ action: 'focus-changed', tabId });
 // });
 
-chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  // when URL changes notify devtools
-  if (changeInfo.status || changeInfo.url) {
-    notify({ action: 'client-sign', tabId, tab, changeInfo });
-  }
-});
+// extension.onTabChange(async (...props) => {
+//   console.log("Tab changed:", props)
+//   // when URL changes notify devtools
+//   if (changeInfo.status || changeInfo.url) {
+//     notify({ action: 'client-sign', tabId, tab, changeInfo });
+//   }
+// });

@@ -22,9 +22,9 @@ export const ButtonGroupStyled = styled.div`
   }
 
   ${ButtonStyled} + ${ButtonStyled},
-  ${ButtonStyled} + ${ButtonGroupStyled},
-  ${ButtonGroupStyled} + ${ButtonStyled},
-  ${ButtonGroupStyled} + ${ButtonGroupStyled} {
+  ${ButtonStyled} + &,
+  & + ${ButtonStyled},
+  & + & {
     margin-left: -1px;
   }
 

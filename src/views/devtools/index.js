@@ -38,12 +38,16 @@ function _setPanelMessage(panel, message) {
  */
 function _waitForPageResources(callback) {
   const checkResources = () => {
+    /**
+     * DO NOT USE MODULES INSIDE THIS CODE
+     * THIS IS INJECTING CODE IN HOST WINDOW
+     */
     chrome.devtools.inspectedWindow.eval(
       `(${(function () {
         try {
-          const ko = __non_webpack_require__('knockout');
+          const ko = require('knockout'); //__non_webpack_require__
 
-          const isReady = window._occDebugger.isReady;
+          const isReady = window.__occDebugger && window.__occDebugger.isReady;
           const isUserLoaded = ko.contextFor(document.body).$masterViewModel.data.global.user;
 
           return isReady && isUserLoaded;
@@ -69,7 +73,7 @@ function _waitForPageResources(callback) {
       chrome.devtools.panels.elements.createSidebarPane(target.name, sidebar => {
         // Register panel
         const panel = { target, sidebar, loaded: false, error: null };
-        panel.enabled =  _isPanelEnabled(panel, state);
+        panel.enabled = _isPanelEnabled(panel, state);
         panels.push(panel);
 
         _loadPanel(panel, state);
@@ -235,18 +239,3 @@ const _updateDebounced = helpers.debounce(_update, 100);
   // Add panels
   _register(state);
 })();
-
-function promiseLike() {
-  const thenChain = [];
-  const catchChain = [];
-
-  const setThen = fn => thenChain.push(fn);
-  const setCatch = fn => catchChain.push(fn);
-
-  
-
-  return {
-    then: setThen,
-    catch: setCatch
-  }
-}
