@@ -14,16 +14,16 @@ function onMessage(callback) {
   return chrome.runtime.onMessage.addListener(callback);
 }
 
-function executeDevtoolsScript(scriptString) {
-  return chrome.devtools.inspectedWindow.eval(scriptString);
+function executeDevtoolsScript(scriptString, callback) {
+  return chrome.devtools.inspectedWindow.eval(scriptString, callback);
 }
 
 function getDevtoolsTabId() {
   return chrome.devtools.inspectedWindow.tabId;
 }
 
-function createDevtoolsSideBarPane(name, callback) {
-  return chrome.devtools.panels.elements.createSidebarPane(name, callback);
+function createDevtoolsSideBarPane(name) {
+  return new Promise(resolve => chrome.devtools.panels.elements.createSidebarPane(name, resolve));
 }
 
 function onDevtoolsElementSelectionChange(callback) {

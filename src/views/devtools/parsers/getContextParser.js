@@ -47,6 +47,6 @@ function parser(configs) {
   }
 }
 
-export const getParser = configs => {
+export const getContextParser = configs => {
   return `(${parser.toString()})(${JSON.stringify(configs)})`;
 }
