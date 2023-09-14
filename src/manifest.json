@@ -20,7 +20,7 @@
       ]
     }
   ],
-  "devtools_page": "views/devtools/index.html",
+  "devtools_page": "views/devtools/index.html?name=occ",
   "background": {
     "service_worker": "scripts/background.js",
     "type": "module"
@@ -42,4 +42,4 @@
       "128": "assets/icons/icon128.png"
     }
   }
- }
+}

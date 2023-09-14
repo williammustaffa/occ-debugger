@@ -1,5 +1,5 @@
 function onTabChange(callback) {
-  return chrome.tabs.onActivated.addListener(callback);
+  return chrome.tabs.onUpdated.addListener(callback);
 }
 
 function getURL(path) {
@@ -20,6 +20,10 @@ function executeDevtoolsScript(scriptString, callback) {
 
 function getDevtoolsTabId() {
   return chrome.devtools.inspectedWindow.tabId;
+}
+
+function getDevtoolsTab() {
+  return new Promise(resolve => getTab(getDevtoolsTabId(), resolve));
 }
 
 function createDevtoolsSideBarPane(name) {
@@ -69,6 +73,7 @@ export default {
   onMessage,
   executeDevtoolsScript,
   getDevtoolsTabId,
+  getDevtoolsTab,
   createDevtoolsSideBarPane,
   onDevtoolsElementSelectionChange,
   getExtensionId,

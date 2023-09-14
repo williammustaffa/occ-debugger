@@ -6,7 +6,6 @@ import { helpers } from '@utils/helpers';
 // Panels modules
 import ChromePanel from './classes/ChromePanel';
 import { getContextParser, getResourcesParser } from './parsers';
-// import { getR } from './parsers;
 
 /**
  * Wait for masterviewmodel to have some data loaded
@@ -16,10 +15,10 @@ import { getContextParser, getResourcesParser } from './parsers';
  *
  * @param {Function} callback executed when data is available
  */
-function waitForPageResources(configs) {
+function waitForPageResources() {
   const checkResources = resolve => {
     extension.executeDevtoolsScript(
-      getResourcesParser(configs),
+      getResourcesParser(),
       result => result ? resolve() : setTimeout(() => checkResources(resolve), 500),
     );
   };
@@ -27,49 +26,66 @@ function waitForPageResources(configs) {
   return new Promise(checkResources);
 }
 
-function validateDomainConfigs(configs) {
-  // Configuration settings
-  if (!configs.registered) {
-    throw new Error('Unidentified site. Please reload your page and reopen the devtools');
-  }
-
-  if (!configs.valid) {
-    throw new Error('This is not an OCC site.');
-  }
-
-  if (!configs.options.enabled) {
-    throw new Error('Extension is disabled on this website.');
-  }
-}
-
 async function initializeDevtools() {
-  const { domainName } = await tabs.getTabById(extension.getDevtoolsTabId());
-  const configs = await storage.getConfigs(domainName);
+  new ChromePanel({
+    id: 'debuggerPanel',
+    name: 'OCC Debugger',
 
-  const id = 'debuggerPanel';
-  const isEnabled = configs.options[id];
+    async onStart() {
+      const tab = await extension.getDevtoolsTab();
+      const domainName = tabs.getTabDomainName(tab);
+      const configs = await storage.getConfigs(domainName);
+      const isEnabled = configs.options.debuggerPanel;
 
-  if (isEnabled) {
-    await waitForPageResources(configs);
+      this.setEnabled(isEnabled);
 
-    const panel = new ChromePanel({
-      id: 'debuggerPanel',
-      name: 'OCC Debugger',
-      expression: getContextParser(configs),
-    });
+      if (isEnabled) {
+        await waitForPageResources();
+        this.setExpression(getContextParser(configs));
+      } else {
+        this.setExpression(null);
+      }
 
-    const debounceUpdate = helpers.debounce(() => panel.update(), 100);
+      this.update();
+    },
 
-    await panel.start();
+    async onTabChange(_tabId, changeInfo) {
+      const { status, url } = changeInfo;
 
-    try {
-      validateDomainConfigs(configs);
-      panel.update();
-      extension.onDevtoolsElementSelectionChange(debounceUpdate);
-    } catch({ message }) {
-      panel.setMessage(message);
-    }
-  }
+      // Update domain configs and panel accordingly
+      if (typeof url !== 'undefined') {
+        const domainName = tabs.getTabDomainName(changeInfo);
+        const configs = await storage.getConfigs(domainName);
+        const isEnabled = configs.valid && configs.options.debuggerPanel;
+
+        this.setEnabled(isEnabled);
+
+        if (isEnabled) {
+          this.setExpression(getContextParser(configs));
+        } else {
+          this.setLoaded(true);
+          this.setExpression(null);
+        }
+      }
+
+      // Update loaded state for enabled sites
+      if (this.enabled) {
+        const isSiteLoaded = (status === 'complete');
+
+        if (isSiteLoaded) {
+          await waitForPageResources();
+        }
+
+        this.setLoaded(isSiteLoaded);
+      }
+
+      this.update();
+    },
+
+    onElementSeclection: helpers.debounce(function () {
+      this.update();
+    }, 100),
+  });
 };
 
 initializeDevtools();

@@ -34,6 +34,11 @@ function getTabById(id) {
   });
 }
 
+function getTabDomainName(tab) {
+  const { hostname } = new URL(tab.url);
+  return hostname;
+}
+
 function isReady(tab) {
   if (!tab) return false;
   return tab.status === 'complete';
@@ -43,5 +48,6 @@ export const tabs = {
   getCurrent,
   getTabById,
   isReady,
-  refreshTab
+  refreshTab,
+  getTabDomainName,
 };

@@ -20,10 +20,10 @@ function debounce(fn, wait, immediate) {
     const callNow = immediate && !timeout;
 
     clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
+    timeout = setTimeout(later, wait);
 
     if (callNow) fn.apply(this, arguments);
-	};
+  };
 }
 
 export const helpers = { assign, debounce };

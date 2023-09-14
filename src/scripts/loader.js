@@ -7,6 +7,9 @@ import { storage, constants } from '@utils';
 
 const { TYPE_ADMIN, TYPE_STORE } = constants;
 
+// Get domain name
+const DOMAIN_NAME = location.hostname;
+
 function injectConfigs(configs) {
   const element = document.createElement('div');
 
@@ -41,8 +44,6 @@ function injectAdminScript(filePath) {
   const requireJsScript = document.querySelector('script[src*="require.js"]');
   requireJsScript.insertAdjacentElement('afterend', script);
 }
-
-const DOMAIN_NAME = location.hostname;
 
 const loaderMap = {};
 

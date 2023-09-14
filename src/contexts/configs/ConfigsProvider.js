@@ -17,10 +17,11 @@ export function ConfigsProvider({ children }) {
 
     const load = async () => {
       const currentTab = await tabs.getCurrent();
-      const configs = await storage.getConfigs(currentTab.domainName);
+      const domainName = tabs.getTabDomainName(currentTab)
+      const configs = await storage.getConfigs(domainName);
 
       // Listen to config updates
-      storage.listenConfigs(currentTab.domainName, configsListener);
+      storage.listenConfigs(domainName, configsListener);
 
       setConfigs(configs);
       setTab(currentTab);

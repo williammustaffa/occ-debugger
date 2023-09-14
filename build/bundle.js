@@ -8,7 +8,7 @@ function createBundle({ input, plugins = [] }) {
     output: {
       file: path.join('dist', input),
       format: 'iife',
-      sourcemap: !isProduction(),
+      sourcemap: !isProduction() ? 'inline' : false,
     },
     plugins: [
       ...sharedPlugins,

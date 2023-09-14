@@ -1,6 +1,6 @@
 function parser() {
   try {
-    const ko = require('knockout'); //__non_webpack_require__
+    const ko = require('knockout');
 
     const isReady = window.__occDebugger && window.__occDebugger.isReady;
     const isUserLoaded = ko.contextFor(document.body).$masterViewModel.data.global.user;
@@ -11,6 +11,6 @@ function parser() {
   }
 }
 
-export const getResourcesParser = configs => {
-  return `(${parser.toString()})(${JSON.stringify(configs)})`;
+export const getResourcesParser = () => {
+  return `(${parser.toString()})()`;
 }
