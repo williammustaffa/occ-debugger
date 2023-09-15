@@ -1,22 +1,25 @@
 const path = require('path');
-const sharedPlugins = require('./plugins');
-const { isProduction } =  require('./utils');
+const { extendCommonPlugins } = require('./plugins');
 
-function createBundle({ input, plugins = [] }) {
+function createPureBundle({ input, format = 'iife', plugins }) {
+  const pathInput = path.join('src', input);
+  const pathOutput = path.join('dist', input);
+
   return {
-    input: path.join('src', input),
+    input: pathInput,
     output: {
-      file: path.join('dist', input),
-      format: 'iife',
-      sourcemap: !isProduction() ? 'inline' : false,
+      file: pathOutput,
+      format,
     },
-    plugins: [
-      ...sharedPlugins,
-      ...plugins
-    ],
-  }
+    plugins,
+  };
+}
+
+function createCommonBundle({ input, plugins = [] }) {
+  return createPureBundle({ input, plugins: extendCommonPlugins(plugins) });
 };
 
 module.exports = {
-  createBundle,
+  createPureBundle,
+  createCommonBundle,
 };

@@ -1,5 +1,5 @@
 const zipFolder = require('zip-folder');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 const path = require('path')
 
 zipFolder(

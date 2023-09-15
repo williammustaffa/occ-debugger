@@ -1,5 +1,5 @@
 import routes from './routes';
-import { getDOMConfigs } from '@utils/configs-dom';
+import { buildRemoteModulePath, buildRemoteViewPath } from './utils';
 
 require(['common/container/pageContainer'], (pageContainer) => {
   const _originalStart = pageContainer.start;
@@ -18,12 +18,12 @@ require(['common/container/pageContainer'], (pageContainer) => {
       const result = await _controllerInitialize.apply(this, arguments);
 
       for (const route of routes) {
-        // const { extensionPath } = getDOMConfigs() || {};
-        // route.modulePath = `${extensionPath}${route.modulePath}`;
-        // route.viewPath = `${extensionPath}${route.viewPath}`;
+        route.modulePath = buildRemoteModulePath(route.modulePath);
+        route.viewPath = buildRemoteViewPath(route.viewPath);
         model.pageConfigurations.push(route);
       }
 
+      console.log("PRAIA UPDATED?", model.pageConfigurations)
       return result;
     };
 

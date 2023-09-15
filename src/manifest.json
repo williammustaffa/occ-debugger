@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "OCC Debugger",
+  "name": "OCC Extras",
   "version": "__version__",
-  "description": "Add some functionalities to debug occ",
+  "description": "Extra functionalities for OCC Users and Developers",
   "short_name": "Occ Debugger",
   "permissions": ["tabs", "storage", "scripting", "activeTab"],
   "host_permissions": [
@@ -12,8 +12,8 @@
     {
       "resources": [
         "scripts/occDebugger.js",
-        "views/ccadmin/index.js",
-        "views/ccstore/index.js"
+        "views/ccadmin/*",
+        "views/ccstore/*"
       ],
       "matches": [
         "*://*/*"

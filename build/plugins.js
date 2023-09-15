@@ -10,7 +10,7 @@ const commonjs = require('@rollup/plugin-commonjs')
 const replace = require('rollup-plugin-replace');
 const terser = require('@rollup/plugin-terser');
 
-const plugins = [
+const commonPlugins = [
   alias({
     entries: {
       'react': 'preact/compat',
@@ -31,8 +31,17 @@ const plugins = [
 ];
 
 if (isProduction()) {
-  plugins.push(terser())
+  commonPlugins.push(terser())
 }
 
+function extendCommonPlugins(plugins) {
+  return [
+    ...commonPlugins,
+    ...plugins,
+  ];
+}
 
-module.exports = plugins;
+module.exports = {
+  commonPlugins,
+  extendCommonPlugins
+};

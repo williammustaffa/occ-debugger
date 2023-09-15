@@ -9,7 +9,7 @@ define(function (require) {
 
   require('common/jet-composites/oj-oc-slate-page/loader');
   require('common/jet-composites/oj-oc-page-header/loader');
-  require('text!ccadmin/pages/Endeca/Endeca.html');
+  // require('text!ccadmin/pages/Endeca/Endeca.html');
 
   var $ = require('jquery');
 
@@ -23,33 +23,32 @@ define(function (require) {
    * @constructor
    */
   var Endeca = function(params) {
-      var extendedParams = $.extend({}, params, {
-          pageId: 'cc-page-home'
-      });
-      Page.call(this, extendedParams);
+    var extendedParams = $.extend({}, params, {
+      pageId: 'cc-page-endeca'
+    });
+    Page.call(this, extendedParams);
 
-      // Create and initialize the reporting panel, for loading with oj-module.
-      var reportingPanel = new ReportingPanel();
-      reportingPanel.initialize();
+    // Create and initialize the reporting panel, for loading with oj-module.
+    var reportingPanel = new ReportingPanel();
+    reportingPanel.initialize();
 
-      /**
-       * The module configuration for the reporting panel.
-       * @type {oj-module.config}
-       */
-      this.reportingPanelConfig = {
-          viewModel: reportingPanel,
-          view: utils.parseTemplate(REPORTING_PANEL_TEMPLATE)
-      };
+    /**
+     * The module configuration for the reporting panel.
+     * @type {oj-module.config}
+     */
+    this.reportingPanelConfig = {
+        viewModel: reportingPanel,
+        view: utils.parseTemplate(REPORTING_PANEL_TEMPLATE)
+    };
 
-      /**
-       * The module configuration for the resources panel.
-       * @type {oj-module.config}
-       */
-      this.resourcesPanelConfig = {
-          viewModel: new ResourcesPanel(this),
-          view: utils.parseTemplate(RESOURCE_PANEL_TEMPLATE)
-      };
-
+    /**
+     * The module configuration for the resources panel.
+     * @type {oj-module.config}
+     */
+    this.resourcesPanelConfig = {
+        viewModel: new ResourcesPanel(this),
+        view: utils.parseTemplate(RESOURCE_PANEL_TEMPLATE)
+    };
   };
 
   Endeca.prototype = Object.create(Page.prototype);
